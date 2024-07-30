@@ -203,29 +203,7 @@
         height: 400px;
     }
 </style>
-<!-- Modal Graficas-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title col-11 text-center" id="exampleModalLabel">Grafico de Tortas</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div class="modal-body">
-            <h1 class="text-center">Reacciones de Publicaciones de Facebook</h1>
-            <canvas id="myPieModal" width="400" height="400"></canvas>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-      </div>
-    </div>
-  </div>
-</div>
-<!--Fin Modal Graficas-->
+
 <!--Mapa con paises-->
 <div class="container">
     <h1 class="text-center">Mapa Estadistico</h1>
@@ -274,10 +252,10 @@
     </div>
 </div>
 <!--Mapa con todas las ciudades-->
-<div class="container">
+<div class="container" style="display:none">
     <h1 class="text-center">Numero de fans de por Ciudad</h1>
     <div class="row">
-        <div id="BarRace" style="height: 500px; width: 100%;"></div>
+        <div id="BarRace" style="height: 500px; width: 100%;"   ></div>
     </div>
 </div>
 <!--grafico de todas las ciudades-->
@@ -302,6 +280,20 @@
         <div id="chartImpressions" style="width: 100%; height: 400px;"></div>
     </div>
 </div>
+<br>
+<div class="container">
+    <h1 class="text-center">Grafica de Tendencia</h1>
+    <form id="date-form">
+        <label for="start-date">Fecha de Inicio:</label>
+        <input type="date" id="start-date" name="start-date">
+        <label for="end-date">Fecha de Fin:</label>
+        <input type="date" id="end-date" name="end-date">
+        <button type="button" onclick="updateChartTrend()">Actualizar Gráfica</button>
+    </form>
+    <div class="row">
+        <div id="trendContainer" style="width:100%; height:400px;"></div>   
+    </div>
+</div>
 <!--Reporte PDF del post con mas interaccion-->
 <div class="container">
     <h1 class="text-center">Informe de Escucha Activa</h1>
@@ -312,6 +304,30 @@
         </form>
     </div>
 </div>
+
+<!-- Modal Graficas-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title col-11 text-center" id="exampleModalLabel">Grafico de Tortas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <h1 class="text-center">Reacciones de Publicaciones de Facebook</h1>
+            <canvas id="myPieModal" width="400" height="400"></canvas>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal Graficas-->
 <!--Bar Race-->
 <script src="https://code.highcharts.com/modules/series-label.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -677,7 +693,57 @@
         });
     });
 </script>
+<!--Grafico de Tendencias-->
+<script>
+    let chartTrend;
+    // Inicializar la gráfica con datos vacíos
+    function initChart() {
+        chartTrend = Highcharts.chart('trendContainer', {
+            chart: { type: 'line' },
+            title: { text: 'Gráfica por Rango de Fechas' },
+            xAxis: { categories: [], title: { text: 'Fecha' } },
+            yAxis: { title: { text: 'Cantidad' } },
+            series: [
+                { name: 'Likes', data: [] },
+                { name: 'Loves', data: [] },
+                { name: 'Hahas', data: [] },
+                { name: 'Wows', data: [] },
+                { name: 'Sads', data: [] },
+                { name: 'Angries', data: [] }
+            ]
+        });
+    }
 
+    // Actualizar la gráfica con datos del servidor
+    function updateChartTrend() {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        $.ajax({
+            url: '/get-chart-data', // Ruta a la acción que devolverá los datos
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (data) {
+                chartTrend.update({
+                        xAxis: { categories: data.dates },
+                        series: [
+                            { name: 'Likes', data: data.likes },
+                            { name: 'Loves', data: data.loves },
+                            { name: 'Hahas', data: data.hahas },
+                            { name: 'Wows', data: data.wows },
+                            { name: 'Sads', data: data.sads },
+                            { name: 'Angries', data: data.angries }
+                        ]
+                    });
+                }
+        });
+    }
+
+    // Inicializar la gráfica al cargar la página
+    document.addEventListener('DOMContentLoaded', initChart);
+</script>
 
 
 

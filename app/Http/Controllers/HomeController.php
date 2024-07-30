@@ -70,9 +70,40 @@ class HomeController extends Controller
 
         $dataImpressions = DB::select('SELECT fpiagu.age_gender_group, SUM(fpiagu.impressions_count) AS impressions_count FROM facebook_page_impressions_age_gender_unique fpiagu GROUP BY fpiagu.age_gender_group');
         
+        $datostendencia = DB::table('facebook_posts')
+            ->select(DB::raw('DATE(created_time) as date'), DB::raw('SUM(like_count) as likes'), DB::raw('SUM(love_count) as loves'), DB::raw('SUM(haha_count) as hahas'), DB::raw('SUM(wow_count) as wows'), DB::raw('SUM(sad_count) as sads'), DB::raw('SUM(angry_count) as angries'))
+            ->groupBy(DB::raw('DATE(created_time)'))
+            ->orderBy(DB::raw('DATE(created_time)'))
+            ->get();
+
+        $trendData = [
+            'dates' => [],
+            'likes' => [],
+            'loves' => [],
+            'hahas' => [],
+            'wows' => [],
+            'sads' => [],
+            'angries' => []
+        ];
+
+        foreach ($datostendencia as $datatendencia) {
+            $trendData['dates'][] = $datatendencia->date;
+            $trendData['likes'][] = (int)$datatendencia->likes;
+            $trendData['loves'][] = (int)$datatendencia->loves;
+            $trendData['hahas'][] = (int)$datatendencia->hahas;
+            $trendData['wows'][] = (int)$datatendencia->wows;
+            $trendData['sads'][] = (int)$datatendencia->sads;
+            $trendData['angries'][] = (int)$datatendencia->angries;
+        }
+
+        $trendDataJson = json_encode($trendData);
+
+       $datosformateadosTrend = json_decode($trendDataJson, true);
+        
+        
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments',
-        'data','datostabla','dataMap','jsonDataMap','topcountries','citiesData','dataCities2','dataImpressions'));           
+        'data','datostabla','dataMap','jsonDataMap','topcountries','citiesData','dataCities2','dataImpressions','datosformateadosTrend'));           
     }
 
     public function informeescucha(){
@@ -139,4 +170,64 @@ class HomeController extends Controller
             $dompdf->stream ('',array("Attachment" => false));
         }   
     }
+
+
+    public function getChartData(Request $request){
+        $datostendencia = DB::table('facebook_posts')
+            ->select(DB::raw('DATE(created_time) as date'), DB::raw('SUM(like_count) as likes'), DB::raw('SUM(love_count) as loves'), DB::raw('SUM(haha_count) as hahas'), DB::raw('SUM(wow_count) as wows'), DB::raw('SUM(sad_count) as sads'), DB::raw('SUM(angry_count) as angries'))
+            ->groupBy(DB::raw('DATE(created_time)'))
+            ->orderBy(DB::raw('DATE(created_time)'))
+            ->get();
+
+        $trendData = [
+            'dates' => [],
+            'likes' => [],
+            'loves' => [],
+            'hahas' => [],
+            'wows' => [],
+            'sads' => [],
+            'angries' => []
+        ];
+
+        foreach ($datostendencia as $datatendencia) {
+            $trendData['dates'][] = $datatendencia->date;
+            $trendData['likes'][] = (int)$datatendencia->likes;
+            $trendData['loves'][] = (int)$datatendencia->loves;
+            $trendData['hahas'][] = (int)$datatendencia->hahas;
+            $trendData['wows'][] = (int)$datatendencia->wows;
+            $trendData['sads'][] = (int)$datatendencia->sads;
+            $trendData['angries'][] = (int)$datatendencia->angries;
+        }
+
+        $trendDataJson = json_encode($trendData);
+
+        $datosformateadosTrend = json_decode($trendDataJson, true);
+
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Filtrar los datos según el rango de fechas
+        $filteredData = $this->filterDataByDateRange($datosformateadosTrend, $startDate, $endDate);
+
+        return response()->json($filteredData);
+    }
+
+    private function filterDataByDateRange($data, $startDate, $endDate)
+    {
+        $filteredIndices = array_keys(array_filter($data['dates'], function($date) use ($startDate, $endDate) {
+            return $date >= $startDate && $date <= $endDate;
+        }));
+
+        return [
+            'dates' => array_values(array_intersect_key($data['dates'], array_flip($filteredIndices))),
+            'likes' => array_values(array_intersect_key($data['likes'], array_flip($filteredIndices))),
+            'loves' => array_values(array_intersect_key($data['loves'], array_flip($filteredIndices))),
+            'hahas' => array_values(array_intersect_key($data['hahas'], array_flip($filteredIndices))),
+            'wows' => array_values(array_intersect_key($data['wows'], array_flip($filteredIndices))),
+            'sads' => array_values(array_intersect_key($data['sads'], array_flip($filteredIndices))),
+            'angries' => array_values(array_intersect_key($data['angries'], array_flip($filteredIndices)))
+        ];
+    }
+
 }
