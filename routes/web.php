@@ -98,4 +98,13 @@ Route::group(['middleware' => 'auth'], function () {
 Route::post('/informe_escucha',[HomeController::class,'informeescucha'])->middleware('auth')->name('informe_escucha');
 Route::post('/recuperar_id_grafica',[HomeController::class,'recuperaridgrafica'])->middleware('auth')->name('recuperar_id_grafica');
 Route::post('/recuperar_id_informe',[HomeController::class,'informeescuchaid'])->middleware('auth')->name('informe_id_escucha');
+//ajax
 Route::get('/get-chart-data', [HomeController::class,'getChartData']);
+Route::get('/api/facebook-posts', [HomeController::class, 'getTopPosts']);
+Route::get('/api/facebook-likes', [HomeController::class, 'getTopLike']);
+Route::get('/api/facebook-loves', [HomeController::class, 'getTopLove']);
+Route::get('/api/facebook-haha', [HomeController::class, 'getTopHaha']);
+Route::get('/api/facebook-wow', [HomeController::class, 'getTopWow']);
+Route::get('/api/facebook-sad', [HomeController::class, 'getTopSad']);
+Route::get('/api/facebook-angry', [HomeController::class, 'getTopAngry']);
+Route::get('/api/facebook-share', [HomeController::class, 'getTopShare']);

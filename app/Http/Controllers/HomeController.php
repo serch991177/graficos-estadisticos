@@ -25,6 +25,7 @@ class HomeController extends Controller
      * @return \Illuminate\View\View
      */
     public function index(){
+        
         // Ejecuta las consultas SQL
         $totalLikes = DB::table('facebook_posts')->sum('like_count');
         $totalLoves = DB::table('facebook_posts')->sum('love_count');
@@ -70,40 +71,12 @@ class HomeController extends Controller
 
         $dataImpressions = DB::select('SELECT fpiagu.age_gender_group, SUM(fpiagu.impressions_count) AS impressions_count FROM facebook_page_impressions_age_gender_unique fpiagu GROUP BY fpiagu.age_gender_group');
         
-        $datostendencia = DB::table('facebook_posts')
-            ->select(DB::raw('DATE(created_time) as date'), DB::raw('SUM(like_count) as likes'), DB::raw('SUM(love_count) as loves'), DB::raw('SUM(haha_count) as hahas'), DB::raw('SUM(wow_count) as wows'), DB::raw('SUM(sad_count) as sads'), DB::raw('SUM(angry_count) as angries'))
-            ->groupBy(DB::raw('DATE(created_time)'))
-            ->orderBy(DB::raw('DATE(created_time)'))
-            ->get();
 
-        $trendData = [
-            'dates' => [],
-            'likes' => [],
-            'loves' => [],
-            'hahas' => [],
-            'wows' => [],
-            'sads' => [],
-            'angries' => []
-        ];
-
-        foreach ($datostendencia as $datatendencia) {
-            $trendData['dates'][] = $datatendencia->date;
-            $trendData['likes'][] = (int)$datatendencia->likes;
-            $trendData['loves'][] = (int)$datatendencia->loves;
-            $trendData['hahas'][] = (int)$datatendencia->hahas;
-            $trendData['wows'][] = (int)$datatendencia->wows;
-            $trendData['sads'][] = (int)$datatendencia->sads;
-            $trendData['angries'][] = (int)$datatendencia->angries;
-        }
-
-        $trendDataJson = json_encode($trendData);
-
-       $datosformateadosTrend = json_decode($trendDataJson, true);
         
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments',
-        'data','datostabla','dataMap','jsonDataMap','topcountries','citiesData','dataCities2','dataImpressions','datosformateadosTrend'));           
+        'data','datostabla','dataMap','jsonDataMap','topcountries','citiesData','dataCities2','dataImpressions'));           
     }
 
     public function informeescucha(){
@@ -229,5 +202,117 @@ class HomeController extends Controller
             'angries' => array_values(array_intersect_key($data['angries'], array_flip($filteredIndices)))
         ];
     }
+
+    public function getTopPosts(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        // Obtener las fechas de inicio y fin, si se proporcionan
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Construir la consulta
+        $query = DB::table('facebook_posts')
+        ->orderBy('comments_count', 'DESC')
+        ->limit($limit);
+
+        // Filtrar por fechas si están presentes
+        if ($startDate) {
+            $query->where('created_time', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->where('created_time', '<=', $endDate);
+        }
+
+        /*$posts = DB::table('facebook_posts')
+        ->orderBy('comments_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'comments_count']);*/
+        // Ejecutar la consulta
+        $posts = $query->get(['story', 'created_time', 'comments_count']);
+
+        return response()->json($posts);
+    }
+    
+    public function getTopLike(Request $request)
+    {
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('like_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'like_count']);
+
+        return response()->json($posts);
+    }
+    public function getTopLove(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('love_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'love_count']);
+
+        return response()->json($posts);
+    }
+    public function getTopHaha(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('haha_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'haha_count']);
+
+        return response()->json($posts);
+    }
+    public function getTopWow(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('wow_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'wow_count']);
+
+        return response()->json($posts);
+    }
+    public function getTopSad(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('sad_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'sad_count']);
+
+        return response()->json($posts);
+    }
+    public function getTopAngry(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('angry_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'angry_count']);
+
+        return response()->json($posts);
+    }
+    public function getTopShare(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        $posts = DB::table('facebook_posts')
+        ->orderBy('share_count', 'DESC')
+        ->limit($limit)
+        ->get(['story', 'created_time', 'share_count']);
+
+        return response()->json($posts);
+    }
+
+    
 
 }

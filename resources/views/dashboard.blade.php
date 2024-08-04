@@ -281,6 +281,7 @@
     </div>
 </div>
 <br>
+<!--Grafico de Tendencias-->
 <div class="container">
     <h1 class="text-center">Grafica de Tendencia</h1>
     <form id="date-form">
@@ -294,6 +295,124 @@
         <div id="trendContainer" style="width:100%; height:400px;"></div>   
     </div>
 </div>
+<!--Grafico de tendencias mas comentarios-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas comentadas</h1>
+    <div class="row">
+        <!--<select id="limit-selector">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>-->
+        <form id="filters-form">
+            <label for="limit">Número de posts:</label>
+            <select id="limit" name="limit">
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="date" id="start_date" name="start_date">
+            
+            <label for="end_date">Fecha de fin:</label>
+            <input type="date" id="end_date" name="end_date">
+            
+            <button type="button" onclick="fetchTopPosts()">Filtrar</button>
+        </form>
+        <div id="charttendenciacomment" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
+<!--Grafico de tendencias con mas likes-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas Likes</h1>
+    <div class="row">
+        <select id="limit-selector-likes">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendencialikes" style="width: 100%; height: 600px;"></div>
+    </div>
+</div> 
+<!--Grafico de tendencias con mas loves-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas loves</h1>
+    <div class="row">
+        <select id="limit-selector-loves">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendencialoves" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
+<!--Grafico de tendencias con mas hahas-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas hahas</h1>
+    <div class="row">
+        <select id="limit-selector-hahas">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendenciahahas" style="width: 100%; height: 600px;"></div>
+    </div>
+</div> 
+<!--Grafico de tendencias con mas wows-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas wows</h1>
+    <div class="row">
+        <select id="limit-selector-wows">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendenciawows" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
+<!--Grafico de tendencias con mas sads-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas sads</h1>
+    <div class="row">
+        <select id="limit-selector-sads">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendenciasads" style="width: 100%; height: 600px;"></div>
+    </div>
+</div> 
+<!--Grafico de tendencias con mas angries-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas angries</h1>
+    <div class="row">
+        <select id="limit-selector-angries">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendenciaangries" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
+<!--Grafico de tendencias con mas shares-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas shares</h1>
+    <div class="row">
+        <select id="limit-selector-shares">
+            <option value="15">15 publicaciones</option>
+            <option value="20">20 publicaciones</option>
+            <option value="30">30 publicaciones</option>
+        </select>
+        <div id="charttendenciashares" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
+<!--Grafico Mapa de Bolivia-->
+<!--<div class="container">
+    <h1 class="text-center">Mapa de Bolivia</h1>
+    <div class="row">
+        <div id="mapaBolivia" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>-->
 <!--Reporte PDF del post con mas interaccion-->
 <div class="container">
     <h1 class="text-center">Informe de Escucha Activa</h1>
@@ -304,7 +423,6 @@
         </form>
     </div>
 </div>
-
 <!-- Modal Graficas-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -340,12 +458,15 @@
 <script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
 <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+<script src="https://code.highcharts.com/mapdata/countries/bo/bo-all.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 <!--cdn javascript datatable-->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <!--fin cdn javascript datatable-->
+<!--Scripts Google Chart-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <!-- inicializacion de data table-->
 <script>
     $('#example').DataTable( {
@@ -744,8 +865,462 @@
     // Inicializar la gráfica al cargar la página
     document.addEventListener('DOMContentLoaded', initChart);
 </script>
+<!--Grafico de tendencias comentario -->
+<script>
+    /*$(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-posts?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendenciacomment', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Publicaciones Más Comentadas'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Comentarios'
+                        }
+                    },
+                    series: [{
+                        name: 'Comentarios',
+                        data: data.map(post => parseInt(post.comments_count))
+                    }]
+                });
+            });
+        }
 
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
 
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });*/
+
+    function fetchTopPosts() {
+        const limit = document.getElementById('limit').value;
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+
+        $.ajax({
+            url: `/api/facebook-posts`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChart(data);
+            }
+        });
+    }
+
+    function renderChart(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.comments_count));
+
+        Highcharts.chart('charttendenciacomment', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Más Comentadas'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Comentarios'
+                }
+            },
+            series: [{
+                name: 'Comentarios',
+                data: data
+            }]
+        });
+    }
+</script>
+<!--Grafico de tendencias likes-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-likes?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendencialikes', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Likes'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Likes'
+                        }
+                    },
+                    series: [{
+                        name: 'Likes',
+                        data: data.map(post => parseInt(post.like_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-likes').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+<!--Grafico de tendencias loves-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-loves?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendencialoves', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Loves'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Loves'
+                        }
+                    },
+                    series: [{
+                        name: 'Loves',
+                        data: data.map(post => parseInt(post.love_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-loves').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+<!--Grafico de tendencias haha-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-haha?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendenciahahas', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Hahas'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Hahas'
+                        }
+                    },
+                    series: [{
+                        name: 'Hahas',
+                        data: data.map(post => parseInt(post.haha_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-hahas').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+<!--Grafico de tendencias wow-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-wow?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendenciawows', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Wows'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Wows'
+                        }
+                    },
+                    series: [{
+                        name: 'Wows',
+                        data: data.map(post => parseInt(post.wow_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-wows').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+<!--Grafico de tendencias sad-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-sad?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendenciasads', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Sads'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Sads'
+                        }
+                    },
+                    series: [{
+                        name: 'Sads',
+                        data: data.map(post => parseInt(post.sad_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-sads').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+<!--Grafico de tendencias angry-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-angry?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendenciaangries', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Angries'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Angries'
+                        }
+                    },
+                    series: [{
+                        name: 'Angries',
+                        data: data.map(post => parseInt(post.angry_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-angries').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+<!--Grafico de tendencias share-->
+<script>
+    $(document).ready(function() {
+        function loadChart(limit) {
+            $.getJSON(`/api/facebook-share?limit=${limit}`, function(data) {
+                Highcharts.chart('charttendenciashares', {
+                    chart: {
+                        type: 'column'
+                    }, 
+                    title: {
+                        text: 'Publicaciones Más Shares'
+                    },
+                    xAxis: {
+                        categories: data.map(post => post.story),
+                        title: {
+                            text: 'Publicaciones'
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Número de Shares'
+                        }
+                    },
+                    series: [{
+                        name: 'Shares',
+                        data: data.map(post => parseInt(post.share_count))
+                    }]
+                });
+            });
+        }
+
+        // Cargar el gráfico con el límite por defecto
+        loadChart(15);
+
+        // Actualizar el gráfico cuando el usuario cambie el límite
+        $('#limit-selector-shares').change(function() {
+            var selectedLimit = $(this).val();
+            loadChart(selectedLimit);
+        });
+    });
+</script>
+
+<!--Mapa de Bolivia -->
+<script>
+    $(document).ready(function() {
+        // Datos de las ciudades
+        var cities = [
+            { name: 'La Paz', lat: -16.5000, lon: -68.1500 },
+            { name: 'Santa Cruz', lat: -17.7833, lon: -63.1833 },
+            { name: 'Cochabamba', lat: -17.3833, lon: -66.1500 },
+            { name: 'Sucre', lat: -19.0333, lon: -65.2627 },
+            { name: 'Oruro', lat: -17.9667, lon: -67.1167 },
+            { name: 'Potosí', lat: -19.5833, lon: -65.7500 },
+            { name: 'Tarija', lat: -21.5167, lon: -64.7333 },
+            { name: 'Cobija', lat: -11.0333, lon: -68.7333 },
+            { name: 'Trinidad', lat: -14.8333, lon: -64.9000 }
+        ];
+
+        Highcharts.mapChart('mapaBolivia', {
+            chart: {
+                map: 'countries/bo/bo-all'
+            },
+            title: {
+                text: 'Mapa de Bolivia con Ciudades'
+            },
+            subtitle: {
+                text: 'Fuente: Highcharts Maps'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            series: [{
+                name: 'Basemap',
+                borderColor: '#A0A0A0',
+                nullColor: 'rgba(200, 200, 200, 0.3)',
+                showInLegend: false
+            }, {
+                name: 'Separators',
+                type: 'mapline',
+                data: Highcharts.geojson(Highcharts.maps['countries/bo/bo-all'], 'mapline'),
+                color: '#707070',
+                showInLegend: false,
+                enableMouseTracking: false
+            }, {
+                type: 'mappoint',
+                name: 'Ciudades',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                },
+                data: cities.map(function(city) {
+                    return {
+                        name: city.name,
+                        lat: city.lat,
+                        lon: city.lon
+                    };
+                }),
+                marker: {
+                    symbol: 'circle',
+                    radius: 7,
+                    fillColor: 'red'
+                },
+                tooltip: {
+                    pointFormat: '{point.name}'
+                }
+            }]
+        });
+    });
+</script>
 
 @endsection    
 
