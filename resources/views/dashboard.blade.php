@@ -113,82 +113,42 @@
 </div>
 <!--Fin Pie de los totales de las reacciones-->
 <br>
-<!--Tabla de publicaciones de Facebook-->
+<!--CAMBIOS -->
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
             <div class="card-header">
-                <h4 class="card-title"> Publicaciones de Facebook</h4>
+                <h4 class="card-title"> Publicaciones de Facebook API</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                <style>
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                    }
-                    th, td {
-                        border: 1px solid black;
-                        padding: 8px;
-                        text-align: center;
-                        width: 5.5%; /* Ancho fijo para cada columna en un total de 8 columnas */
-                    }
-                    caption {
-                        caption-side: top;
-                        font-size: 1.5em;
-                        font-weight: bold;
-                        margin-bottom: 10px;
-                    }
-                </style>
-                    <table id="example" class="display  table tablesorter" style="width:100%">
+                    <style>
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: center;
+                            width: 5.5%; /* Ancho fijo para cada columna en un total de 8 columnas */
+                        }
+                        caption {
+                            caption-side: top;
+                            font-size: 1.5em;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                    </style>
+                    <table id="example123" class="display  table tablesorter" style="width:100%">
                         <thead>
                             <tr>
-                                <th>id</th>
-                                <th>Story</th>
-                                <th>Foto</th>
-                                <th>Link</th>
-                                <th>Fecha de Creacion</th>
-                                <th>Recuento de comentarios</th>
-                                <th>Recuento de me gustas</th>
-                                <th>Recuento me encantas</th>
-                                <th>Recuento de me diviertes</th>
-                                <th>Recuento de me asombra</th>
-                                <th>Recuento de me entristece</th>
-                                <th>Recuento de me enojas</th>
-                                <th>Recuento de compartidos</th>
-                                <th>Opcion</th>
+                                @foreach ( $heads as $head)
+                                    <th>{{ $head }}</th>
+                                @endforeach
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ( $datostabla as $datostablas)
-                                <tr>
-                                    <td>{{$datostablas->id}}</td>
-                                    <td>{{$datostablas->story}}</td>
-                                    <td><img src="{{$datostablas->full_picture}}" alt="" ></td>
-                                    <td>{{$datostablas->permalink_url}}</td>
-                                    <td>{{$datostablas->created_time}}</td>
-                                    <td>{{$datostablas->comments_count}}</td>
-                                    <td>{{$datostablas->like_count}}</td>
-                                    <td>{{$datostablas->love_count}}</td>
-                                    <td>{{$datostablas->haha_count}}</td>
-                                    <td>{{$datostablas->wow_count}}</td>
-                                    <td>{{$datostablas->sad_count}}</td>
-                                    <td>{{$datostablas->angry_count}}</td>
-                                    <td>{{$datostablas->share_count}}</td>
-                                    <td> <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary id_graficar" value="{{$datostablas->id}}" data-toggle="modal" data-target="#exampleModal">
-                                            Generar Grafica
-                                        </button> <br><br>
-                                        <form action="{{route('informe_id_escucha')}}" method="post" target="_blank">
-                                            @csrf 
-                                            <input type="hidden" name="id" value="{{$datostablas->id}}">
-                                            <button class="btn btn-warning">Generar Pdf</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -196,6 +156,10 @@
         </div>
     </div>
 </div>
+<!--fin cambios-->
+
+<!--Tabla de publicaciones de Facebook-->
+
 <br>
 <style>
     #myPieModal {
@@ -238,8 +202,8 @@
                                 @foreach ( $topcountries as $topcountry)
                                     <tr>
                                         <td>{{$contadorcountry}}</td>
-                                        <td>{{$topcountry->country_name}}</td>
-                                        <td>{{$topcountry->fan_count}}</td>
+                                        <td>{{$topcountry['pais']}}</td>
+                                        <td>{{$topcountry['fan_count']}}</td>
                                     </tr>
                                     @php($contadorcountry++)
                                 @endforeach
@@ -264,7 +228,7 @@
     <h1 class="text-center">Numero de fans en todas las ciudades</h1>
     <div class="row">
         <select id="dataCount" class="form-control" onchange="updateChart()">
-            <option value="">Seleccione un rango de numero</option>
+            <option value="">Seleccione un rango </option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="30">30</option>
@@ -282,14 +246,32 @@
 </div>
 <br>
 <!--Grafico de Tendencias-->
+<style>
+    .form-inline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .form-inline label {
+        margin: 0 10px;
+    }
+    .form-inline .form-control {
+        width: auto;
+    }
+    .form-inline .btn {
+        margin-left: 10px;
+    }
+</style>
 <div class="container">
     <h1 class="text-center">Grafica de Tendencia</h1>
     <form id="date-form">
-        <label for="start-date">Fecha de Inicio:</label>
-        <input type="date" id="start-date" name="start-date">
-        <label for="end-date">Fecha de Fin:</label>
-        <input type="date" id="end-date" name="end-date">
-        <button type="button" onclick="updateChartTrend()">Actualizar Gráfica</button>
+        <div class="form-inline">
+            <label for="start-date">Fecha de Inicio:</label>
+            <input type="date" id="start-date" name="start-date" class="form-control">
+            <label for="end-date">Fecha de Fin:</label>
+            <input type="date" id="end-date" name="end-date" class="form-control">
+            <button class="btn btn-success" type="button" onclick="updateChartTrend()" >Actualizar Gráfica</button>
+        </div>
     </form>
     <div class="row">
         <div id="trendContainer" style="width:100%; height:400px;"></div>   
@@ -299,25 +281,22 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas comentadas</h1>
     <div class="row">
-        <!--<select id="limit-selector">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>-->
         <form id="filters-form">
-            <label for="limit">Número de posts:</label>
-            <select id="limit" name="limit">
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-            </select>
-            <label for="start_date">Fecha de inicio:</label>
-            <input type="date" id="start_date" name="start_date">
-            
-            <label for="end_date">Fecha de fin:</label>
-            <input type="date" id="end_date" name="end_date">
-            
-            <button type="button" onclick="fetchTopPosts()">Filtrar</button>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit" name="limit" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control">
+                
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control">
+                
+                <button type="button" class="btn btn-success" onclick="fetchTopPosts()">Filtrar</button>
+            </div>
         </form>
         <div id="charttendenciacomment" style="width: 100%; height: 600px;"></div>
     </div>
@@ -326,11 +305,23 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas Likes</h1>
     <div class="row">
-        <select id="limit-selector-likes">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-likes" name="limit-selector-likes" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_likes" name="start_date_likes" class="form-control">
+                
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_likes" name="end_date_likes" class="form-control">
+                
+                <button type="button" class="btn btn-success" onclick="fetchTopLikes()">Filtrar</button>
+            </div>
+        </form>
         <div id="charttendencialikes" style="width: 100%; height: 600px;"></div>
     </div>
 </div> 
@@ -338,11 +329,23 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas loves</h1>
     <div class="row">
-        <select id="limit-selector-loves">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form >
+            <div class="form-inline">
+            <label for="limit">Número de posts:</label>
+                <select id="limit-selector-loves" name="limit-selector-loves" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_loves" name="start_date_loves" class="form-control">
+                
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_loves" name="end_date_loves" class="form-control">
+
+                <button type="button" class="btn btn-success" onclick="fetchTopLoves()">Filtrar</button>
+            </div>    
+        </form>
         <div id="charttendencialoves" style="width: 100%; height: 600px;"></div>
     </div>
 </div>
@@ -350,11 +353,24 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas hahas</h1>
     <div class="row">
-        <select id="limit-selector-hahas">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-hahas" name="limit-selector-hahas" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_hahas" name="start_date_hahas" class="form-control">
+                
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_hahas" name="end_date_hahas" class="form-control">
+
+                <button type="button" class="btn btn-success" onclick="fetchTopHahas()">Filtrar</button>
+            </div>
+        </form>
         <div id="charttendenciahahas" style="width: 100%; height: 600px;"></div>
     </div>
 </div> 
@@ -362,23 +378,43 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas wows</h1>
     <div class="row">
-        <select id="limit-selector-wows">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-wows" name="limit-selector-wows" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_wows" name="start_date_wows" class="form-control">
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_wows" name="end_date_wows" class="form-control">
+                <button type="button" class="btn btn-success" onclick="fetchTopWows()">Filtrar</button></div>
+            </div>
+        </form>
         <div id="charttendenciawows" style="width: 100%; height: 600px;"></div>
     </div>
-</div>
+</div> 
 <!--Grafico de tendencias con mas sads-->
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas sads</h1>
     <div class="row">
-        <select id="limit-selector-sads">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form>
+            <div class="form-inline">    
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-sads" name="limit-selector-sads" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_sads" name="start_date_sads" class="form-control">
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_sads" name="end_date_sads" class="form-control">
+                <button type="button" class="btn btn-success" onclick="fetchTopSads()">Filtrar</button>
+            </div>
+        </form>
         <div id="charttendenciasads" style="width: 100%; height: 600px;"></div>
     </div>
 </div> 
@@ -386,11 +422,21 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas angries</h1>
     <div class="row">
-        <select id="limit-selector-angries">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-angries" name="limit-selector-angries" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_angries" name="start_date_angries" class="form-control">
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_angries" name="end_date_angries" class="form-control">
+                <button type="button" class="btn btn-success" onclick="fetchTopAngries()">Filtrar</button>
+            </div>
+        </form>
         <div id="charttendenciaangries" style="width: 100%; height: 600px;"></div>
     </div>
 </div>
@@ -398,11 +444,21 @@
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas shares</h1>
     <div class="row">
-        <select id="limit-selector-shares">
-            <option value="15">15 publicaciones</option>
-            <option value="20">20 publicaciones</option>
-            <option value="30">30 publicaciones</option>
-        </select>
+        <form>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-shares" name="limit-selector-shares" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_shares" name="start_date_shares" class="form-control">
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_shares" name="end_date_shares" class="form-control">
+                <button type="button" class="btn btn-success" onclick="fetchTopShares()">Filtrar</button>
+            </div>
+        </form>
         <div id="charttendenciashares" style="width: 100%; height: 600px;"></div>
     </div>
 </div>
@@ -423,6 +479,16 @@
         </form>
     </div>
 </div>
+<!--Nuevo Reporte-->
+<!--<div class="container">
+    <h1 class="text-center">Informe Actualizado</h1>
+    <div class="text-center">
+        <form action="{{route('informe_actualizado')}}" method="post" target="_blank">
+            @csrf
+            <button class="btn btn-primary" title="Generar Informe">Generar Informe</button>
+        </form>
+    </div>
+</div>-->
 <!-- Modal Graficas-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -458,6 +524,9 @@
 <script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
 <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+
+<script src="https://code.highcharts.com/modules/map.js"></script>
+
 <script src="https://code.highcharts.com/mapdata/countries/bo/bo-all.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 <!--cdn javascript datatable-->
@@ -469,9 +538,62 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <!-- inicializacion de data table-->
 <script>
-    $('#example').DataTable( {
-        responsive: true
-    } );
+    $('#example123').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ route('tablepost') }}",
+            "type": "GET"
+        },
+        "columns": [
+            { "data": "id" },
+            { "data": "story" },
+            { 
+                "data": "full_picture" ,
+                "render": function(data, type, row) {
+                    return '<img src="' + data + '" style="width: 400px; height: auto;">';
+                }   
+            },
+            { 
+                "data": "permalink_url",
+                "render":function(data,type,row){
+                    return '<a href="' + data + '" target="_blank">Link Publicacion</a>'
+                } 
+            },
+            { "data": "created_time" },
+            { "data": "comments_count" },
+            { "data": "like_count" },
+            { "data": "love_count" },
+            { "data": "haha_count" },
+            { "data": "wow_count" },
+            { "data": "sad_count" },
+            { "data": "angry_count" },
+            { "data": "share_count" },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    return `
+                        <button type="button" class="btn btn-primary id_graficar" value="${row.id}" data-toggle="modal" data-target="#exampleModal">
+                            Generar Grafica
+                        </button>
+                        <br><br>
+                        <form action="{{ route('informe_id_escucha') }}" method="post" target="_blank">
+                            @csrf 
+                            <input type="hidden" name="id" value="${row.id}">
+                            <button class="btn btn-warning">Generar Pdf</button>
+                        </form>
+                    `;
+                }
+            }
+        ],
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true
+    });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -867,46 +989,6 @@
 </script>
 <!--Grafico de tendencias comentario -->
 <script>
-    /*$(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-posts?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendenciacomment', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Publicaciones Más Comentadas'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Comentarios'
-                        }
-                    },
-                    series: [{
-                        name: 'Comentarios',
-                        data: data.map(post => parseInt(post.comments_count))
-                    }]
-                });
-            });
-        }
-
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
-        });
-    });*/
-
     function fetchTopPosts() {
         const limit = document.getElementById('limit').value;
         const startDate = document.getElementById('start_date').value;
@@ -958,364 +1040,409 @@
 </script>
 <!--Grafico de tendencias likes-->
 <script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-likes?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendencialikes', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Likes'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Likes'
-                        }
-                    },
-                    series: [{
-                        name: 'Likes',
-                        data: data.map(post => parseInt(post.like_count))
-                    }]
-                });
-            });
-        }
+    function fetchTopLikes() {
+        const limit = document.getElementById('limit-selector-likes').value;
+        const startDate = document.getElementById('start_date_likes').value;
+        const endDate = document.getElementById('end_date_likes').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-likes').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-likes`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartLikes(data);
+            }
         });
-    });
+    }
+    function renderChartLikes(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.likes_count));
+
+        Highcharts.chart('charttendencialikes', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Con mas Likes'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Likes'
+                }
+            },
+            series: [{
+                name: 'Likes',
+                data: data
+            }]
+        });
+    }
 </script>
 <!--Grafico de tendencias loves-->
 <script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-loves?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendencialoves', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Loves'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Loves'
-                        }
-                    },
-                    series: [{
-                        name: 'Loves',
-                        data: data.map(post => parseInt(post.love_count))
-                    }]
-                });
-            });
-        }
+        
+   function fetchTopLoves() {
+        const limit = document.getElementById('limit-selector-loves').value;
+        const startDate = document.getElementById('start_date_loves').value;
+        const endDate = document.getElementById('end_date_loves').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-loves').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-loves`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartLoves(data);
+            }
         });
-    });
+    }
+    function renderChartLoves(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.loves_count));
+
+        Highcharts.chart('charttendencialoves', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Con Mas Loves'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Loves'
+                }
+            },
+            series: [{
+                name: 'Loves',
+                data: data
+            }]
+        });
+    }
 </script>
 <!--Grafico de tendencias haha-->
-<script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-haha?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendenciahahas', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Hahas'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Hahas'
-                        }
-                    },
-                    series: [{
-                        name: 'Hahas',
-                        data: data.map(post => parseInt(post.haha_count))
-                    }]
-                });
-            });
-        }
+<script> 
+    function fetchTopHahas() {
+        const limit = document.getElementById('limit-selector-hahas').value;
+        const startDate = document.getElementById('start_date_hahas').value;
+        const endDate = document.getElementById('end_date_hahas').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-hahas').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-haha`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartHahas(data);
+            }
         });
-    });
+    }
+    function renderChartHahas(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.hahas_count));
+
+        Highcharts.chart('charttendenciahahas', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones con mas Hahas'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Hahas'
+                }
+            },
+            series: [{
+                name: 'Hahas',
+                data: data
+            }]
+        });
+    }
 </script>
 <!--Grafico de tendencias wow-->
 <script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-wow?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendenciawows', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Wows'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Wows'
-                        }
-                    },
-                    series: [{
-                        name: 'Wows',
-                        data: data.map(post => parseInt(post.wow_count))
-                    }]
-                });
-            });
-        }
+    function fetchTopWows() {
+        const limit = document.getElementById('limit-selector-wows').value;
+        const startDate = document.getElementById('start_date_wows').value;
+        const endDate = document.getElementById('end_date_wows').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-wows').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-wow`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartWows(data);
+            }
         });
-    });
+    }
+    function renderChartWows(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.wows_count));
+
+        Highcharts.chart('charttendenciawows', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones con mas Wows'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Wows'
+                }
+            },
+            series: [{
+                name: 'Wows',
+                data: data
+            }]
+        });
+    }
 </script>
 <!--Grafico de tendencias sad-->
 <script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-sad?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendenciasads', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Sads'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Sads'
-                        }
-                    },
-                    series: [{
-                        name: 'Sads',
-                        data: data.map(post => parseInt(post.sad_count))
-                    }]
-                });
-            });
-        }
+    function fetchTopSads() {
+        const limit = document.getElementById('limit-selector-sads').value;
+        const startDate = document.getElementById('start_date_sads').value;
+        const endDate = document.getElementById('end_date_sads').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-sads').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-sad`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartSads(data);
+            }
         });
-    });
+    }
+    function renderChartSads(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.sads_count));
+
+        Highcharts.chart('charttendenciasads', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones con mas Sads'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Sads'
+                }
+            },
+            series: [{
+                name: 'Sads',
+                data: data
+            }]
+        });
+    }
 </script>
 <!--Grafico de tendencias angry-->
-<script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-angry?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendenciaangries', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Angries'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Angries'
-                        }
-                    },
-                    series: [{
-                        name: 'Angries',
-                        data: data.map(post => parseInt(post.angry_count))
-                    }]
-                });
-            });
-        }
+<script>     
+    function fetchTopAngries() {
+        const limit = document.getElementById('limit-selector-angries').value;
+        const startDate = document.getElementById('start_date_angries').value;
+        const endDate = document.getElementById('end_date_angries').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-angries').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-angry`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartAngries(data);
+            }
         });
-    });
+    }
+    function renderChartAngries(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.angries_count));
+
+        Highcharts.chart('charttendenciaangries', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones con mas Angries'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Angries'
+                }
+            },
+            series: [{
+                name: 'Angries',
+                data: data
+            }]
+        });
+    }
 </script>
 <!--Grafico de tendencias share-->
 <script>
-    $(document).ready(function() {
-        function loadChart(limit) {
-            $.getJSON(`/api/facebook-share?limit=${limit}`, function(data) {
-                Highcharts.chart('charttendenciashares', {
-                    chart: {
-                        type: 'column'
-                    }, 
-                    title: {
-                        text: 'Publicaciones Más Shares'
-                    },
-                    xAxis: {
-                        categories: data.map(post => post.story),
-                        title: {
-                            text: 'Publicaciones'
-                        }
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Número de Shares'
-                        }
-                    },
-                    series: [{
-                        name: 'Shares',
-                        data: data.map(post => parseInt(post.share_count))
-                    }]
-                });
-            });
-        }
+    function fetchTopShares() {
+        const limit = document.getElementById('limit-selector-shares').value;
+        const startDate = document.getElementById('start_date_shares').value;
+        const endDate = document.getElementById('end_date_shares').value;
 
-        // Cargar el gráfico con el límite por defecto
-        loadChart(15);
-
-        // Actualizar el gráfico cuando el usuario cambie el límite
-        $('#limit-selector-shares').change(function() {
-            var selectedLimit = $(this).val();
-            loadChart(selectedLimit);
+        $.ajax({
+            url: `/api/facebook-share`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartShares(data);
+            }
         });
-    });
-</script>
+    }
+    function renderChartShares(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.shares_count));
 
+        Highcharts.chart('charttendenciashares', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones con mas Compartidas'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Compartidas'
+                }
+            },
+            series: [{
+                name: 'Compartidas',
+                data: data
+            }]
+        });
+    }
+</script>
 <!--Mapa de Bolivia -->
 <script>
-    $(document).ready(function() {
-        // Datos de las ciudades
-        var cities = [
-            { name: 'La Paz', lat: -16.5000, lon: -68.1500 },
-            { name: 'Santa Cruz', lat: -17.7833, lon: -63.1833 },
-            { name: 'Cochabamba', lat: -17.3833, lon: -66.1500 },
-            { name: 'Sucre', lat: -19.0333, lon: -65.2627 },
-            { name: 'Oruro', lat: -17.9667, lon: -67.1167 },
-            { name: 'Potosí', lat: -19.5833, lon: -65.7500 },
-            { name: 'Tarija', lat: -21.5167, lon: -64.7333 },
-            { name: 'Cobija', lat: -11.0333, lon: -68.7333 },
-            { name: 'Trinidad', lat: -14.8333, lon: -64.9000 }
+    //mapaBolivia
+    document.addEventListener('DOMContentLoaded', function () {
+        const data = [
+            { "name": "La Paz", "y": 12345 },
+            { "name": "El Alto", "y": 11000 },
+            { "name": "Santa Cruz", "y": 23456 },
+            { "name": "Montero", "y": 15000 },
+            { "name": "Cochabamba", "y": 34567 },
+            { "name": "Sacaba", "y": 12000 },
+            { "name": "Sucre", "y": 4567 },
+            { "name": "Potosí", "y": 5678 },
+            { "name": "Oruro", "y": 6789 },
+            { "name": "Tarija", "y": 7890 },
+            { "name": "Cobija", "y": 890 },
+            { "name": "Trinidad", "y": 901 }
         ];
 
         Highcharts.mapChart('mapaBolivia', {
             chart: {
                 map: 'countries/bo/bo-all'
             },
+
             title: {
-                text: 'Mapa de Bolivia con Ciudades'
+                text: 'Ciudades de Bolivia con datos de fans'
             },
+
             subtitle: {
-                text: 'Fuente: Highcharts Maps'
+                text: 'Datos estáticos'
             },
+
             mapNavigation: {
                 enabled: true,
                 buttonOptions: {
                     verticalAlign: 'bottom'
                 }
             },
+
+            colorAxis: {
+                min: 0
+            },
+
             series: [{
-                name: 'Basemap',
-                borderColor: '#A0A0A0',
-                nullColor: 'rgba(200, 200, 200, 0.3)',
-                showInLegend: false
-            }, {
-                name: 'Separators',
-                type: 'mapline',
-                data: Highcharts.geojson(Highcharts.maps['countries/bo/bo-all'], 'mapline'),
-                color: '#707070',
-                showInLegend: false,
-                enableMouseTracking: false
-            }, {
-                type: 'mappoint',
-                name: 'Ciudades',
+                data: data,
+                name: 'Fans count',
+                states: {
+                    hover: {
+                        color: '#BADA55'
+                    }
+                },
                 dataLabels: {
                     enabled: true,
                     format: '{point.name}'
-                },
-                data: cities.map(function(city) {
-                    return {
-                        name: city.name,
-                        lat: city.lat,
-                        lon: city.lon
-                    };
-                }),
-                marker: {
-                    symbol: 'circle',
-                    radius: 7,
-                    fillColor: 'red'
-                },
-                tooltip: {
-                    pointFormat: '{point.name}'
                 }
             }]
         });

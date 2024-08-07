@@ -98,6 +98,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::post('/informe_escucha',[HomeController::class,'informeescucha'])->middleware('auth')->name('informe_escucha');
 Route::post('/recuperar_id_grafica',[HomeController::class,'recuperaridgrafica'])->middleware('auth')->name('recuperar_id_grafica');
 Route::post('/recuperar_id_informe',[HomeController::class,'informeescuchaid'])->middleware('auth')->name('informe_id_escucha');
+Route::post('/informe_facebook',[HomeController::class,'informefacebook'])->middleware('auth')->name('informe_actualizado');
+Route::get('/tabla-post',[HomeController::class,'tablepost'])->middleware('auth')->name('tablepost');
 //ajax
 Route::get('/get-chart-data', [HomeController::class,'getChartData']);
 Route::get('/api/facebook-posts', [HomeController::class, 'getTopPosts']);
