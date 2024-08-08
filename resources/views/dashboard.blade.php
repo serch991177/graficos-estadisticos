@@ -513,19 +513,11 @@
 </div>
 <!--Fin Modal Graficas-->
 <!--Bar Race-->
-<script src="https://code.highcharts.com/modules/series-label.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <!--Scripts de ciudades-->
-<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
 <!--Scripts de javascript-->
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
 <script src="https://code.highcharts.com/maps/modules/map.js"></script>
-
-<script src="https://code.highcharts.com/modules/map.js"></script>
 
 <script src="https://code.highcharts.com/mapdata/countries/bo/bo-all.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>

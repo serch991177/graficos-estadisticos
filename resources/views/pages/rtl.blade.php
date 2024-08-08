@@ -641,7 +641,7 @@
   <!--  Notifications Plugin    -->
   <script src="{{ asset('white') }}/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for White Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="{{ asset('white') }}/js/white-dashboard.min.js?v=1.0.0"></script>
+  <!--<script src="{{ asset('white') }}/js/white-dashboard.min.js?v=1.0.0"></script>-->
   <!-- White Dashboard DEMO methods, don't include it in your project! -->
   <script src="{{ asset('white') }}/demo/demo.js"></script>
   <script>
