@@ -390,7 +390,7 @@
                 <input type="date" id="start_date_wows" name="start_date_wows" class="form-control">
                 <label for="end_date">Fecha de fin:</label>
                 <input type="date" id="end_date_wows" name="end_date_wows" class="form-control">
-                <button type="button" class="btn btn-success" onclick="fetchTopWows()">Filtrar</button></div>
+                <button type="button" class="btn btn-success" onclick="fetchTopWows()">Filtrar</button>
             </div>
         </form>
         <div id="charttendenciawows" style="width: 100%; height: 600px;"></div>
