@@ -480,7 +480,7 @@
     </div>
 </div>
 <!--Nuevo Reporte-->
-<!--<div class="container">
+{{--<div class="container">
     <h1 class="text-center">Informe Actualizado</h1>
     <div class="text-center">
         <form action="{{route('informe_actualizado')}}" method="post" target="_blank">
@@ -488,7 +488,7 @@
             <button class="btn btn-primary" title="Generar Informe">Generar Informe</button>
         </form>
     </div>
-</div>-->
+</div>--}}
 <!-- Modal Graficas-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
