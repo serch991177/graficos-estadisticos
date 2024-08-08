@@ -112,7 +112,7 @@ class HomeController extends Controller
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments',
-        'data','jsonDataMap','topcountries','citiesData','dataCities2','dataImpressions','heads'));           
+        'data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads'));           
     }
 
     public function tablepost(Request $request){

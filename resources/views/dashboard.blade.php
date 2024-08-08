@@ -678,7 +678,7 @@
 </script>
 <!--grafico mapa ciudades -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+   /* document.addEventListener('DOMContentLoaded', function () {
         const categories = @json(array_column($citiesData, 'name'));
         const dataSeries = @json($citiesData);
 
@@ -749,7 +749,7 @@
                 data: series.data
             }))
         });
-    });
+    });*/
 </script>
 <!--Grafico de todo el conteo de fans-->
 <script>
