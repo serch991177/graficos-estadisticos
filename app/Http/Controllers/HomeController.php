@@ -152,19 +152,21 @@ class HomeController extends Controller
 
     public function informeescucha(){
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
-
-        $informe_escucha = 'SELECT fp.created_time, fp.story, fp.full_picture,fp.comments_count, fp.share_count,fpc.message, fpc.permalink_url ,fpc.comment_count,(fp.like_count + fp.love_count + fp.haha_count + fp.wow_count + fp.sad_count + fp.angry_count + fp.share_count) AS total_reacciones,ARRAY(SELECT CONCAT(reaction, \' \', count)FROM (VALUES (\'Likes\', fp.like_count), (\'Loves\', fp.love_count), (\'Hahas\', fp.haha_count), (\'Wows\', fp.wow_count), (\'Sads\', fp.sad_count), (\'Angries\', fp.angry_count) ) AS r(reaction, count)ORDER BY count DESC LIMIT 4) AS top_reactions FROM  facebook_posts fp INNER JOIN facebook_post_comments fpc ON fpc.post_id = fp.id WHERE fpc.comment_count = (SELECT MAX(comment_count) FROM facebook_post_comments WHERE post_id = fp.id) ORDER BY  fp.comments_count DESC LIMIT 1;';
-        $postData = DB::select($informe_escucha);
-        $url = 'https://scontent.flpb3-2.fna.fbcdn.net/v/t1.6435-9/154496389_158241429449860_9063786801458211452_n.jpg?stp=dst-jpg_p720x720&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=jzmwYFCVAeMQ7kNvgGAHS-w&_nc_ht=scontent.flpb3-2.fna&edm=AKIiGfEEAAAA&oh=00_AYAbDjsl5hyObR_z0nYGVxIOObFIwEdRkn168rYT9GTgqA&oe=66B93B18';
-        //$postData[0]->full_picture
-        $imageUrl = $postData[0]->full_picture;
+        
+        $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPost';
+        $response_informe = Http::get($url_informe);
+        $data_informe = $response_informe->json();
+        $postData = $data_informe['data'];
+        $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
+       
+        $imageUrl = $postData['full_picture'];
         $response = Http::get($imageUrl);
         $imageContents = $response->body();
         $imageBase64 = base64_encode($imageContents);
         $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
         
         
-        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc]);
+        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
@@ -244,19 +246,22 @@ class HomeController extends Controller
         return response()->json(['dibujar_torta'=>$dibujar_torta]);    
     }
     public function informeescuchaid(Request $request){
-        $informe_escucha = 'SELECT fp.created_time, fp.story, fp.full_picture, fp.comments_count, fp.share_count, fpc.message, fpc.permalink_url, fpc.comment_count,(fp.like_count + fp.love_count + fp.haha_count + fp.wow_count + fp.sad_count + fp.angry_count + fp.share_count) AS total_reacciones,ARRAY( SELECT CONCAT(reaction, \' \', count)FROM (VALUES (\'Likes\', fp.like_count),(\'Loves\', fp.love_count),(\'Hahas\', fp.haha_count),(\'Wows\', fp.wow_count),(\'Sads\', fp.sad_count),(\'Angries\', fp.angry_count)) AS r(reaction, count) ORDER BY count DESC LIMIT 4) AS top_reactions FROM facebook_posts fp INNER JOIN facebook_post_comments fpc ON fpc.post_id = fp.id WHERE fpc.comment_count = (SELECT MAX(comment_count) FROM facebook_post_comments WHERE post_id = fp.id) AND fp.id = ' . intval($request->id) . ' ORDER BY fp.comments_count DESC LIMIT 1;';
-        $postData = DB::select($informe_escucha);
+        $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPostforId/'.$request->id;
+        $response_informe = Http::get($url_informe);
+        $data_informe = $response_informe->json();
+        $postData = $data_informe['data'];
+        $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
         if(empty($postData)){
             echo "No hay comentarios disponibles."; 
         }else{
             // dd($postData[0]->full_picture);
-            $imageUrl = $postData[0]->full_picture;
+            $imageUrl = $postData['full_picture'];
             $response = Http::get($imageUrl);
             $imageContents = $response->body();
             $imageBase64 = base64_encode($imageContents);
             $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
             
-            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc]);
+            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);

@@ -36,8 +36,7 @@
     <h4 class="text-center">Informe de Escucha Activa</h4>    
     {{-- Process top reactions --}}
     @php
-        $topReactionsString = str_replace(['{', '}'], ['[', ']'], $postData[0]->top_reactions);
-        $topReactionsArray = json_decode($topReactionsString, true);
+        $topReactionsArray = $postData['top_reactions'];
         
         $icons = [
             'Likes' => 'https://img.freepik.com/vector-gratis/facebook-icono-me-gusta_1017-8081.jpg',
@@ -51,7 +50,6 @@
         $reactionTexts = [];
         if (is_array($topReactionsArray)) {
             foreach ($topReactionsArray as $reaction) {
-                $reaction = trim($reaction, '"');
                 list($type, $count) = explode(' ', $reaction);
                 $iconPath = isset($icons[$type]) ? $icons[$type] : '';
                 $reactionTexts[] = "<img src='{$iconPath}' class='reaction-icon' alt='{$type}' width='20px'> {$type} {$count}";
@@ -71,11 +69,11 @@
         <caption>DATOS DE LA PUBLICACION</caption>
         <tr>
             <td>FECHA</td>
-            <td>{{$postData[0]->created_time}}</td>
+            <td>{{$postData['created_time']}}</td>
         </tr>
         <tr>
             <td>TEMA</td>
-            <td>{{$postData[0]->story}}</td>
+            <td>{{$postData['story']}}</td>
         </tr>
         <tr>
             <td>PAGINA</td>
@@ -83,11 +81,11 @@
         </tr>
         <tr>
             <td>TIEMPO DE LA MUESTRA</td>
-            <td>{{\Carbon\Carbon::parse($postData[0]->created_time)->diffForHumans()}}</td>
+            <td>{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</td>
         </tr>
         <tr>
             <td>TOTAL REACCIONES</td>
-            <td>{{$postData[0]->total_reacciones}}</td>
+            <td>{{$total_reacciones}}</td>
         </tr>
         <tr>
             <td>TENDENCIA DE REACCIONES</td>
@@ -95,11 +93,11 @@
         </tr>
         <tr>
             <td>COMPARTIDOS</td>
-            <td>{{$postData[0]->share_count}}</td>
+            <td>{{$postData['share_count']}}</td>
         </tr>
         <tr>
             <td>COMENTARIOS</td>
-            <td>{{$postData[0]->comments_count}}</td>
+            <td>{{$postData['comments_count']}}</td>
         </tr>
     </table>
 
@@ -112,11 +110,11 @@
         </tr>
     </table>
     <h1 class="text-center">Comentario mas relevante</h1>
-    <p class="text-center">{{$postData[0]->message}}</p>
-    <h1>Link Del Comentario</h1>
+    <p class="text-center">{{$postData['comment_pop']['message']}}</p>
+    {{--<h1>Link Del Comentario</h1>
     <a href="{{$postData[0]->permalink_url}}" target="_blank" >Ver Comentario</a>
     <h1>Numero de Sub Comentarios</h1>
-    <p>{{$postData[0]->comment_count}}</p>
+    <p>{{$postData[0]->comment_count}}</p>--}}
     <h1 class="text-center">Resultado de La Escucha Activa</h1>
     <img src="https://quickchart.io/chart?width=300&height=300&c={type:'pie',data:{labels:['Negativo','Positivo','Neutro','Otros'],datasets:[{data:[60,70,180,190]}]}}">
     <img src="https://quickchart.io/chart?width=300&height=300&chart={type:'bar',data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Positivo',data:[50,60,70,180,190]},{label:'Negativo',data:[100,200,300,400,500]}]}}" />
