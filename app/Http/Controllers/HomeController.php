@@ -67,15 +67,15 @@ class HomeController extends Controller
         //end servcio top 10 contries
 
         //Datos de la ciudades
-        $dataCities= DB::select('SELECT city_name,fan_count  FROM facebook_page_fans_city ORDER BY fan_count DESC LIMIT 5');
+        //$dataCities= DB::select('SELECT city_name,fan_count  FROM facebook_page_fans_city ORDER BY fan_count DESC LIMIT 5');
         // Estructurar los datos según el formato proporcionado
-        $citiesData = [];
+        /*$citiesData = [];
         foreach ($dataCities as $city) {
             $citiesData[] = [
                 'name' => $city->city_name,
                 'data' => [(int)$city->fan_count] // Convertir a entero para asegurarse de que Highcharts maneje los datos correctamente
             ];
-        }
+        }*/
 
         //servicio all countries
         $url_data_cities = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcity';
