@@ -119,7 +119,7 @@
         <div class="col-md-12">
             <div class="card ">
             <div class="card-header">
-                <h4 class="card-title"> Publicaciones de Facebook API</h4>
+                <h4 class="card-title"> Publicaciones de Facebook</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -579,12 +579,13 @@
             }
         ],
         "paging": true,
-        "lengthChange": false,
+        "lengthChange": true,
         "searching": false,
         "ordering": true,
         "info": true,
         "autoWidth": false,
-        "responsive": true
+        "responsive": true,
+        "pageLength": 15 // Asegúrate de que esté configurado según tus necesidades
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

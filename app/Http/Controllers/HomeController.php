@@ -131,7 +131,7 @@ class HomeController extends Controller
                 return strtotime($b['created_time']) - strtotime($a['created_time']);
             });
 
-            //dd($datas);
+            //dd($total);
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,
