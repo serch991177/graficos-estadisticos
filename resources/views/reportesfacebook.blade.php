@@ -1,5 +1,7 @@
 @extends('layouts.app', ['pageSlug' => 'reportes_facebook'])
 @section('content')
+@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
+
 <!--Grafico de Tendencias-->
 <style>
     .form-inline {
