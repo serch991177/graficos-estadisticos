@@ -470,7 +470,7 @@
     </div>
 </div>-->
 <!--Reporte PDF del post con mas interaccion-->
-<div class="container">
+{{--<div class="container">
     <h1 class="text-center">Informe de Escucha Activa</h1>
     <div class="text-center">
         <form action="{{route('informe_escucha')}}" method="post" target="_blank">
@@ -478,7 +478,7 @@
             <button class="btn btn-primary" title="Generar Informe">Generar Informe</button>
         </form>
     </div>
-</div>
+</div>--}}
 <!--Nuevo Reporte-->
 {{--<div class="container">
     <h1 class="text-center">Informe Actualizado</h1>

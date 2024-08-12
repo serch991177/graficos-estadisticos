@@ -20,14 +20,14 @@
 
                 <div class="collapse show" id="facebook-feature">
                     <ul class="nav pl-4">
-                        <li @if ($pageSlug == 'profile') class="active " @endif>
-                            <a href="{{ route('profile.edit')  }}">
+                        <li @if ($pageSlug == 'dashboard') class="active " @endif>
+                            <a href="{{ route('home')  }}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <p>{{ _('Graficos') }}</p>
                             </a>
                         </li>
-                        <li @if ($pageSlug == 'users') class="active " @endif>
-                            <a href="{{ route('user.index')  }}">
+                        <li @if ($pageSlug == 'reportes_facebook') class="active " @endif>
+                            <a href="{{ route('reportes_facebook')  }}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
                                 <p>{{ _('Reportes') }}</p>
                             </a>

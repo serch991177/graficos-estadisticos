@@ -180,35 +180,225 @@ class HomeController extends Controller
         $dompdf->stream ('',array("Attachment" => false));
     }
 
-    public function informefacebook(){
+    public function informefacebook(Request $request){
+       
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
+        $request->validate([
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/reportfordate';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos = $responseBody['data'];
+        //dd($datos['TopPost'][0]['type_post']);
+        $total_seguidores= $datos['follwers']['total_seguidores_ultimo'];
+        $nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
+        $unfollows = $datos['follwers']['total_seguidores_perdidos'];
+        $sumatotalinteraccionespost1 = $datos['TopPost'][0]['comments_count'] + $datos['TopPost'][0]['share_count'] + $datos['TopPost'][0]['like_count'] + $datos['TopPost'][0]['love_count'] + $datos['TopPost'][0]['haha_count']+ $datos['TopPost'][0]['wow_count']+ $datos['TopPost'][0]['sad_count']+ $datos['TopPost'][0]['angry_count'];
+        $sumatotalinteraccionespost2 = $datos['TopPost'][1]['comments_count'] + $datos['TopPost'][1]['share_count'] + $datos['TopPost'][1]['like_count'] + $datos['TopPost'][1]['love_count'] + $datos['TopPost'][1]['haha_count']+ $datos['TopPost'][1]['wow_count']+ $datos['TopPost'][1]['sad_count']+ $datos['TopPost'][1]['angry_count'];      
+        $sumatotalinteraccionesCompartido = $datos['getMostSharedPost']['comments_count'] + $datos['getMostSharedPost']['share_count'] + $datos['getMostSharedPost']['like_count'] + $datos['getMostSharedPost']['love_count'] + $datos['getMostSharedPost']['haha_count']+ $datos['getMostSharedPost']['wow_count']+ $datos['getMostSharedPost']['sad_count']+ $datos['getMostSharedPost']['angry_count'];
+        $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost']['comments_count'] + $datos['getMostCommentsPost']['share_count'] + $datos['getMostCommentsPost']['like_count'] + $datos['getMostCommentsPost']['love_count'] + $datos['getMostCommentsPost']['haha_count']+ $datos['getMostCommentsPost']['wow_count']+ $datos['getMostCommentsPost']['sad_count']+ $datos['getMostCommentsPost']['angry_count'];
         
+        $imageUrlCompartido = $datos['getMostSharedPost']['full_picture'];
+        if (empty($imageUrlCompartido)) {
+            $imageUrlCompartido = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $responseCompartido = Http::get($imageUrlCompartido);
+            $imageContentsCompartido = $responseCompartido->body();
+            $imageBase64Compartidos = base64_encode($imageContentsCompartido);
+            $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+        }else{    
+            $responseCompartido = Http::get($imageUrlCompartido);
+            $imageContentsCompartido = $responseCompartido->body();
+            $imageBase64Compartidos = base64_encode($imageContentsCompartido);
+            $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+        }
+        
+        $imageUrlComentario = $datos['getMostCommentsPost']['full_picture'];
+        if (empty($imageUrlComentario)) {
+            $imageUrlComentario = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $responseComentario = Http::get($imageUrlComentario);
+            $imageContentsComentario = $responseComentario->body();
+            $imageBase64Comentario = base64_encode($imageContentsComentario);
+            $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+        }else{    
+            $responseComentario = Http::get($imageUrlComentario);
+            $imageContentsComentario = $responseComentario->body();
+            $imageBase64Comentario = base64_encode($imageContentsComentario);
+            $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+        }
+
+
+        $imageUrlMayorAlcance1 = $datos['TopPost'][0]['full_picture'];
+        if (empty($imageUrlMayorAlcance1)) {
+            $imageUrlMayorAlcance1 = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
+            $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
+            $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
+            $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+        }else{
+            $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
+            $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
+            $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
+            $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+        }
+        $imageUrlMayorAlcance2 = $datos['TopPost'][1]['full_picture'];
+        if (empty($imageUrlMayorAlcance2)){
+            $imageUrlMayorAlcance2 = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+            $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
+            $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
+            $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+        }else{
+            $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+            $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
+            $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
+            $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+        }
+        /**grafico 1 de tendencia */  
+        $allReactions = $responseBody['data']['allReactions'];
+        $totalReactionsSum = 0;
+        foreach ($allReactions as $reactions) {
+            $totalReactionsSum += (int) $reactions['total_reactions'];
+        }
+        $dates = [];
+        $postCounts = [];
+        $totalReactions = [];
+        foreach ($allReactions as $reaction) {
+            $dates[] = $reaction['date'];
+            $postCounts[] = $reaction['post_count'];
+            $totalReactions[] = $reaction['total_reactions'];
+        }
+        $chartData = [
+            'type' => 'line',
+            'data' => [
+                'labels' => $dates,
+                'datasets' => [
+                    [
+                        'label' => 'Conteo de Publicaciones',
+                        'data' => $postCounts,
+                        'borderColor' => 'rgba(75, 192, 192, 1)',
+                        'fill' => false,
+                    ],
+                    [
+                        'label' => 'Total de Reacciones',
+                        'data' => $totalReactions,
+                        'borderColor' => 'rgba(255, 99, 132, 1)',
+                        'fill' => false,
+                    ],
+                ],
+            ],
+        ];
+        $chartUrl = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chartData));
+        /**Fin grafico 11 de tendencia */
+
+        /**Grafico 2 de tendencia */
+        $dailyResults = $responseBody['data']['follwers']['daily_results'];
+        $datesSeguidores = [];
+        $totalSeguidores = [];
+        $nuevosSeguidores = [];
+        $seguidoresPerdidos = [];
+        foreach ($dailyResults as $date => $result) {
+            $datesSeguidores[] = $date;
+            $totalSeguidores[] = $result['total_seguidores'];
+            $nuevosSeguidores[] = $result['nuevos_seguidores'];
+            $seguidoresPerdidos[] = $result['seguidores_perdidos'];
+        }
+        $chartDataSeguidores = [
+            'type' => 'line',
+            'data' => [
+                'labels' => $datesSeguidores,
+                'datasets' => [
+                    [
+                        'label' => 'Total Seguidores',
+                        'data' => $totalSeguidores,
+                        'borderColor' => 'rgba(54, 162, 235, 1)',
+                        'fill' => false,
+                    ],
+                    [
+                        'label' => 'Nuevos Seguidores',
+                        'data' => $nuevosSeguidores,
+                        'borderColor' => 'rgba(75, 192, 192, 1)',
+                        'fill' => false,
+                    ],
+                    [
+                        'label' => 'Seguidores Perdidos',
+                        'data' => $seguidoresPerdidos,
+                        'borderColor' => 'rgba(255, 99, 132, 1)',
+                        'fill' => false,
+                    ],
+                ],
+            ],
+        ];
+        $chartUrlSeguidores = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chartDataSeguidores));
+        /**Fin Grafico 2 de tendencia */
+        
+        //Imagenes de Facebook
         $inicio = public_path() . '/img/inicio.png';
         $imageInicio = base64_encode(file_get_contents($inicio));
         $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-    
         $facebook = public_path() . '/img/facebook.png';
         $imagefacebook = base64_encode(file_get_contents($facebook));
         $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-    
         $overview = public_path() . '/img/overview.png';
         $imageoverview = base64_encode(file_get_contents($overview));
         $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-    
         $resultado_facebook = public_path() . '/img/resultado_facebook.png';
         $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
         $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
-    
+        $mayoralcance_facebook = public_path() . '/img/mayoralcance.png';
+        $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
+        $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
+        $compartido_facebook = public_path() . '/img/compartido.png';
+        $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
+        $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
+        $comentado_facebook = public_path() . '/img/comentado.png';
+        $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
+        $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
+        $reacciones_facebook = public_path() . '/img/reacciones.png';
+        $imagereacciones_facebook = base64_encode(file_get_contents($reacciones_facebook));
+        $src_reacciones_facebook = 'data:' . mime_content_type($reacciones_facebook) . ';base64,' . $imagereacciones_facebook;
+        $gracias = public_path() . '/img/gracias.png';
+        $imagegracias = base64_encode(file_get_contents($gracias));
+        $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+        //Fin Imagenes de Faceboo
         $vista = view('informe_facebook', [
             'src_inicio' => $src_inicio,
             'src_facebook' => $src_facebook,
             'src_overview' => $src_overview,
-            'src_resultado_facebook' => $src_resultado_facebook
+            'src_resultado_facebook' => $src_resultado_facebook,
+            'src_mayoralcance' => $src_mayoralcance, 
+            'src_compartido' => $src_compartido,
+            'src_comentado_facebook' => $src_comentado_facebook,
+            'src_reacciones_facebook' => $src_reacciones_facebook,
+            'src_gracias' => $src_gracias,
+            'datos'=>$datos,
+            'chartUrl'=>$chartUrl,
+            'totalReactionsSum'=>$totalReactionsSum,
+            'chartUrlSeguidores'=>$chartUrlSeguidores,
+            'fecha_inicio' => $fecha_inicio, 
+            'fecha_fin' => $fecha_fin,
+            'total_seguidores' => $total_seguidores ,
+            'nuevos_seguidores' => $nuevos_seguidores,
+            'unfollows' => $unfollows,
+            'imageSrcMayorAlcance1'=>$imageSrcMayorAlcance1, 
+            'imageSrcMayorAlcance2'=>$imageSrcMayorAlcance2,
+            'sumatotalinteraccionespost1' =>$sumatotalinteraccionespost1,
+            'sumatotalinteraccionespost2'=>$sumatotalinteraccionespost2,
+            'imageSrcCompartido'=>$imageSrcCompartido,
+            'imageSrcComentario'=>$imageSrcComentario,
+            'sumatotalinteraccionesCompartido' => $sumatotalinteraccionesCompartido,
+            'sumatotalinteraccionesComentarios' => $sumatotalinteraccionesComentarios
         ]);
-    
-        file_put_contents(public_path('output.html'), $vista);
-
-
+        //file_put_contents(public_path('output.html'), $vista);
         //$options = new Options();
         $options = new Options();
         $options->set('isRemoteEnabled',TRUE);
@@ -647,5 +837,8 @@ class HomeController extends Controller
         return response()->json($posts);
     }
 
+    public function cargarfacebookinforme(Request $request){
+        return view('reportesfacebook');
+    }
 
 }
