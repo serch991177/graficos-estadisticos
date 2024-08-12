@@ -204,7 +204,7 @@ class HomeController extends Controller
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
         $request->validate([
             'start_date' => 'required',
-            'end_date' => 'required',
+            'end_date' => 'required|date|before_or_equal:today',
         ]);
         $fecha_inicio = $request->start_date;
         $fecha_fin = $request->end_date; 
