@@ -165,11 +165,22 @@ class HomeController extends Controller
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
        
+
         $imageUrl = $postData['full_picture'];
-        $response = Http::get($imageUrl);
-        $imageContents = $response->body();
-        $imageBase64 = base64_encode($imageContents);
-        $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        if (empty($imageUrl)) {
+            $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }else{    
+            
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }
+
         
         
         $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
@@ -447,16 +458,26 @@ class HomeController extends Controller
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
+        
+        
         if(empty($postData)){
             echo "No hay comentarios disponibles."; 
         }else{
             // dd($postData[0]->full_picture);
             $imageUrl = $postData['full_picture'];
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
-            
+            if (empty($imageUrl)) {
+                $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            }else{    
+                
+                $response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            }
             $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);

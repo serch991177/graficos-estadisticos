@@ -110,7 +110,12 @@
         </tr>
     </table>
     <h1 class="text-center">Comentario mas relevante</h1>
-    <p class="text-center">{{$postData['comment_pop']['message']}}</p>
+    @if(isset($postData['comment_pop']['message']))
+        <p class="text-center">{{$postData['comment_pop']['message']}}</p>
+    @else
+        <p>No hay comentarios.</p>
+    @endif
+    
     {{--<h1>Link Del Comentario</h1>
     <a href="{{$postData[0]->permalink_url}}" target="_blank" >Ver Comentario</a>
     <h1>Numero de Sub Comentarios</h1>
