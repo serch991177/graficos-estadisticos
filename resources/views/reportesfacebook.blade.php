@@ -45,7 +45,7 @@
     <div class="text-center">
         <form action="{{route('informe_escucha')}}" method="post" target="_blank">
             @csrf
-            <button class="btn btn-primary" title="Generar Informe">Generar Informe</button>
+            <button class="btn btn-success" title="Generar Informe">Generar Informe</button>
         </form>
     </div>
 </div>

@@ -123,7 +123,13 @@ class HomeController extends Controller
             $datas = $response->json();
             $items = $datas['data'];
             $total = $datas['total'];
-    
+            
+            // Ordenar los datos por created_time de manera descendente
+            usort($items, function($a, $b) {
+                return strtotime($b['created_time']) - strtotime($a['created_time']);
+            });
+
+            //dd($datas);
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,
