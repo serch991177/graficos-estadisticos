@@ -572,10 +572,23 @@
         },
         "columns": [
             { "data": "id" },
-            { "data": "story" },
+            {
+                "data": "story",
+                "render": function(data, type, row) {
+                    if (data.length > 100) {
+                        var truncated = data.substring(0, 100) + '...';
+                        return '<span title="' + data.replace(/"/g, '&quot;') + '">' + truncated + '</span>';
+                    } else {
+                        return data;
+                    }
+                }
+            },
             { 
                 "data": "full_picture" ,
                 "render": function(data, type, row) {
+                    if (!data) {
+                        data = "https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43";
+                    }
                     return '<img src="' + data + '" style="width: 150px !important; height: 150px; object-fit: cover;">';
                 }   
             },
