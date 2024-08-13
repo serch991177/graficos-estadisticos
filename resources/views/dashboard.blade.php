@@ -44,10 +44,12 @@
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #80D4E5;">
                 <div class="card-header">
-                    <i class="fas fa-thumbs-up"></i> Total de me gustas
+                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/e4299734559659.56d57de04bda4.gif" alt="Total de me gustas" style="max-width: 100%; "> 
+                <div class="text-center">Total de me gustas</div>
+                <!--<i class="fas fa-thumbs-up"></i> Total de me gustas-->
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalLikes }}</h5>
+                    <h5 class="card-title text-center">{{ $totalLikes }}</h5>
                 </div>
             </div>
         </div>
@@ -55,10 +57,11 @@
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #C080C0;">
                 <div class="card-header">
-                    <i class="fas fa-heart"></i> Total de me enamoras
+                    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/65ea2034559659.56d57de06cea2.gif" alt="Total de me enamoras" style="max-width: 100%;"> 
+                    <div class="text-center">Total de me enamoras</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalLoves }}</h5>
+                    <h5 class="card-title text-center">{{ $totalLoves }}</h5>
                 </div>
             </div>
         </div>
@@ -66,10 +69,11 @@
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #F497B7;">
                 <div class="card-header">
-                    <i class="fas fa-smile"></i> Total de me diviertes
+                    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/35c9bf34559659.56d57de0eb467.gif" alt="Total de me diviertes" style="max-width: 100%;"> 
+                    <div class="text-center">Total de me diviertes</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalHahas }}</h5>
+                    <h5 class="card-title text-center">{{ $totalHahas }}</h5>
                 </div>
             </div>
         </div>
@@ -77,10 +81,11 @@
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #E89A9A;">
                 <div class="card-header">
-                    <i class="fas fa-surprise"></i> Total de me asombras
+                    <img src="/img/emoji-wow.gif" alt="Total de me asombras" style="max-width: 100%;"> 
+                    <div class="text-center">Total de me asombras</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalWows }}</h5>
+                    <h5 class="card-title text-center">{{ $totalWows }}</h5>
                 </div>
             </div>
         </div>
@@ -88,10 +93,11 @@
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #D080D0;">
                 <div class="card-header">
-                    <i class="fas fa-frown"></i> Total de me entristece
+                    <img src="/img/emoji-sad.gif" alt="Total de me entristece" style="max-width: 100%;"> 
+                    <div class="text-center">Total de me entristece</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalSads }}</h5>
+                    <h5 class="card-title text-center">{{ $totalSads }}</h5>
                 </div>
             </div>
         </div>
@@ -99,32 +105,35 @@
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #F4A4A4;">
                 <div class="card-header">
-                    <i class="fas fa-angry"></i> Total de me enojas
+                    <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/e66e6e34559659.56d57de095aee.gif" alt="Total de me enojas" style="max-width: 100%;"> 
+                    <div class="text-center">Total de me enojas</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalAngries }}</h5>
+                    <h5 class="card-title text-center">{{ $totalAngries }}</h5>
                 </div>
             </div>
         </div>
         <!-- Total de compartidas -->
         <div class="col-md-3">
-            <div class="card text-white" style="background-color: #80C0C0;">
+            <div class="card text-white" style="background-color: #C0C0C0;"> 
                 <div class="card-header">
-                    <i class="fas fa-share"></i> Total de compartidas
+                    <img src="/img/compartir.gif" alt="Total de compartidas" style="max-width: 100%;"> 
+                    <div class="text-center">Total de compartidas</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalShares }}</h5>
+                    <h5 class="card-title text-center">{{ $totalShares }}</h5>
                 </div>
             </div>
         </div>
         <!-- Total de Comentarios -->
         <div class="col-md-3">
-            <div class="card text-white" style="background-color: #C0C0C0;">
+            <div class="card text-white" style="background-color: #80C0C0;"> 
                 <div class="card-header">
-                    <i class="fas fa-comments"></i> Total de Comentarios
+                    <img src="/img/comentarios.gif" alt="Total de compartidas" style="max-width: 100%;"> 
+                    <div class="text-center">Total de Comentarios</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $totalComments }}</h5>
+                    <h5 class="card-title text-center">{{ $totalComments }}</h5>
                 </div>
             </div>
         </div>
@@ -620,14 +629,14 @@
                 "data": null,
                 "render": function(data, type, row) {
                     return `
-                        <button type="button" class="btn btn-primary id_graficar" value="${row.id}" data-toggle="modal" data-target="#exampleModal">
-                            Generar Grafica
+                        <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-toggle="modal" data-target="#exampleModal">
+                            <i class="fas fa-chart-bar"></i>
                         </button>
                         <br><br>
                         <form action="{{ route('informe_id_escucha') }}" method="post" target="_blank">
                             @csrf 
                             <input type="hidden" name="id" value="${row.id}">
-                            <button class="btn btn-warning">Generar Pdf</button>
+                            <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
                         </form>
                     `;
                 }
@@ -952,12 +961,12 @@
             xAxis: { categories: [], title: { text: 'Fecha' } },
             yAxis: { title: { text: 'Cantidad' } },
             series: [
-            { name: 'Likes', data: [], color: '#FFB3BA' },    // Rosa pastel
-            { name: 'Loves', data: [], color: '#FFDFBA' },    // Naranja pastel
-            { name: 'Hahas', data: [], color: '#FFFFBA' },    // Amarillo pastel
-            { name: 'Wows', data: [], color: '#B3E5FC' },     // Azul pastel
-            { name: 'Sads', data: [], color: '#B4AEE8' },     // Púrpura pastel
-            { name: 'Angries', data: [], color: '#FFDAC1' }   // Melocotón pastel
+            { name: 'Likes', data: [] },    // Rosa pastel
+            { name: 'Loves', data: []},    // Naranja pastel
+            { name: 'Hahas', data: [] },    // Amarillo pastel
+            { name: 'Wows', data: [] },     // Azul pastel
+            { name: 'Sads', data: []},     // Púrpura pastel
+            { name: 'Angries', data: []}   // Melocotón pastel
         ]
         });
     }
@@ -977,12 +986,12 @@
                 chartTrend.update({
                     xAxis: { categories: data.dates },
                     series: [
-                    { name: 'Likes', data: data.likes, color: '#FFB3BA' },    // Rosa pastel
-                    { name: 'Loves', data: data.loves, color: '#FFDFBA' },    // Naranja pastel
-                    { name: 'Hahas', data: data.hahas, color: '#FFFFBA' },    // Amarillo pastel
-                    { name: 'Wows', data: data.wows, color: '#B3E5FC' },      // Azul pastel
-                    { name: 'Sads', data: data.sads, color: '#B4AEE8' },      // Púrpura pastel
-                    { name: 'Angries', data: data.angries, color: '#FFDAC1' } // Melocotón pastel
+                    { name: 'Likes', data: data.likes },    // Rosa pastel
+                    { name: 'Loves', data: data.loves },    // Naranja pastel
+                    { name: 'Hahas', data: data.hahas },    // Amarillo pastel
+                    { name: 'Wows', data: data.wows },      // Azul pastel
+                    { name: 'Sads', data: data.sads },      // Púrpura pastel
+                    { name: 'Angries', data: data.angries } // Melocotón pastel
                 ]
                 });
             }

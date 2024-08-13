@@ -120,8 +120,8 @@
     <a href="{{$postData[0]->permalink_url}}" target="_blank" >Ver Comentario</a>
     <h1>Numero de Sub Comentarios</h1>
     <p>{{$postData[0]->comment_count}}</p>--}}
-    <h1 class="text-center">Resultado de La Escucha Activa</h1>
+    {{--<h1 class="text-center">Resultado de La Escucha Activa</h1>
     <img src="https://quickchart.io/chart?width=300&height=300&c={type:'pie',data:{labels:['Negativo','Positivo','Neutro','Otros'],datasets:[{data:[60,70,180,190]}]}}">
-    <img src="https://quickchart.io/chart?width=300&height=300&chart={type:'bar',data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Positivo',data:[50,60,70,180,190]},{label:'Negativo',data:[100,200,300,400,500]}]}}" />
+    <img src="https://quickchart.io/chart?width=300&height=300&chart={type:'bar',data:{labels:['January','February', 'March','April', 'May'], datasets:[{label:'Positivo',data:[50,60,70,180,190]},{label:'Negativo',data:[100,200,300,400,500]}]}}" />--}}
 </body>
 </html>
