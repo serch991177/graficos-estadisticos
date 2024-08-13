@@ -260,12 +260,21 @@
 <div class="container">
     <h1 class="text-center">Numero de fans en todas las ciudades</h1>
     <div class="row">
-        <select id="dataCount" class="form-control" onchange="updateChart()">
-            <option value="">Seleccione un rango </option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-        </select>
+        <div class="form-inline">
+            <!-- Filtro por país -->
+            <label >Seleccione un país :</label>
+            <select id="countryFilter" class="form-control" onchange="updateChart()">
+                <option value="">Seleccione un país</option>
+                <!-- Las opciones de países se llenarán dinámicamente en el script -->
+            </select>
+            <label >Seleccione un rango</label>
+            <select id="dataCount" class="form-control" onchange="updateChart()">
+                <option value="">Seleccione un rango </option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+        </div>
         <div id="BarFans" style="width: 100%; height: 400px;"></div>
     </div>
 </div>
@@ -722,12 +731,29 @@
     document.addEventListener('DOMContentLoaded', function () {
         var dataCities = @json($dataCities2);
 
+        // Extraer los nombres de las ciudades, países y conteo de fans
         var cityNames = dataCities.map(function (city) {
             return city.city_name;
         });
 
         var fanCounts = dataCities.map(function (city) {
             return parseInt(city.fan_count);
+        });
+
+        var countries = dataCities.map(function (city) {
+            return city.city_name.split(', ').pop(); // Extraer el país del nombre de la ciudad
+        });
+
+        // Obtener países únicos
+        var uniqueCountries = [...new Set(countries)];
+
+        // Llenar el select de países
+        var countrySelect = document.getElementById('countryFilter');
+        uniqueCountries.forEach(function (country) {
+            var option = document.createElement('option');
+            option.value = country;
+            option.text = country;
+            countrySelect.appendChild(option);
         });
 
         var chartCity = Highcharts.chart('BarFans', {
@@ -763,23 +789,36 @@
             series: [{
                 name: 'Fans',
                 data: fanCounts,
-                color: '#D4B3E6' 
+                color: '#D4B3E6'
             }]
         });
-        
+
         window.updateChart = function() {
+            var selectedCountry = document.getElementById('countryFilter').value;
             var count = parseInt(document.getElementById('dataCount').value);
-            var filteredData = {
-                cityNames: cityNames.slice(0, count),
-                fanCounts: fanCounts.slice(0, count)
-            };
 
-            chartCity.xAxis[0].setCategories(filteredData.cityNames);
-            chartCity.series[0].setData(filteredData.fanCounts);
+            var filteredData = dataCities.filter(function(city) {
+                return selectedCountry === '' || city.city_name.includes(selectedCountry);
+            });
+
+            if (count > 0) {
+                filteredData = filteredData.slice(0, count);
+            }
+
+            var filteredCityNames = filteredData.map(function (city) {
+                return city.city_name;
+            });
+
+            var filteredFanCounts = filteredData.map(function (city) {
+                return parseInt(city.fan_count);
+            });
+
+            chartCity.xAxis[0].setCategories(filteredCityNames);
+            chartCity.series[0].setData(filteredFanCounts);
         };
-
     });
 </script>
+
 <!--Grafico de impresiones de edad-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
