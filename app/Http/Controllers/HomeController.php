@@ -96,20 +96,20 @@ class HomeController extends Controller
         //end service age and gender
 
         $heads = [
-            'id',
-            'story',
-            'foto',
-            'link',
-            'fecha de creacion',
-            'recuento de comentarios',
-            'recuento de me gustas',
-            'recuento de me ecantas',
-            'recuento de me diviertes',
-            'recuento de me asombra',
-            'recuento de me entristece',
-            'recuento de me enojas',
-            'recuento de compartidos',
-            'opciones'
+            '<i class="fas fa-id-badge"></i>',
+            '<i class="fas fa-file-alt"></i>',
+            '<i class="fas fa-image"></i>',
+            '<i class="fas fa-link"></i>',
+            '<i class="fas fa-calendar-alt"></i>',
+            '<i class="fas fa-comments" style="color: #77DD77;"></i>',
+            '<i class="fas fa-thumbs-up" style="color: #2196F3;"></i>',
+            '<i class="fas fa-heart" style="color: #E91E63;"></i>',
+            '<i class="fas fa-smile" style="color: #FFEB3B;"></i>',
+            '<i class="fa-solid fa-face-surprise" style="color: #FF5722;"></i>',
+            '<i class="fas fa-sad-tear" style="color: #9C27B0;"></i>',
+            '<i class="fas fa-angry" style="color: #F44336;"></i>',
+            '<i class="fas fa-share" style="color: #03A9F4;"></i>',
+            '<i class="fas fa-cog"></i>'
         ];
         
         // Pasa los datos a la vista

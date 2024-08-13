@@ -1,12 +1,48 @@
 @extends('layouts.app', ['pageSlug' => 'dashboard'])
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 <!--Cards del total de las Reacciones-->
 <div class="container">
     <div class="row">
+        <style>
+            .bg-lightblue {
+                background-color: #AEC6CF !important;
+            }
+
+            .bg-lightpink {
+                background-color: #FFB6C1 !important;
+            }
+
+            .bg-lightyellow {
+                background-color: #FDFD96 !important;
+            }
+
+            .bg-lightorange {
+                background-color: #FFDAB9 !important;
+            }
+
+            .bg-lightpurple {
+                background-color: #D1CFE2 !important;
+            }
+
+            .bg-lightcoral {
+                background-color: #F08080 !important;
+            }
+
+            .bg-lightteal {
+                background-color: #B2DFDB !important;
+            }
+
+            .bg-lightgrey {
+                background-color: #D3D3D3 !important;
+            }
+
+        </style>
         <!-- Total de me gustas -->
         <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
+            <div class="card text-white" style="background-color: #80D4E5;">
                 <div class="card-header">
                     <i class="fas fa-thumbs-up"></i> Total de me gustas
                 </div>
@@ -17,7 +53,7 @@
         </div>
         <!-- Total de me enamoras -->
         <div class="col-md-3">
-            <div class="card text-white bg-danger mb-3">
+            <div class="card text-white" style="background-color: #C080C0;">
                 <div class="card-header">
                     <i class="fas fa-heart"></i> Total de me enamoras
                 </div>
@@ -28,7 +64,7 @@
         </div>
         <!-- Total de me diviertes -->
         <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
+            <div class="card text-white" style="background-color: #F497B7;">
                 <div class="card-header">
                     <i class="fas fa-smile"></i> Total de me diviertes
                 </div>
@@ -39,11 +75,9 @@
         </div>
         <!-- Total de me asombras -->
         <div class="col-md-3">
-            <div class="card text-white bg-orange mb-3">
+            <div class="card text-white" style="background-color: #E89A9A;">
                 <div class="card-header">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15">
-                    <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM176.4 176a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm128 32a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM256 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>
-                </svg> Total de me asombras
+                    <i class="fas fa-surprise"></i> Total de me asombras
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ $totalWows }}</h5>
@@ -52,7 +86,7 @@
         </div>
         <!-- Total de me entristece -->
         <div class="col-md-3">
-            <div class="card text-white bg-purple mb-3">
+            <div class="card text-white" style="background-color: #D080D0;">
                 <div class="card-header">
                     <i class="fas fa-frown"></i> Total de me entristece
                 </div>
@@ -63,10 +97,9 @@
         </div>
         <!-- Total de me enojas -->
         <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
+            <div class="card text-white" style="background-color: #F4A4A4;">
                 <div class="card-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" width="15" ><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zM136 240c0-9.3 4.1-17.5 10.5-23.4l-31-9.3c-8.5-2.5-13.3-11.5-10.7-19.9 2.5-8.5 11.4-13.2 19.9-10.7l80 24c8.5 2.5 13.3 11.5 10.7 19.9-2.1 6.9-8.4 11.4-15.3 11.4-.5 0-1.1-.2-1.7-.2 .7 2.7 1.7 5.3 1.7 8.2 0 17.7-14.3 32-32 32S136 257.7 136 240zm168 154.2c-27.8-33.4-84.2-33.4-112.1 0-13.5 16.3-38.2-4.2-24.6-20.5 20-24 49.4-37.8 80.6-37.8s60.6 13.8 80.6 37.8c13.8 16.5-11.1 36.6-24.5 20.5zm76.6-186.9l-31 9.3c6.3 5.8 10.5 14.1 10.5 23.4 0 17.7-14.3 32-32 32s-32-14.3-32-32c0-2.9 .9-5.6 1.7-8.2-.6 .1-1.1 .2-1.7 .2-6.9 0-13.2-4.5-15.3-11.4-2.5-8.5 2.3-17.4 10.7-19.9l80-24c8.4-2.5 17.4 2.3 19.9 10.7 2.5 8.5-2.3 17.4-10.8 19.9z"/></svg>
-                    Total de me enojas
+                    <i class="fas fa-angry"></i> Total de me enojas
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ $totalAngries }}</h5>
@@ -75,9 +108,9 @@
         </div>
         <!-- Total de compartidas -->
         <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
+            <div class="card text-white" style="background-color: #80C0C0;">
                 <div class="card-header">
-                    <i class="fas fa-share" style="color: #ffffff;"></i> Total de compartidas
+                    <i class="fas fa-share"></i> Total de compartidas
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ $totalShares }}</h5>
@@ -86,9 +119,9 @@
         </div>
         <!-- Total de Comentarios -->
         <div class="col-md-3">
-            <div class="card text-white bg-secondary mb-3">
+            <div class="card text-white" style="background-color: #C0C0C0;">
                 <div class="card-header">
-                    <i class="fas fa-comments" style="color: #007bff;"></i> Total de Comentarios
+                    <i class="fas fa-comments"></i> Total de Comentarios
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ $totalComments }}</h5>
@@ -145,7 +178,7 @@
                         <thead>
                             <tr>
                                 @foreach ( $heads as $head)
-                                    <th>{{ $head }}</th>
+                                    <th>{!! $head !!}</th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -601,7 +634,7 @@
                 labels: @json($data['labels']),
                 datasets: [{
                     data: @json($data['values']),
-                    backgroundColor: ['purple','red','yellow','green','purple','orange','pink','grey']
+                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9', '#D4B3E6', '#F7C8D9', '#E8A4B8', '#D9D9D9']
                 }]
             },
             options: {
@@ -649,16 +682,18 @@
             colorAxis: {
                 min:0,
                 stops: [
-                    [0, '#800080'] // Color púrpura en hexadecimal
+                    [0, '#D4B3E6'], // Color púrpura pastel en hexadecimal
+                    [0.5, '#A8DDEB'], // Color azul pastel en hexadecimal
+                    [1, '#F7C8D9'] // Color rosa pastel en hexadecimal
                 ]
             },
             series: [{
                 data:dataMap,
                 name: 'Numero de Fans',
-                color: '#800080',
+                color: '#D4B3E6',
                 states: {
                     hover: {
-                        color: '#800080'
+                        color: '#A8DDEB'
                     }
                 },
                 dataLabels: {
@@ -715,7 +750,7 @@
             series: [{
                 name: 'Fans',
                 data: fanCounts,
-                color: '#6a0dad' 
+                color: '#D4B3E6' 
             }]
         });
         
@@ -769,11 +804,11 @@
             plotOptions: {
                 area: {
                     stacking: 'normal',
-                    lineColor: '#666666',
+                    lineColor: '#B4AEE8',
                     lineWidth: 1,
                     marker: {
                         lineWidth: 1,
-                        lineColor: '#666666'
+                        lineColor: '#B4AEE8'
                     },
                     dataLabels: {
                         enabled: true
@@ -783,7 +818,7 @@
             series: [{
                 name: 'Impresiones',
                 data: impressions,
-                color: '#6a0dad' // Color púrpura para las áreas
+                color: '#D4B3E6' // Color púrpura para las áreas
             }]
         });
     });
@@ -822,7 +857,7 @@
                                 labels: data.dibujar_torta.labels,
                                 datasets: [{
                                     data: data.dibujar_torta.values,
-                                    backgroundColor: ['purple', 'red', 'yellow', 'green', 'purple', 'orange', 'pink', 'grey']
+                                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9', '#D4B3E6', '#F7C8D9', '#E8A4B8', '#D9D9D9']
                                 }]
                             },
                             options: {
@@ -865,13 +900,13 @@
             xAxis: { categories: [], title: { text: 'Fecha' } },
             yAxis: { title: { text: 'Cantidad' } },
             series: [
-                { name: 'Likes', data: [] },
-                { name: 'Loves', data: [] },
-                { name: 'Hahas', data: [] },
-                { name: 'Wows', data: [] },
-                { name: 'Sads', data: [] },
-                { name: 'Angries', data: [] }
-            ]
+            { name: 'Likes', data: [], color: '#FFB3BA' },    // Rosa pastel
+            { name: 'Loves', data: [], color: '#FFDFBA' },    // Naranja pastel
+            { name: 'Hahas', data: [], color: '#FFFFBA' },    // Amarillo pastel
+            { name: 'Wows', data: [], color: '#B3E5FC' },     // Azul pastel
+            { name: 'Sads', data: [], color: '#B4AEE8' },     // Púrpura pastel
+            { name: 'Angries', data: [], color: '#FFDAC1' }   // Melocotón pastel
+        ]
         });
     }
 
@@ -888,17 +923,17 @@
             },
             success: function (data) {
                 chartTrend.update({
-                        xAxis: { categories: data.dates },
-                        series: [
-                            { name: 'Likes', data: data.likes },
-                            { name: 'Loves', data: data.loves },
-                            { name: 'Hahas', data: data.hahas },
-                            { name: 'Wows', data: data.wows },
-                            { name: 'Sads', data: data.sads },
-                            { name: 'Angries', data: data.angries }
-                        ]
-                    });
-                }
+                    xAxis: { categories: data.dates },
+                    series: [
+                    { name: 'Likes', data: data.likes, color: '#FFB3BA' },    // Rosa pastel
+                    { name: 'Loves', data: data.loves, color: '#FFDFBA' },    // Naranja pastel
+                    { name: 'Hahas', data: data.hahas, color: '#FFFFBA' },    // Amarillo pastel
+                    { name: 'Wows', data: data.wows, color: '#B3E5FC' },      // Azul pastel
+                    { name: 'Sads', data: data.sads, color: '#B4AEE8' },      // Púrpura pastel
+                    { name: 'Angries', data: data.angries, color: '#FFDAC1' } // Melocotón pastel
+                ]
+                });
+            }
         });
     }
 
@@ -951,7 +986,8 @@
             },
             series: [{
                 name: 'Comentarios',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
             }]
         });
     }
@@ -1001,7 +1037,8 @@
             },
             series: [{
                 name: 'Likes',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
             }]
         });
     }
@@ -1052,7 +1089,9 @@
             },
             series: [{
                 name: 'Loves',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+
             }]
         });
     }
@@ -1102,7 +1141,9 @@
             },
             series: [{
                 name: 'Hahas',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+
             }]
         });
     }
@@ -1152,7 +1193,9 @@
             },
             series: [{
                 name: 'Wows',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+
             }]
         });
     }
@@ -1202,7 +1245,9 @@
             },
             series: [{
                 name: 'Sads',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+
             }]
         });
     }
@@ -1252,7 +1297,9 @@
             },
             series: [{
                 name: 'Angries',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+
             }]
         });
     }
@@ -1302,7 +1349,9 @@
             },
             series: [{
                 name: 'Compartidas',
-                data: data
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+
             }]
         });
     }
