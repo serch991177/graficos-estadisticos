@@ -12430,7 +12430,7 @@ fieldset[disabled] .btn-link.active {
 }
 
 img {
-  max-width: 100%;
+  /*max-width: 100%;*/
   border-radius: 0.2857rem;
 }
 

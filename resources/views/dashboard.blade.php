@@ -576,7 +576,7 @@
             { 
                 "data": "full_picture" ,
                 "render": function(data, type, row) {
-                    return '<img src="' + data + '" style="width: 400px; height: auto;">';
+                    return '<img src="' + data + '" style="width: 150px !important; height: 150px; object-fit: cover;">';
                 }   
             },
             { 
