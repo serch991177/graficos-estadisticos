@@ -5,12 +5,7 @@
             <a href="#" class="simple-text logo-normal">{{ _('White Dashboard') }}</a>
         </div>
         <ul class="nav">
-            <li @if ($pageSlug == 'dashboard') class="active " @endif>
-                <a href="{{ route('home') }}">
-                    <i class="tim-icons icon-chart-pie-36"></i>
-                    <p>{{ _('Dashboard') }}</p>
-                </a>
-            </li>
+            
             <li>
                 <a data-toggle="collapse" href="#facebook-feature" aria-expanded="true">
                     <i class="fab fa-facebook" ></i>
@@ -22,7 +17,7 @@
                     <ul class="nav pl-4">
                         <li @if ($pageSlug == 'dashboard') class="active " @endif>
                             <a href="{{ route('home')  }}">
-                                <i class="tim-icons icon-single-02"></i>
+                                <i class="fas fa-chart-bar"></i>
                                 <p>{{ _('Graficos') }}</p>
                             </a>
                         </li>
@@ -46,7 +41,7 @@
                     <ul class="nav pl-4">
                         <li @if ($pageSlug == 'profile') class="active " @endif>
                             <a href="">
-                                <i class="tim-icons icon-single-02"></i>
+                                <i class="fas fa-chart-bar"></i>
                                 <p>{{ _('Graficos') }}</p>
                             </a>
                         </li>
