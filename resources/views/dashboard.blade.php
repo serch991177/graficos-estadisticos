@@ -283,6 +283,14 @@
                 <option value="20">20</option>
                 <option value="30">30</option>
             </select>
+
+            <!-- Selección del tipo de gráfico -->
+            <label for="">Seleccione un tipo de gráfico</label>
+            <select id="chartType" class="form-control" onchange="updateChart()">
+                <option value="bar">Barra</option>
+                <option value="column">Columna</option>
+                <option value="line">Línea</option>
+            </select>
         </div>
         <div id="BarFans" style="width: 100%; height: 400px;"></div>
     </div>
@@ -767,7 +775,7 @@
 
         var chartCity = Highcharts.chart('BarFans', {
             chart: {
-                type: 'bar'
+                type: 'bar'  // Tipo de gráfico inicial
             },
             title: {
                 text: 'Conteo de fanes por Ciudad'
@@ -789,7 +797,7 @@
                 valueSuffix: ' fans'
             },
             plotOptions: {
-                bar: {
+                series: {
                     dataLabels: {
                         enabled: true
                     }
@@ -805,6 +813,7 @@
         window.updateChart = function() {
             var selectedCountry = document.getElementById('countryFilter').value;
             var count = parseInt(document.getElementById('dataCount').value);
+            var chartType = document.getElementById('chartType').value;
 
             var filteredData = dataCities.filter(function(city) {
                 return selectedCountry === '' || city.city_name.includes(selectedCountry);
@@ -822,11 +831,22 @@
                 return parseInt(city.fan_count);
             });
 
-            chartCity.xAxis[0].setCategories(filteredCityNames);
-            chartCity.series[0].setData(filteredFanCounts);
+            // Actualizar el tipo de gráfico
+            chartCity.update({
+                chart: {
+                    type: chartType
+                },
+                xAxis: {
+                    categories: filteredCityNames
+                },
+                series: [{
+                    data: filteredFanCounts
+                }]
+            });
         };
     });
 </script>
+
 
 <!--Grafico de impresiones de edad-->
 <script>
