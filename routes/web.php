@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InstagramController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth; // Importar el facade Auth
 
@@ -54,7 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('profile/password', [ProfileController::class, 'password'])->name('profile.password');
 
-    // Rutas relacionadas con informes y gráficos
+    // Rutas relacionadas con informes y gráficos facebook 
     Route::post('/informe_escucha', [HomeController::class, 'informeescucha'])->name('informe_escucha');
     Route::post('/recuperar_id_grafica', [HomeController::class, 'recuperaridgrafica'])->name('recuperar_id_grafica');
     Route::post('/recuperar_id_informe', [HomeController::class, 'informeescuchaid'])->name('informe_id_escucha');
@@ -62,8 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/tabla-post', [HomeController::class, 'tablepost'])->name('tablepost');
     Route::get('/reportes-facebook', [HomeController::class, 'cargarfacebookinforme'])->name('reportes_facebook');
 
-
-    // Rutas de AJAX para gráficos
+    // Rutas de AJAX para gráficos facebook
     Route::get('/get-chart-data', [HomeController::class, 'getChartData']);
     Route::get('/api/facebook-posts', [HomeController::class, 'getTopPosts']);
     Route::get('/api/facebook-likes', [HomeController::class, 'getTopLike']);
@@ -73,4 +73,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/facebook-sad', [HomeController::class, 'getTopSad']);
     Route::get('/api/facebook-angry', [HomeController::class, 'getTopAngry']);
     Route::get('/api/facebook-share', [HomeController::class, 'getTopShare']);
+    //rutas relacionada con informes y graficos de Instagram
+    Route::get('/graficos-instagram',[InstagramController::class,'index'])->name('graficos_instagram');
+    Route::get('/tabla-post-instagram', [InstagramController::class, 'tablepost'])->name('tablepostinstagram');
+
 });

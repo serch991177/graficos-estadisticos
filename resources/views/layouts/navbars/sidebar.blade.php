@@ -39,8 +39,8 @@
 
                 <div class="collapse show" id="Instagram-feat">
                     <ul class="nav pl-4">
-                        <li @if ($pageSlug == 'profile') class="active " @endif>
-                            <a href="">
+                        <li @if ($pageSlug == 'dashboard_instagram') class="active " @endif>
+                            <a href="{{route('graficos_instagram')}}">
                                 <i class="fas fa-chart-bar"></i>
                                 <p>{{ _('Graficos') }}</p>
                             </a>
