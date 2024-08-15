@@ -9,7 +9,7 @@
             @csrf
             <div class="card card-login card-white">
                 <div class="card-header">
-                    <img src="{{ asset('white') }}/img/card-primary.png" alt="">
+                    <img src="{{ asset('white') }}/img/card-primary.png" alt="" style="max-width: 100%;">
                     <h1 class="card-title">{{ _('Log in') }}</h1>
                 </div>
                 <div class="card-body">
