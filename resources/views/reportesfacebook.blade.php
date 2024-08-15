@@ -57,29 +57,39 @@
     <h1 class="text-center">Generacion de informe de Escucha por rango de fechas</h1>
     <form id="date-form" action="{{route('iforme_escucha_fecha')}}" method="post" target="_blank" enctype="multipart/form-data">
         @csrf
-        <div class="form-inline">
-            <label for="start_date">Fecha de Inicio:</label>
-            <input type="date" id="start_date" name="start_date" class="form-control">
-            @error('start_date')
-                <p class='text-danger inputerror'>{{ $message }} </p>
-            @enderror 
-            <label for="end_date">Fecha de Fin:</label>
-            <input type="date" id="end_date" name="end_date" class="form-control">
-            @error('end_date')
-                <p class='text-danger inputerror'>{{ $message }} </p>
-            @enderror  
-            <label for="">Grafico de Tortas</label>
-            <input type="file" name="grafico_tortas" id="grafico_tortas" accept="image/*">
-            @error('grafico_tortas')
-                <p class='text-danger inputerror'>{{ $message }} </p>
-            @enderror  
-            <label for="">Grafico de Barras</label>
-            <input type="file" name="grafico_bar" id="grafico_bar" accept="image/*">
-            @error('grafico_bar')
-                <p class='text-danger inputerror'>{{ $message }} </p>
-            @enderror  
-            <button class="btn btn-success" >Generar Informe</button>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="start_date">Fecha de Inicio:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control">
+                @error('start_date')
+                    <p class='text-danger inputerror'>{{ $message }} </p>
+                @enderror
+            </div> 
+            <div class="col-md-3">
+                <label for="end_date">Fecha de Fin:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control">
+                @error('end_date')
+                    <p class='text-danger inputerror'>{{ $message }} </p>
+                @enderror
+            </div>  
+            <div class="col-md-3">
+                <label for="">Grafico de Tortas</label>
+                <input type="file" name="grafico_tortas" id="grafico_tortas" accept="image/*">
+                @error('grafico_tortas')
+                    <p class='text-danger inputerror'>{{ $message }} </p>
+                @enderror
+            </div>  
+            <div class="col-md-3">
+                <label for="">Grafico de Barras</label>
+                <input type="file" name="grafico_bar" id="grafico_bar" accept="image/*">
+                @error('grafico_bar')
+                    <p class='text-danger inputerror'>{{ $message }} </p>
+                @enderror  
+            </div>
         </div>
+        <div class="text-center">
+            <button class="btn btn-success" >Generar Informe</button>
+        </div>    
     </form>
 </div>
 @endsection    
