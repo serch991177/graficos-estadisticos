@@ -199,6 +199,69 @@ class HomeController extends Controller
         $dompdf->stream ('',array("Attachment" => false));
     }
 
+    public function informeescuchafecha(Request $request){
+        set_time_limit(300); 
+        $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date|before_or_equal:today',
+            'grafico_tortas' => 'image' ,
+            'grafico_bar'=> 'image'
+        ]);
+        if(!empty($request->file('grafico_tortas'))){
+            $file_cake = $request->file('grafico_tortas');
+            $imageChartBase64 = base64_encode(file_get_contents($file_cake));   
+        }else {
+            $imageChartBase64 = null; 
+        }
+        if(!empty($request->file('grafico_bar'))){
+            $file_bar = $request->file('grafico_bar');
+            $imageChartBarBase64 = base64_encode(file_get_contents($file_bar));
+        }else{
+            $imageChartBarBase64 = null;
+        }
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getReportListen';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos = $responseBody['data'];
+        $total_reacciones = $datos['like_count'] + $datos['love_count'] + $datos['haha_count'] + $datos['wow_count'] + $datos['sad_count'] + $datos['angry_count'];
+
+        $imageUrl = $datos['full_picture'];
+        if (empty($imageUrl)) {
+            $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }else{    
+            
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }
+
+        $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64]);
+        $options = new Options(); 
+        $options->set('isRemoteEnabled', TRUE);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($vista);
+        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->set_option('isPhpEnabled', true);
+        //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
+        // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $dompdf->render();
+        // $dompdf->stream('autorizaciones.pdf');
+        $dompdf->stream ('',array("Attachment" => false));
+    }
+
     public function informefacebook(Request $request){
        
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
