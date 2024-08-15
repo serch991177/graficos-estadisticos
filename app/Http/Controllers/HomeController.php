@@ -95,6 +95,19 @@ class HomeController extends Controller
         $dataImpressions = $data_impressions['data'];
         //end service age and gender
 
+        //service followers
+        $url_followers = 'https://reportapi.infocenterlatam.com/api/fstadistic/getstadisticFollowers';
+        $response_followers = Http::get($url_followers);
+        $data_followers = $response_followers->json();
+        $dataFollowers = $data_followers['data'];
+        $totalFollowers = $dataFollowers['total'];
+        $totalNewFollowers = str_replace('%', '', $dataFollowers['total_new_followers']);
+        $totalLostFollowers = str_replace('%', '', $dataFollowers['total_lost_followers']);
+        $newFollowersNumber = round(($totalNewFollowers / 100) * $totalFollowers);
+        $lostFollowersNumber = round(($totalLostFollowers / 100) * $totalFollowers);
+
+        //end service followers 
+
         $heads = [
             '<i class="fas fa-id-badge"></i>',
             '<i class="fas fa-file-alt"></i>',
@@ -114,7 +127,7 @@ class HomeController extends Controller
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments',
-        'data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads'));           
+        'data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'));           
     }
 
     public function tablepost(Request $request){

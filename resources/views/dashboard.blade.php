@@ -137,6 +137,50 @@
                 </div>
             </div>
         </div>
+        <!-- Total de Seguidores -->
+        <div class="col-md-3">
+            <div class="card text-white" style="background-color: #FFFFFF;"> 
+                <div class="card-header">
+                    <img src="/img/followersface.gif" alt="Total de seguidores" style="max-width: 100%;"> 
+                    <div class="text-center">Total de Seguidores</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{ $dataFollowers['total'] }}</h5>
+                </div>
+            </div>
+        </div>
+        <!-- Total de Nuevos Seguidores -->
+        <div class="col-md-3">
+            <div class="card text-white" style="background-color: #A9CCE3;"> 
+                <div class="card-header">
+                    <img src="/img/new_follower.gif" alt="Total de nuevos seguidores" style="max-width: 100%;"> 
+                    <div class="text-center">Total de Nuevos Seguidores</div>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">{{$newFollowersNumber}} </h5>
+                    <h5 class="card-title d-flex align-items-center justify-content-center">
+                        <img src="/img/subiendo.gif" alt="GIF" style="width: 50px; height: 50px; margin-right: 8px;">
+                        {{ $dataFollowers['total_new_followers'] }}
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <!-- Total de Seguidores perdidos -->
+        <div class="col-md-3">
+            <div class="card text-white" style="background-color: #F7CAC9;"> 
+                <div class="card-header">
+                    <img src="/img/unfollowvideo.gif" alt="Total de seguidores perdidos" style="max-width: 100%;"> 
+                    <div class="text-center">Total de Seguidores Perdidos</div>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-center">{{$lostFollowersNumber}}</h5>
+                    <h5 class="card-title d-flex align-items-center justify-content-center">
+                        <img src="/img/bajando.gif" alt="GIF" style="width: 50px; height: 50px; margin-right: 8px;">
+                        {{ $dataFollowers['total_lost_followers'] }}
+                    </h5>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <style>
