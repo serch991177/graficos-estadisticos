@@ -348,6 +348,82 @@
     </div>
 </div>
 <br>
+<!--Audiencia-->
+<div class="container">
+    <h1 class="text-center">Audiencia</h1>
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Trends</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Demografico</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <!--Pestana de trends-->
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <h3 class="text-center">Trends</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Fecha Inicio :</label>
+                            <input type="date" name="start_trend" id="start_trend">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha Fin :</label>
+                            <input type="date" name="end_trend" id="end_trend">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-success" type="button" onclick="UpdateTrend()" >Actualizar Gráfica</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div id="trendContainerFollows" style="width:100%; height:400px;"></div>   
+                        </div>
+                        <div class="col-md-3">
+                            <label>Rango de Fechas</label>
+                            <p class="date-range"></p>
+                            <label >Unfollows</label>
+                            <p class="date-unfollows"></p>
+                            <label >Nuevos Seguidores</label>
+                            <p class="date-new-followers"></p>
+                            <label>Total Seguidores</label>
+                            <p class="date-total-followers"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Pestana de Demograficos-->
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <h3 class="text-center">Demografico</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1>Total Seguidores</h1>
+                            <h3>{{$dataFollowers['total'] }}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="ageandgender"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="porcentajecities"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="porcentajecountry"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
 <!--Grafico de Tendencias-->
 <style>
     .form-inline {
@@ -890,8 +966,6 @@
         };
     });
 </script>
-
-
 <!--Grafico de impresiones de edad-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -1170,8 +1244,7 @@
 </script>
 <!--Grafico de tendencias loves-->
 <script>
-        
-   function fetchTopLoves() {
+    function fetchTopLoves() {
         const limit = document.getElementById('limit-selector-loves').value;
         const startDate = document.getElementById('start_date_loves').value;
         const endDate = document.getElementById('end_date_loves').value;
@@ -1540,6 +1613,188 @@
         });
     });
 </script>
+<!--Actualizar trend-->
+<script>
+    let chartTrendFollow;
+    // Inicializar la gráfica con datos vacíos
+    function initChartTrend() {
+        chartTrendFollow = Highcharts.chart('trendContainerFollows', {
+            chart: { type: 'line' },
+            title: { text: 'Gráfica por Rango de Fechas' },
+            xAxis: { categories: [], title: { text: 'Fecha' } },
+            yAxis: { title: { text: 'Cantidad' } },
+            series: [
+            { name: 'Follows', data: [] },    
+            { name: 'Unfollows', data: []}
+        ]
+        });
+    }
 
+    // Actualizar la gráfica con datos del servidor
+    function UpdateTrend() {
+        const startDate = document.getElementById('start_trend').value;
+        const endDate = document.getElementById('end_trend').value;
+        $.ajax({
+            url: '/get-chart-follows', // Ruta a la acción que devolverá los datos
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (data) {
+                var startDate = formatDate(data.startDate);
+                var endDate = formatDate(data.endDate);
+                // Concatenar las fechas formateadas
+                var dateRange = startDate + " - " + endDate;
+                $('.date-range').text(dateRange);
+                $('.date-unfollows').text(data.unfollows);
+                $('.date-new-followers').text(data.nuevos_seguidores);
+                $('.date-total-followers').text(data.total_seguidores);
+                chartTrendFollow.update({
+                    xAxis: { categories: data.filteredData.dates },
+                    series: [
+                    { name: 'Follows', data: data.filteredData.Follows },
+                    { name: 'Unfollows', data: data.filteredData.Unfollows }
+                ]
+                });
+            }
+        });
+    }
+    // Función para formatear la fecha
+    function formatDate(dateStr) {
+        // Crear la fecha con formato correcto para evitar el desplazamiento
+        var [year, month, day] = dateStr.split('-');
+        var date = new Date(year, month - 1, day);
+
+        var options = { year: 'numeric', month: 'short', day: 'numeric' };
+        var formattedDate = date.toLocaleDateString('es-ES', options);
+
+        return formattedDate.replace(/\b\w/g, function(c) { return c.toLowerCase(); });
+    }
+    // Inicializar la gráfica al cargar la página
+    document.addEventListener('DOMContentLoaded', initChartTrend);
+</script>
+<!--Datos Demograficos-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('ageandgender', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Desglose por género según rango de edad'
+            },
+            xAxis: {
+                categories: ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+                title: {
+                    text: 'Rango de edad'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Conteo de Impresiones',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            series: [{
+                name: 'Female',
+                data: [
+                    {{ $groupedData['Female']['13-17'] ?? 0 }},
+                    {{ $groupedData['Female']['18-24'] ?? 0 }},
+                    {{ $groupedData['Female']['25-34'] ?? 0 }},
+                    {{ $groupedData['Female']['35-44'] ?? 0 }},
+                    {{ $groupedData['Female']['45-54'] ?? 0 }},
+                    {{ $groupedData['Female']['55-64'] ?? 0 }},
+                    {{ $groupedData['Female']['65+'] ?? 0 }},
+                ]
+            }, {
+                name: 'Male',
+                data: [
+                    {{ $groupedData['Male']['13-17'] ?? 0 }},
+                    {{ $groupedData['Male']['18-24'] ?? 0 }},
+                    {{ $groupedData['Male']['25-34'] ?? 0 }},
+                    {{ $groupedData['Male']['35-44'] ?? 0 }},
+                    {{ $groupedData['Male']['45-54'] ?? 0 }},
+                    {{ $groupedData['Male']['55-64'] ?? 0 }},
+                    {{ $groupedData['Male']['65+'] ?? 0 }},
+                ]
+            }]
+        });
+    });
+</script>
+<!--Porcentaje top Countries-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('porcentajecountry', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de fan por pais (porcentajes)'
+            },
+            xAxis: {
+                categories: @json($percentageData->pluck('pais')),
+                title: {
+                    text: 'Pais'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)',
+                    align: 'high'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'; 
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                data: @json($percentageData->pluck('percentage'))
+            }]
+        });
+    });
+</script>
+<!--Porcentaje top cities-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('porcentajecities', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de fan por Ciudad (porcentajes)'
+            },
+            xAxis: {
+                categories: @json($percentageDataCities->pluck('city_name')),
+                title: {
+                    text: 'Pais'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)',
+                    align: 'high'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'; 
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                data: @json($percentageDataCities->pluck('percentage'))
+            }]
+        });
+    });
+</script>
 @endsection    
 

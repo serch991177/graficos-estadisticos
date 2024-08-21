@@ -56,7 +56,7 @@ class HomeController extends Controller
         $jsonDataMap = $formattedDataMap->toJson();
         //end servicio de mapas
 
-        //servicio top 10 contries
+        //servicio top 10 countries
         $url_top_ten = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getCitiesGroupedByCountry';
         $response_top_ten = Http::get($url_top_ten);
         $data_top_ten = $response_top_ten->json();
@@ -66,18 +66,14 @@ class HomeController extends Controller
         $sortedCountries = $order_countries->sortByDesc('fan_count');
         // Si quieres que los índices sean secuenciales después de ordenar
         $topcountries = $sortedCountries->values();
+        $top5countries = $order_countries->sortByDesc('fan_count')->take(5);
+        $totalFans = $top5countries->sum('fan_count');
+        $percentageData = $top5countries->map(function ($item) use ($totalFans) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFans) * 100, 2);
+            return $item;
+        });
         //end servcio top 10 contries
 
-        //Datos de la ciudades
-        //$dataCities= DB::select('SELECT city_name,fan_count  FROM facebook_page_fans_city ORDER BY fan_count DESC LIMIT 5');
-        // Estructurar los datos según el formato proporcionado
-        /*$citiesData = [];
-        foreach ($dataCities as $city) {
-            $citiesData[] = [
-                'name' => $city->city_name,
-                'data' => [(int)$city->fan_count] // Convertir a entero para asegurarse de que Highcharts maneje los datos correctamente
-            ];
-        }*/
 
         //servicio all countries
         $url_data_cities = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcity';
@@ -86,6 +82,12 @@ class HomeController extends Controller
         $dataCollectionCities = collect($data_cities['data']);
         $sortedDataCollection = $dataCollectionCities->sortByDesc('fan_count');
         $dataCities2=$sortedDataCollection->values()->all();
+        $top5cities = $sortedDataCollection->sortByDesc('fan_count')->take(5);
+        $totalFansCities = $top5cities->sum('fan_count');
+        $percentageDataCities = $top5cities->map(function ($item) use ($totalFans) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFans) * 100, 2);
+            return $item;
+        });
         //end service all contries
 
         //service age and gender
@@ -93,6 +95,17 @@ class HomeController extends Controller
         $response_impressions = Http::get($url_impressions);
         $data_impressions = $response_impressions->json();
         $dataImpressions = $data_impressions['data'];
+        $groupedData = ['Male' => [],'Female' => []];
+        foreach ($dataImpressions as $entry) {
+            $gender = $entry['age_gender_group'][0] === 'M' ? 'Male' : 'Female';
+            $ageRange = substr($entry['age_gender_group'], 2);
+        
+            if (!isset($groupedData[$gender][$ageRange])) {
+                $groupedData[$gender][$ageRange] = 0;
+            }
+        
+            $groupedData[$gender][$ageRange] += $entry['impressions_count'];
+        }
         //end service age and gender
 
         //service followers
@@ -105,7 +118,6 @@ class HomeController extends Controller
         $totalLostFollowers = str_replace('%', '', $dataFollowers['total_lost_followers']);
         $newFollowersNumber = round(($totalNewFollowers / 100) * $totalFollowers);
         $lostFollowersNumber = round(($totalLostFollowers / 100) * $totalFollowers);
-
         //end service followers 
 
         $heads = [
@@ -126,8 +138,8 @@ class HomeController extends Controller
         ];
         
         // Pasa los datos a la vista
-        return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments',
-        'data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'));           
+        return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
+        ,'groupedData','percentageData','percentageDataCities'));           
     }
 
     public function tablepost(Request $request){
@@ -616,6 +628,73 @@ class HomeController extends Controller
 
         return response()->json($filteredData);
     }
+
+    public function getChartFollows(Request $request){
+        $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date|before_or_equal:today',
+        ]);
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/reportfordate';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos = $responseBody['data'];
+        $nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
+        $unfollows = $datos['follwers']['total_seguidores_perdidos'];
+        $total_seguidores= $datos['follwers']['total_seguidores_ultimo'];
+
+        $dailyResults = $responseBody['data']['follwers']['daily_results'];
+        //datos para el grafico
+        $trendData = [
+            'dates' => [],
+            'Follows' => [],
+            'Unfollows' => []
+        ];
+
+        foreach ($dailyResults as $date => $result) {
+            $trendData['dates'][] = $date;
+            $trendData['Follows'][] = $result['nuevos_seguidores'];
+            $trendData['Unfollows'][] = $result['seguidores_perdidos'];
+        }
+        $trendDataJson = json_encode($trendData);
+
+        $datosformateadosTrend = json_decode($trendDataJson, true);
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Filtrar los datos según el rango de fechas
+        $filteredData = $this->filterDataByDateRangeFollow($datosformateadosTrend, $startDate, $endDate);
+        return response()->json([
+            'filteredData' => $filteredData,
+            'startDate'=> $startDate,
+            'endDate'=> $endDate,
+            'nuevos_seguidores'=>$nuevos_seguidores,
+            'unfollows'=>$unfollows,
+            'total_seguidores'=>$total_seguidores
+        ]);
+
+    }
+
+    private function filterDataByDateRangeFollow($data, $startDate, $endDate)
+    {
+        $filteredIndices = array_keys(array_filter($data['dates'], function($date) use ($startDate, $endDate) {
+            return $date >= $startDate && $date <= $endDate;
+        }));
+        return [
+            'dates' => array_values(array_intersect_key($data['dates'], array_flip($filteredIndices))),
+            'Follows' => array_values(array_intersect_key($data['Follows'], array_flip($filteredIndices))),
+            'Unfollows' => array_values(array_intersect_key($data['Unfollows'], array_flip($filteredIndices)))
+        ];
+    }
+
 
     private function filterDataByDateRange($data, $startDate, $endDate)
     {

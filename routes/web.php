@@ -66,6 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Rutas de AJAX para gráficos facebook
     Route::get('/get-chart-data', [HomeController::class, 'getChartData']);
+    Route::get('/get-chart-follows',[HomeController::class,'getChartFollows']);
     Route::get('/api/facebook-posts', [HomeController::class, 'getTopPosts']);
     Route::get('/api/facebook-likes', [HomeController::class, 'getTopLike']);
     Route::get('/api/facebook-loves', [HomeController::class, 'getTopLove']);
