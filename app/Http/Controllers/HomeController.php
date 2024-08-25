@@ -429,12 +429,6 @@ class HomeController extends Controller
                     'labels' => $datesSeguidores,
                     'datasets' => [
                         [
-                            'label' => 'Total Seguidores',
-                            'data' => $totalSeguidores,
-                            'borderColor' => 'rgba(54, 162, 235, 1)',
-                            'fill' => false,
-                        ],
-                        [
                             'label' => 'Nuevos Seguidores',
                             'data' => $nuevosSeguidores,
                             'borderColor' => 'rgba(75, 192, 192, 1)',
