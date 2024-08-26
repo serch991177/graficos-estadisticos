@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/facebook-sad', [HomeController::class, 'getTopSad']);
     Route::get('/api/facebook-angry', [HomeController::class, 'getTopAngry']);
     Route::get('/api/facebook-share', [HomeController::class, 'getTopShare']);
+    Route::get('/api/facebook-all', [HomeController::class, 'getAllpostwithImpresions']);
     Route::get('/api/facebook-update',[HomeController::class,'updatereactions']);
     //rutas relacionada con informes y graficos de Instagram
     Route::get('/graficos-instagram',[InstagramController::class,'index'])->name('graficos_instagram');

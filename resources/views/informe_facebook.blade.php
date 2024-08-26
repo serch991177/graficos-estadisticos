@@ -89,7 +89,7 @@
         {{--<div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:300px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['']}} Artes graficas</h1></div>--}}
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:380px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allLife']}}  Transmisiones en vivo</h1></div>
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:460px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allAlbum']}} Albumes de fotos</h1></div>
-        <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:540px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allShare']}} Contenido compratido</h1></div>
+        <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:540px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allShare']}} Contenido compartido</h1></div>
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:620px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allVideo']}} Videos</h1></div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
     </div>

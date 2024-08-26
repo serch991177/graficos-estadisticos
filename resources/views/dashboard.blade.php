@@ -670,6 +670,28 @@
         <div id="charttendenciashares" style="width: 100%; height: 600px;"></div>
     </div>
 </div>
+<!--Grafico de tendencias general con todas las reacciones-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de todas las reacciones</h1>
+    <div class="row">
+        <form>
+            <div class="form-inline">
+                <label for="limit">Número de posts:</label>
+                <select id="limit-selector-all" name="limit-selector-all" class="form-control">
+                    <option value="15">15 publicaciones</option>
+                    <option value="20">20 publicaciones</option>
+                    <option value="30">30 publicaciones</option>
+                </select>
+                <label for="start_date">Fecha de inicio:</label>
+                <input type="date" id="start_date_all" name="start_date_all" class="form-control">
+                <label for="end_date">Fecha de fin:</label>
+                <input type="date" id="end_date_all" name="end_date_all" class="form-control">
+                <button type="button" class="btn btn-success" onclick="fetchTopAll()">Filtrar</button>
+            </div>
+        </form>
+        <div id="charttendenciasall" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
 <!--Grafico Mapa de Bolivia-->
 <!--<div class="container">
     <h1 class="text-center">Mapa de Bolivia</h1>
@@ -1684,6 +1706,103 @@
         });
     }
 </script>
+<!--Grafico de tendencias con todas las interacciones-->
+<script>
+    function fetchTopAll() {
+        const limit = document.getElementById('limit-selector-all').value;
+        const startDate = document.getElementById('start_date_all').value;
+        const endDate = document.getElementById('end_date_all').value;
+          
+        $.ajax({
+            url: `/api/facebook-all`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartAll(data);
+            }
+        });
+    }
+    function renderChartAll(posts) {
+        const categories = posts.map(post => post.story);
+        const CommentsData = posts.map(post => parseInt(post.comments_count));
+        const LikesData = posts.map(post => parseInt(post.likes_count));
+        const LovesData = posts.map(post => parseInt(post.loves_count));
+        const HahasData = posts.map(post => parseInt(post.hahas_count));
+        const WowsData = posts.map(post => parseInt(post.wows_count));
+        const SadsData = posts.map(post => parseInt(post.sads_count));
+        const AngriesData = posts.map(post => parseInt(post.angries_count));
+        const SharesData = posts.map(post => parseInt(post.shares_count));
+        const ClicksData = posts.map(post => parseInt(post.clicks_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
+        
+        Highcharts.chart('charttendenciasall', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones con mas Compartidas'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Reacciones'
+                }
+            },
+            series: [{
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
+            }, {
+                name: 'Comentarios',
+                data: CommentsData,
+                color: '#B3E5FC'  // Azul pastel
+            }, {
+                name: 'Likes',
+                data: LikesData,
+                color: '#81C784'  // Verde pastel
+            }, {
+                name: 'Loves',
+                data: LovesData,
+                color: '#FF8A80'  // Rojo pastel
+            }, {
+                name: 'Hahas',
+                data: HahasData,
+                color: '#FFD54F'  // Amarillo pastel
+            }, {
+                name: 'Wows',
+                data: WowsData,
+                color: '#FFB74D'  // Naranja pastel (más oscuro)
+            }, {
+                name: 'Sads',
+                data: SadsData,
+                color: '#4FC3F7'  // Celeste pastel
+            }, {
+                name: 'Compartidas',
+                data: SharesData,
+                color: '#BA68C8'  // Púrpura pastel
+            }, {
+                name: 'Angries',
+                data: AngriesData,
+                color: '#E57373'  // Rojo pastel (más oscuro)
+            }, {
+                name: 'Clicks',
+                data: ClicksData,
+                color: '#7986CB'  // Azul violáceo pastel
+            }]      
+        });
+    }
+</script>
+  
 <!--Mapa de Bolivia -->
 <script>
     //mapaBolivia

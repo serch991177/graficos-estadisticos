@@ -1078,6 +1078,54 @@ class HomeController extends Controller
         return response()->json($posts);
     }
 
+    public function getAllpostwithImpresions(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+        // Obtener las fechas de inicio y fin, si se proporcionan
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        // Construir la consulta
+        $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
+        $response = Http::get($url_top);
+        $data = $response->json();
+        if (!isset($data['data'])) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+        // Convertir los datos en una colección de Laravel
+        $query = collect($data['data']);
+        //dd($query);
+        // Filtrar por fechas si están presentes
+        if ($startDate) {
+            $query = $query->filter(function ($item) use ($startDate) {
+                return $item['date'] >= $startDate;
+            });
+        }
+        if ($endDate) {
+            $query = $query->filter(function ($item) use ($endDate) {
+                return $item['date'] <= $endDate;
+            });
+        }
+        // Ordenar por comments_count en orden descendente y limitar los resultados
+        $query = $query->sortByDesc('impressions')->take($limit);
+        $posts = $query->map(function ($item) {
+            //dd($item);
+            return (object)[
+                'story' => $item['story'],
+                'created_time' => $item['date'],
+                'comments_count' => $item['comments'],
+                'likes_count'=> $item['likes'],
+                'loves_count'=> $item['loves'],
+                'hahas_count'=> $item['hahas'],
+                'wows_count'=> $item['wows'],
+                'sads_count'=> $item['sads'],
+                'angries_count'=> $item['angrys'],
+                'shares_count'=> $item['shares'],
+                'clicks_count'=> $item['clicks'],
+                'impressions_count' => $item['impressions']
+            ];
+        })->values(); 
+        return response()->json($posts);
+    }
     public function cargarfacebookinforme(Request $request){
         return view('reportesfacebook');
     }
