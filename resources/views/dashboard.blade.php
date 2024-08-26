@@ -1254,7 +1254,7 @@
     function renderChart(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.comments_count));
-
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
         Highcharts.chart('charttendenciacomment', {
             chart: {
                 type: 'column'
@@ -1275,9 +1275,13 @@
                 }
             },
             series: [{
-                name: 'Comentarios',
-                data: data,
-                color: '#B3E5FC'  // Azul pastel
+            name: 'Comentarios',
+            data: data,
+            color: '#B3E5FC'  // Azul pastel
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }
@@ -1305,6 +1309,7 @@
     function renderChartLikes(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.likes_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendencialikes', {
             chart: {
@@ -1329,7 +1334,12 @@
                 name: 'Likes',
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
-            }]
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
+            }
+            ]
         });
     }
 </script>
@@ -1356,6 +1366,7 @@
     function renderChartLoves(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.loves_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendencialoves', {
             chart: {
@@ -1380,7 +1391,10 @@
                 name: 'Loves',
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
-
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }
@@ -1408,6 +1422,7 @@
     function renderChartHahas(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.hahas_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendenciahahas', {
             chart: {
@@ -1433,6 +1448,10 @@
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
 
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }
@@ -1460,6 +1479,7 @@
     function renderChartWows(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.wows_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendenciawows', {
             chart: {
@@ -1485,6 +1505,10 @@
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
 
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }
@@ -1512,6 +1536,7 @@
     function renderChartSads(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.sads_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendenciasads', {
             chart: {
@@ -1537,6 +1562,10 @@
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
 
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }
@@ -1564,6 +1593,7 @@
     function renderChartAngries(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.angries_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendenciaangries', {
             chart: {
@@ -1589,6 +1619,10 @@
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
 
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }
@@ -1616,6 +1650,7 @@
     function renderChartShares(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.shares_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendenciashares', {
             chart: {
@@ -1641,6 +1676,10 @@
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
 
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
             }]
         });
     }

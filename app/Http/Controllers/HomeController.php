@@ -786,12 +786,14 @@ class HomeController extends Controller
         }
         // Ordenar por comments_count en orden descendente y limitar los resultados
         $query = $query->sortByDesc('comments')->take($limit);
-        
+
         $posts = $query->map(function ($item) {
+            
             return (object)[
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'comments_count' => $item['comments'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         
@@ -836,6 +838,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'likes_count' => $item['likes'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         
@@ -878,6 +881,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'loves_count' => $item['loves'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         
@@ -916,6 +920,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'hahas_count' => $item['hahas'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         return response()->json($posts);
@@ -953,6 +958,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'wows_count' => $item['wows'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         return response()->json($posts);
@@ -990,6 +996,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'sads_count' => $item['sads'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         return response()->json($posts);
@@ -1027,6 +1034,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'angries_count' => $item['angrys'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         return response()->json($posts);
@@ -1064,6 +1072,7 @@ class HomeController extends Controller
                 'story' => $item['story'],
                 'created_time' => $item['date'],
                 'shares_count' => $item['shares'],
+                'impressions_count' => $item['impressions']
             ];
         })->values();
         return response()->json($posts);
