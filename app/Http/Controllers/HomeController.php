@@ -41,9 +41,10 @@ class HomeController extends Controller
         $totalAngries = $data['data'][0]['angry_count'];
         $totalShares = $data['data'][0]['share_count'];
         $totalComments = $data['data'][0]['comments_count'];
+        $totalclicks = $data['data'][0]['post_click'];
         $data = ['labels' => ['Likes', 'Loves', 'Hahas','Wows','Sads','Angrys','Shares','Comments'],'values' => [$totalLikes,$totalLoves,$totalHahas,$totalWows,$totalSads,$totalAngries,$totalShares,$totalComments]];
         //end count reactions
-
+        //dd($data);
 
         // Servicio de mapas
         $url_mapa_country = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcountry';
@@ -138,10 +139,53 @@ class HomeController extends Controller
         ];
         
         // Pasa los datos a la vista
-        return view('dashboard', compact('totalLikes', 'totalLoves', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
+        return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
         ,'groupedData','percentageData','percentageDataCities'));           
     }
 
+    public function updatereactions(Request $request){
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getStadisticCount';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos_reactions = $responseBody['data'];
+        $data_pie = ['labels' => ['Likes', 'Loves', 'Hahas','Wows','Sads','Angrys','Shares','Comments'],'values' => [$datos_reactions[0]['total_likes'],$datos_reactions[0]['total_loves'],$datos_reactions[0]['haha_count'],$datos_reactions[0]['wow_count'],$datos_reactions[0]['sad_count'],$datos_reactions[0]['angry_count'],$datos_reactions[0]['share_count'],$datos_reactions[0]['comments_count']]];
+        
+
+        //service followers
+        $url_followers = 'https://reportapi.infocenterlatam.com/api/fstadistic/getstadisticFollowers';
+        $headers_follow = ['Content-Type' => 'application/json'];
+        $body_followers = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }'; 
+        $client_follow = new Client();
+        $response_follow = $client_follow->get($url_followers, ['headers' => $headers_follow,'body' => $body_followers,]);
+        $responseBody_follow = json_decode($response_follow->getBody()->getContents(),true);
+        $datos_follow = $responseBody_follow['data'];
+        $totalFollowers = $datos_follow['total'];
+        $totalNewFollowers = str_replace('%', '', $datos_follow['total_new_followers']);
+        $totalLostFollowers = str_replace('%', '', $datos_follow['total_lost_followers']);
+        $newFollowersNumber = round(($totalNewFollowers / 100) * $totalFollowers);
+        $lostFollowersNumber = round(($totalLostFollowers / 100) * $totalFollowers);
+        
+        return response()->json([
+            'datos_reactions' => $datos_reactions,
+            'datos_follow' => $datos_follow,
+            'newFollowersNumber' => $newFollowersNumber,
+            'lostFollowersNumber' => $lostFollowersNumber,
+            'data_pie' => $data_pie
+        ]);
+       
+        
+    }
     public function tablepost(Request $request){
         if($request->ajax()){
             $page = $request->input('start') / $request->input('length') + 1;
@@ -588,7 +632,7 @@ class HomeController extends Controller
         $response = Http::get($url_tendecia);
         $data = $response->json();
         $datostendencia = $data['data'];
-    
+        //dd($datostendencia);
         $trendData = [
             'dates' => [],
             'likes' => [],
@@ -596,9 +640,11 @@ class HomeController extends Controller
             'hahas' => [],
             'wows' => [],
             'sads' => [],
-            'angries' => []
+            'angries' => [],
+            'clicks' => [],
+            'impressions' => []
         ];
-
+        //dd($trendData);
         foreach ($datostendencia as $datatendencia) {
             $trendData['dates'][] = $datatendencia['date'];
             $trendData['likes'][] = (int)$datatendencia['likes'];
@@ -607,10 +653,11 @@ class HomeController extends Controller
             $trendData['wows'][] = (int)$datatendencia['wows'];
             $trendData['sads'][] = (int)$datatendencia['sads'];
             $trendData['angries'][] = (int)$datatendencia['angrys'];
+            $trendData['clicks'][] = (int)$datatendencia['clicks'];
+            $trendData['impressions'][] = (int)$datatendencia['impressions'];
         }
 
         $trendDataJson = json_encode($trendData);
-
         $datosformateadosTrend = json_decode($trendDataJson, true);
 
 
@@ -619,7 +666,7 @@ class HomeController extends Controller
 
         // Filtrar los datos según el rango de fechas
         $filteredData = $this->filterDataByDateRange($datosformateadosTrend, $startDate, $endDate);
-
+        //dd($filteredData);
         return response()->json($filteredData);
     }
 
@@ -703,8 +750,10 @@ class HomeController extends Controller
             'hahas' => array_values(array_intersect_key($data['hahas'], array_flip($filteredIndices))),
             'wows' => array_values(array_intersect_key($data['wows'], array_flip($filteredIndices))),
             'sads' => array_values(array_intersect_key($data['sads'], array_flip($filteredIndices))),
-            'angries' => array_values(array_intersect_key($data['angries'], array_flip($filteredIndices)))
-        ];
+            'angries' => array_values(array_intersect_key($data['angries'], array_flip($filteredIndices))),
+            'clicks' => array_values(array_intersect_key($data['clicks'], array_flip($filteredIndices))),
+            'impressions' => array_values(array_intersect_key($data['impressions'], array_flip($filteredIndices)))
+        ]; 
     }
 
     public function getTopPosts(Request $request){

@@ -6,6 +6,23 @@
 <!--Cards del total de las Reacciones-->
 <div class="container">
     <div class="row">
+        <div class="col-md-4">
+            <label for="">Fecha Inicio</label>
+            <input type="date" class="form-control" name="start_reaction" id="start_reaction">
+        </div>
+        <div class="col-md-4">
+            <label for="">Fecha Fin</label>
+            <input type="date" class="form-control" name="end_reaction" id="end_reaction">
+        </div>
+        <div class="col-md-4">
+            <label for=""></label><br>
+            <button class="btn btn-success" type="button" onclick="updateReactions()" >Actualizar Reacciones</button>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row">
         <style>
             .bg-lightblue {
                 background-color: #AEC6CF !important;
@@ -49,7 +66,7 @@
                 <!--<i class="fas fa-thumbs-up"></i> Total de me gustas-->
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalLikes }}</h5>
+                    <h5 class="card-title text-center" id="totallikes">{{ $totalLikes }}</h5>
                 </div>
             </div>
         </div>
@@ -61,7 +78,7 @@
                     <div class="text-center">Total de me enamoras</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalLoves }}</h5>
+                    <h5 class="card-title text-center" id="totalloves">{{ $totalLoves }}</h5>
                 </div>
             </div>
         </div>
@@ -73,7 +90,7 @@
                     <div class="text-center">Total de me diviertes</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalHahas }}</h5>
+                    <h5 class="card-title text-center" id="totalhahas">{{ $totalHahas }}</h5>
                 </div>
             </div>
         </div>
@@ -85,7 +102,7 @@
                     <div class="text-center">Total de me asombras</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalWows }}</h5>
+                    <h5 class="card-title text-center" id="totalwows">{{ $totalWows }}</h5>
                 </div>
             </div>
         </div>
@@ -97,7 +114,7 @@
                     <div class="text-center">Total de me entristece</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalSads }}</h5>
+                    <h5 class="card-title text-center" id="totalsads">{{ $totalSads }}</h5>
                 </div>
             </div>
         </div>
@@ -109,7 +126,7 @@
                     <div class="text-center">Total de me enojas</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalAngries }}</h5>
+                    <h5 class="card-title text-center" id="totalangries">{{ $totalAngries }}</h5>
                 </div>
             </div>
         </div>
@@ -121,7 +138,7 @@
                     <div class="text-center">Total de compartidas</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalShares }}</h5>
+                    <h5 class="card-title text-center" id="totalshares">{{ $totalShares }}</h5>
                 </div>
             </div>
         </div>
@@ -133,7 +150,19 @@
                     <div class="text-center">Total de Comentarios</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $totalComments }}</h5>
+                    <h5 class="card-title text-center" id="totalcomments">{{ $totalComments }}</h5>
+                </div>
+            </div>
+        </div>
+        <!--Total Clicks-->
+        <div class="col-md-3">
+            <div class="card text-white" style="background-color: #D080D0;">
+                <div class="card-header">
+                    <img src="/img/click.gif" alt="total clicks" style="max-width: 100%;">
+                    <div class="text-center">Total de Clicks</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center" id="totalClicks">{{$totalclicks}}</h5>
                 </div>
             </div>
         </div>
@@ -145,7 +174,7 @@
                     <div class="text-center">Total de Seguidores</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{ $dataFollowers['total'] }}</h5>
+                    <h5 class="card-title text-center" id="totalseguidores">{{ $dataFollowers['total'] }}</h5>
                 </div>
             </div>
         </div>
@@ -157,10 +186,10 @@
                     <div class="text-center">Total de Nuevos Seguidores</div>
                 </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title text-center">{{$newFollowersNumber}} </h5>
-                    <h5 class="card-title d-flex align-items-center justify-content-center">
+                    <h5 class="card-title text-center" id="newfollowersnumber">{{$newFollowersNumber}} </h5>
+                    <h5 class="card-title d-flex align-items-center justify-content-center" >
                         <img src="/img/subiendo.gif" alt="GIF" style="width: 50px; height: 50px; margin-right: 8px;">
-                        {{ $dataFollowers['total_new_followers'] }}
+                        <span id="totalnewfollowers">{{ $dataFollowers['total_new_followers'] }}</span>
                     </h5>
                 </div>
             </div>
@@ -173,10 +202,10 @@
                     <div class="text-center">Total de Seguidores Perdidos</div>
                 </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title text-center">{{$lostFollowersNumber}}</h5>
+                    <h5 class="card-title text-center" id="losfollowernumber">{{$lostFollowersNumber}}</h5>
                     <h5 class="card-title d-flex align-items-center justify-content-center">
                         <img src="/img/bajando.gif" alt="GIF" style="width: 50px; height: 50px; margin-right: 8px;">
-                        {{ $dataFollowers['total_lost_followers'] }}
+                         <span id="totallostfollowers">{{ $dataFollowers['total_lost_followers'] }}</span>
                     </h5>
                 </div>
             </div>
@@ -785,9 +814,10 @@
 <!-- fin inicializacion de data table-->
 <!---grafico torta-->
 <script>
+    let myPieChartUpdate;
     document.addEventListener('DOMContentLoaded', function () {
         var ctx = document.getElementById('myPieChart').getContext('2d');
-        var myPieChart = new Chart(ctx, {
+        myPieChartUpdate = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: @json($data['labels']),
@@ -813,6 +843,63 @@
             }
         });
     });
+    function updateReactions(){
+        const startDate = document.getElementById('start_reaction').value;
+        const endDate = document.getElementById('end_reaction').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+        $.ajax({
+            url: '/api/facebook-update', // Ruta a la acción que devolverá los datos
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (data) {
+                //llenado de datos      
+                document.getElementById("totallikes").innerText = data.datos_reactions[0]['total_likes'];
+                document.getElementById("totalloves").innerText = data.datos_reactions[0]['total_loves'];
+                document.getElementById("totalhahas").innerText = data.datos_reactions[0]['haha_count'];
+                document.getElementById("totalwows").innerText = data.datos_reactions[0]['wow_count'];
+                document.getElementById("totalsads").innerText = data.datos_reactions[0]['sad_count'];
+                document.getElementById("totalangries").innerText = data.datos_reactions[0]['angry_count'];
+                document.getElementById("totalshares").innerText = data.datos_reactions[0]['share_count'];
+                document.getElementById("totalcomments").innerText = data.datos_reactions[0]['comments_count'];
+                document.getElementById("totalClicks").innerText = data.datos_reactions[0]['post_click'];
+                document.getElementById("totalseguidores").innerText = data.datos_follow.total;
+                document.getElementById("totallostfollowers").innerText = data.datos_follow.total_lost_followers;
+                document.getElementById("totalnewfollowers").innerText = data.datos_follow.total_new_followers;
+                document.getElementById("newfollowersnumber").innerText = data.newFollowersNumber;
+                document.getElementById("losfollowernumber").innerText = data.lostFollowersNumber;
+                // Actualización de la gráfica de torta con los nuevos datos
+                myPieChartUpdate.data.labels = data.data_pie.labels;
+                myPieChartUpdate.data.datasets[0].data = data.data_pie.values;
+                myPieChartUpdate.update();
+                // Cerrar el SweetAlert cuando se complete la actualización
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
+            }
+        });
+    }
 </script>
 <!--grafico mapa -->
 <script>
@@ -1104,7 +1191,9 @@
             { name: 'Hahas', data: [] },    // Amarillo pastel
             { name: 'Wows', data: [] },     // Azul pastel
             { name: 'Sads', data: []},     // Púrpura pastel
-            { name: 'Angries', data: []}   // Melocotón pastel
+            { name: 'Angries', data: []},   // Melocotón pastel
+            { name: 'Clicks', data: []},   // Melocotón pastel
+            { name: 'Impressions', data: []}   // Melocotón pastel
         ]
         });
     }
@@ -1129,7 +1218,9 @@
                     { name: 'Hahas', data: data.hahas },    // Amarillo pastel
                     { name: 'Wows', data: data.wows },      // Azul pastel
                     { name: 'Sads', data: data.sads },      // Púrpura pastel
-                    { name: 'Angries', data: data.angries } // Melocotón pastel
+                    { name: 'Angries', data: data.angries }, // Melocotón pastel
+                    { name: 'Clicks', data: data.clicks }, // Melocotón pastel
+                    { name: 'Impressions', data: data.impressions } // Melocotón pastel
                 ]
                 });
             }
