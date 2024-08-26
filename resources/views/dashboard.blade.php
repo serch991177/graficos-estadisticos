@@ -422,6 +422,11 @@
                             <p class="date-total-followers"></p>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div id="mosttimeactives" style="width:100%; height:400px;"></div>   
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--Pestana de Demograficos-->
@@ -1802,7 +1807,6 @@
         });
     }
 </script>
-  
 <!--Mapa de Bolivia -->
 <script>
     //mapaBolivia
@@ -1922,6 +1926,48 @@
     }
     // Inicializar la gráfica al cargar la página
     document.addEventListener('DOMContentLoaded', initChartTrend);
+</script>
+<!--Grafica de horas-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('mosttimeactives', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de Seguidores por Intervalo de Tiempo'
+            },
+            xAxis: {
+                categories: ['12AM - 3AM', '3AM - 6AM', '6AM - 9AM', '9AM - 12PM', '12PM - 3PM', '3PM - 6PM', '6PM - 9PM','9PM - 12AM'],
+                title: {
+                    text: 'Rango de Horas'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Conteo de Seguidores',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            series: [{
+                name: 'Seguidores',
+                data: [
+                    {{ $groupedTime[0]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[1]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[2]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[3]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[4]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[5]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[6]['total_followers'] ?? 0 }},
+                    {{ $groupedTime[7]['total_followers'] ?? 0 }},
+                ]
+            }]
+        });
+    });
 </script>
 <!--Datos Demograficos-->
 <script>
