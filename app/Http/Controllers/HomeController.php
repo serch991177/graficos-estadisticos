@@ -219,7 +219,7 @@ class HomeController extends Controller
        
         
     }
-    public function tablepost(Request $request){
+    /*public function tablepost(Request $request){
         if($request->ajax()){
             $page = $request->input('start') / $request->input('length') + 1;
             $url = "https://reportapi.infocenterlatam.com/api/fstadistic/listPost?page=" . $page;
@@ -241,24 +241,33 @@ class HomeController extends Controller
                 'data' => $items,
             ]);
         }
-        $heads = [
-            'id',
-            'story',
-            'foto',
-            'link',
-            'fecha de creacion',
-            'recuento de comentarios',
-            'recuento de me gustas',
-            'recuento de me ecantas',
-            'recuento de me diviertes',
-            'recuento de me asombra',
-            'recuento de me entristece',
-            'recuento de me enojas',
-            'recuento de compartidos',
-            'opciones'
-        ];
-        return view('dashboard',['heads'=>$heads]);
+    }*/
+
+    public function tablepost(Request $request) {
+        if ($request->ajax()) {
+            $page = $request->input('start') / $request->input('length') + 1;
+    
+            // Definir parámetros de ordenamiento por defecto
+            $sortBy = $request->input('columns')[$request->input('order')[0]['column']]['data'] ?? 'created_time';
+            $sortDirection = $request->input('order')[0]['dir'] ?? 'desc';
+    
+            // Construir la URL con los parámetros de ordenamiento
+            $url = "https://reportapi.infocenterlatam.com/api/fstadistic/listPost?page=" . $page . "&per_page=" . $request->input('length') . "&sort_by=" . $sortBy . "&sort_direction=" . $sortDirection;
+    
+            $response = Http::get($url);
+            $datas = $response->json();
+            $items = $datas['data'];
+            $total = $datas['total'];
+    
+            return response()->json([
+                'draw' => $request->input('draw'),
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $items,
+            ]);
+        }
     }
+    
 
     public function informeescucha(){
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario

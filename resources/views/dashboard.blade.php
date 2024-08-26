@@ -423,7 +423,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <div id="mosttimeactives" style="width:100%; height:400px;"></div>   
                         </div>
                     </div>
@@ -772,6 +772,7 @@
             "url": "{{ route('tablepost') }}",
             "type": "GET"
         },
+        "order": [[ 4, "desc" ]],
         "columns": [
             { "data": "id" },
             {
