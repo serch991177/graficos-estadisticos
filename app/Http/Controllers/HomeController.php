@@ -332,7 +332,11 @@ class HomeController extends Controller
         }
         $fecha_inicio = $request->start_date;
         $fecha_fin = $request->end_date; 
-        $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getReportListen';
+        if($request->reaccion_reporte){
+            $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getReportListen?sort_direction=desc&order_by='.$request->reaccion_reporte;
+        }else{
+            $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getReportListen';
+        }
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
@@ -366,10 +370,7 @@ class HomeController extends Controller
         $dompdf->loadHtml($vista);
         $dompdf->setPaper('letter', 'portrait');
         $dompdf->set_option('isPhpEnabled', true);
-        //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
-        // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         $dompdf->render();
-        // $dompdf->stream('autorizaciones.pdf');
         $dompdf->stream ('',array("Attachment" => false));
     }
 

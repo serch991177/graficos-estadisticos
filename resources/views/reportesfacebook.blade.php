@@ -87,6 +87,24 @@
                 @enderror  
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Seleccione un filtro </label>
+                <select name="reaccion_reporte" id="reaccion_reporte" class="form-control">
+                    <option value="">Seleccione una reaccion</option>
+                    <option value="like_count">Likes</option>
+                    <option value="love_count">Loves</option>
+                    <option value="haha_count">Hahas</option>
+                    <option value="wow_count">Wows</option>
+                    <option value="sad_count">Sads</option>
+                    <option value="angry_count">Angries</option>
+                    <option value="share_count">Shares</option>
+                    <option value="comments_count">Comentarios</option>
+                    <option value="post_click">Clicks</option>
+                    <option value="post_impressions">Impresiones</option>
+                </select>
+            </div>
+        </div>
         <div class="text-center">
             <button class="btn btn-success" >Generar Informe</button>
         </div>    
