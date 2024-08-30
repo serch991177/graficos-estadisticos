@@ -179,6 +179,7 @@
     </div>
 </div>
 <br>
+<!--grafico de todas las ciudades-->
 <div class="container">
     <h1 class="text-center">Numero de fans en todas las ciudades</h1>
     <div class="row">
@@ -206,6 +207,136 @@
             </select>
         </div>
         <div id="BarFans" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
+<br>
+<!--Grafico de Impresiones-->
+<div class="container">
+    <h1 class="text-center">Impresiones de Pagina por Grupo de Edad y Sexo</h1>
+    <div class="row">
+        <div id="chartImpressions" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
+<br>
+<!--Audiencia-->
+<div class="container">
+    <h1 class="text-center">Audiencia</h1>
+    <div class="row">
+        <div id="ageandgender" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
+<!--Porcentajes de las ciudades y paises-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="porcentajecities"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="porcentajecountry"></div>
+        </div>
+    </div>
+</div>
+<!--Grafico de Tendencias-->
+<div class="container">
+    <h1 class="text-center">Grafica de Tendencia</h1>
+    <div class="row"> 
+        <div class="col-md-4">
+            <label for="start-date">Fecha de Inicio:</label>
+            <input type="date" id="start-date" name="start-date" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label for="end-date">Fecha de Fin:</label>
+            <input type="date" id="end-date" name="end-date" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <br>
+            <button class="btn btn-success" type="button" onclick="updateChartTrend()" >Actualizar Gráfica</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="trendContainer" style="width:100%; height:400px;"></div>   
+    </div>
+</div>
+<!--Grafico de tendencias mas comentarios-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas comentadas</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="limit">Número de posts:</label>
+            <select id="limit" name="limit" class="form-control">
+                <option value="15">15 publicaciones</option>
+                <option value="20">20 publicaciones</option>
+                <option value="30">30 publicaciones</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="date" id="start_date" name="start_date" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label for="end_date">Fecha de fin:</label>
+            <input type="date" id="end_date" name="end_date" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <br>
+            <button type="button" class="btn btn-success" onclick="fetchTopPosts()">Filtrar</button>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+        <div id="charttendenciacomment" style="width: 100%; height: 600px;"></div>
+    </div>
+</div>
+<!--Grafico de tendencias con mas likes-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas Likes</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="limit">Número de posts:</label>
+            <select id="limit-selector-likes" name="limit-selector-likes" class="form-control">
+                <option value="15">15 publicaciones</option>
+                <option value="20">20 publicaciones</option>
+                <option value="30">30 publicaciones</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="date" id="start_date_likes" name="start_date_likes" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label for="end_date">Fecha de fin:</label>
+            <input type="date" id="end_date_likes" name="end_date_likes" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <br>
+            <button type="button" class="btn btn-success" onclick="fetchTopLikes()">Filtrar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div id="charttendencialikes" style="width: 100%; height: 600px;"></div>
+    </div>
+</div> 
+
+<!-- Modal Graficas-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title col-11 text-center" id="exampleModalLabel">Grafico de Tortas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <h1 class="text-center">Reacciones de Publicaciones de Instagram</h1>
+            <canvas id="myPieModal" width="400" height="400"></canvas>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
     </div>
 </div>
 <!--Scripts de javascript-->
@@ -310,11 +441,15 @@
             "url": "{{ route('tablepostinstagram') }}",
             "type": "GET"
         },
+        "order": [[ 4, "desc" ]],
         "columns": [
             { "data": "id" },
             {
                 "data": "story",
                 "render": function(data, type, row) {
+                    if (!data || data.trim() === "") {
+                        return "";  // Devuelve un string vacío si es null o vacío
+                    }
                     if (data.length > 100) {
                         var truncated = data.substring(0, 100) + '...';
                         return '<span title="' + data.replace(/"/g, '&quot;') + '">' + truncated + '</span>';
@@ -340,6 +475,9 @@
             },
             { "data": "created_time" },
             { "data": "comments_count" },
+            {"data": "post_impressions"},
+            {"data":"saved_count"},
+            {"data":"shares_count"},
             { "data": "likes_count" },
             { 
                 "data": null,
@@ -365,7 +503,73 @@
         "info": true,
         "autoWidth": false,
         "responsive": true,
-        "pageLength": 15 // Asegúrate de que esté configurado según tus necesidades
+        "pageLength": 10 // Asegúrate de que esté configurado según tus necesidades
+    });
+</script>
+<!--Funcion para recupera id de las graficas-->
+<script>
+    $(document).ready(function(){
+        var myPieChart;
+        $(document).on('click', '.id_graficar', function(){
+            var id = $(this).val();
+            // Mostrar el spinner y ocultar el canvas al hacer clic en el botón
+            $('#spinner').show();
+            $('#myPieModal').hide();
+            $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                url: "{{ route('recuperar_id_grafica_instagram') }}",
+                async: false,
+                data: JSON.stringify({'id': id}),
+                success: function(data) {
+                    // Destruir el gráfico existente si existe
+                    if (myPieChart) {
+                        myPieChart.destroy();
+                    }
+                    // Asegúrate de que el modal esté visible
+                    $('#exampleModal').modal('show');
+                    // Retraso para asegurar que el modal está completamente visible
+                    setTimeout(function() {
+                        var ctx = document.getElementById('myPieModal').getContext('2d');
+                        myPieChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: data.dibujar_torta.labels,
+                                datasets: [{
+                                    data: data.dibujar_torta.values,
+                                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9', '#D4B3E6']
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function (tooltipItem) {
+                                                return tooltipItem.label + ': ' + tooltipItem.raw;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        // Ocultar el spinner y mostrar el canvas después de que se haya cargado el gráfico
+                        $('#spinner').hide();
+                        $('#myPieModal').show();
+                    }, 500); // Ajusta el tiempo según sea necesario
+                },
+                error: function() {
+                    // En caso de error, ocultar el spinner
+                    $('#spinner').hide();
+                }
+            });
+        });
     });
 </script>
 <!--grafico mapa -->
@@ -518,6 +722,339 @@
                 }]
             });
         };
+    });
+</script>
+<!--Grafico de impresiones de edad-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dataImpressions = @json($dataImpressions);
+        var categories = dataImpressions.map(function (item) {
+            return item.age_gender_group;
+        });
+        var impressions = dataImpressions.map(function (item) {
+            return parseInt(item.impressions_count);
+        });
+        Highcharts.chart('chartImpressions', {
+            chart: {
+                type: 'area',
+                options3d: {
+                    enabled: true
+                }
+            },
+            title: {
+                text: 'Impresiones de Página por Grupo de Edad y Sexo'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Grupo de Edad y Sexo'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Cantidad de Impresiones'
+                }
+            },
+            tooltip: {
+                pointFormat: 'Impresiones: <b>{point.y}</b>'
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#B4AEE8',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#B4AEE8'
+                    },
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [{
+                name: 'Impresiones',
+                data: impressions,
+                color: '#D4B3E6' // Color púrpura para las áreas
+            }]
+        });
+    });
+</script>
+<!--Grafico de Tendencias-->
+<script>
+    let chartTrend;
+    // Inicializar la gráfica con datos vacíos
+    function initChart() {
+        chartTrend = Highcharts.chart('trendContainer', {
+            chart: { type: 'line' },
+            title: { text: 'Gráfica por Rango de Fechas' },
+            xAxis: { categories: [], title: { text: 'Fecha' } },
+            yAxis: { title: { text: 'Cantidad' } },
+            series: [
+            { name: 'likes', data: [] },    
+            { name: 'comments', data: []}
+        ]
+        });
+    }
+    // Actualizar la gráfica con datos del servidor
+    function updateChartTrend() {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        $.ajax({
+            url: '/get-chart-data-instagram', // Ruta a la acción que devolverá los datos
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (data) {
+                chartTrend.update({
+                    xAxis: { categories: data.dates },
+                    series: [
+                    { name: 'likes', data: data.likes },
+                    { name: 'comments', data: data.comments }
+                ]
+                });
+            }
+        });
+    }
+    // Inicializar la gráfica al cargar la página
+    document.addEventListener('DOMContentLoaded', initChart);
+</script>
+<!--Grafico de tendencias comentario -->
+<script>
+    function fetchTopPosts() {
+        const limit = document.getElementById('limit').value;
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+
+        $.ajax({
+            url: `/api/instagram-posts`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChart(data);
+            }
+        });
+    }
+
+    function renderChart(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.comments));
+        //const impressionsData = posts.map(post => parseInt(post.impressions_count));
+        Highcharts.chart('charttendenciacomment', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Más Comentadas'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Comentarios'
+                }
+            },
+            series: [{
+            name: 'Comentarios',
+            data: data,
+            color: '#B3E5FC'  // Azul pastel
+            }/*, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
+            }*/]
+        });
+    }
+</script>
+<!--Grafico de tendencias likes-->
+<script>
+    function fetchTopLikes() {
+        const limit = document.getElementById('limit-selector-likes').value;
+        const startDate = document.getElementById('start_date_likes').value;
+        const endDate = document.getElementById('end_date_likes').value;
+
+        $.ajax({
+            url: `/api/instagram-likes`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartLikes(data);
+            }
+        });
+    }
+    function renderChartLikes(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.likes));
+        //const impressionsData = posts.map(post => parseInt(post.impressions_count));
+
+        Highcharts.chart('charttendencialikes', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Con mas Likes'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Likes'
+                }
+            },
+            series: [{
+                name: 'Likes',
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+            }/*s, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
+            }*/
+            ]
+        });
+    }
+</script>
+
+<!--Datos Demograficos-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('ageandgender', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Desglose por género según rango de edad'
+            },
+            xAxis: {
+                categories: ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+                title: {
+                    text: 'Rango de edad'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Conteo de Impresiones',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            series: [{
+                name: 'Female',
+                data: [
+                    {{ $groupedData['Female']['13-17'] ?? 0 }},
+                    {{ $groupedData['Female']['18-24'] ?? 0 }},
+                    {{ $groupedData['Female']['25-34'] ?? 0 }},
+                    {{ $groupedData['Female']['35-44'] ?? 0 }},
+                    {{ $groupedData['Female']['45-54'] ?? 0 }},
+                    {{ $groupedData['Female']['55-64'] ?? 0 }},
+                    {{ $groupedData['Female']['65+'] ?? 0 }},
+                ]
+            }, {
+                name: 'Male',
+                data: [
+                    {{ $groupedData['Male']['13-17'] ?? 0 }},
+                    {{ $groupedData['Male']['18-24'] ?? 0 }},
+                    {{ $groupedData['Male']['25-34'] ?? 0 }},
+                    {{ $groupedData['Male']['35-44'] ?? 0 }},
+                    {{ $groupedData['Male']['45-54'] ?? 0 }},
+                    {{ $groupedData['Male']['55-64'] ?? 0 }},
+                    {{ $groupedData['Male']['65+'] ?? 0 }},
+                ]
+            }]
+        });
+    });
+</script>
+<!--Porcentaje top cities-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('porcentajecities', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de fan por Ciudad (porcentajes)'
+            },
+            xAxis: {
+                categories: @json($percentageDataCities->pluck('city_name')),
+                title: {
+                    text: 'Pais'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)',
+                    align: 'high'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'; 
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                data: @json($percentageDataCities->pluck('percentage'))
+            }]
+        });
+    });
+</script>
+<!--Porcentaje top Countries-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('porcentajecountry', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de fan por pais (porcentajes)'
+            },
+            xAxis: {
+                categories: @json($percentageData->pluck('pais')),
+                title: {
+                    text: 'Pais'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)',
+                    align: 'high'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'; 
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                data: @json($percentageData->pluck('percentage'))
+            }]
+        });
     });
 </script>
 @if(session('error'))

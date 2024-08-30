@@ -30,6 +30,9 @@ class InstagramController extends Controller
             '<i class="fas fa-link"></i>',
             '<i class="fas fa-calendar-alt"></i>',
             '<i class="fas fa-comments" style="color: #77DD77;"></i>',
+            '<i class="fas fa-eye" style="color: #E91E63;"></i>',
+            '<i class="fas fa-bookmark" style="color: #E91E63;"></i>',
+            '<i class="fas fa-share" style="color: #03A9F4;"></i>',
             '<i class="fas fa-heart" style="color: #E91E63;"></i>',
             '<i class="fas fa-cog"></i>'
         ];
@@ -55,6 +58,12 @@ class InstagramController extends Controller
         $sortedCountries = $order_countries->sortByDesc('fan_count');
         // Si quieres que los índices sean secuenciales después de ordenar
         $topcountries = $sortedCountries->take(10)->values();
+        $top5countries = $order_countries->sortByDesc('fan_count')->take(5);
+        $totalFans = $top5countries->sum('fan_count');
+        $percentageData = $top5countries->map(function ($item) use ($totalFans) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFans) * 100, 2);
+            return $item;
+        });
         //end servcio top 10 contries
 
         //servicio all countries
@@ -64,9 +73,34 @@ class InstagramController extends Controller
         $dataCollectionCities = collect($data_cities['data']);
         $sortedDataCollection = $dataCollectionCities->sortByDesc('fan_count');
         $dataCities=$sortedDataCollection->values()->all();
-        //end service all contries
+        $top5cities = $sortedDataCollection->sortByDesc('fan_count')->take(5);
+        $totalFansCities = $top5cities->sum('fan_count');
+        $percentageDataCities = $top5cities->map(function ($item) use ($totalFansCities) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFansCities) * 100, 2);
+            return $item;
+        });        
+        
+        //end service all countries
 
-        return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities'));
+        //service age and gender
+        $url_impressions = 'https://reportapi.infocenterlatam.com/api/istadistic/listage';
+        $response_impressions = Http::get($url_impressions);
+        $data_impressions = $response_impressions->json();
+        $dataImpressions = $data_impressions['data'];
+        $groupedData = ['Male' => [],'Female' => []];
+        foreach ($dataImpressions as $entry) {
+            $gender = $entry['age_gender_group'][0] === 'M' ? 'Male' : 'Female';
+            $ageRange = substr($entry['age_gender_group'], 2);
+        
+            if (!isset($groupedData[$gender][$ageRange])) {
+                $groupedData[$gender][$ageRange] = 0;
+            }
+        
+            $groupedData[$gender][$ageRange] += $entry['impressions_count'];
+        }
+        //end service age and gender
+        return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities',
+        'groupedData','dataImpressions','percentageDataCities','percentageData'));
     }
 
     public function updatereactions(Request $request){
@@ -95,17 +129,17 @@ class InstagramController extends Controller
     public function tablepost(Request $request){
         if($request->ajax()){
             $page = $request->input('start') / $request->input('length') + 1;
-            $url = "https://reportapi.infocenterlatam.com/api/istadistic/listPost?page=" . $page;
+            // Definir parámetros de ordenamiento por defecto
+            $sortBy = $request->input('columns')[$request->input('order')[0]['column']]['data'] ?? 'created_time';
+            $sortDirection = $request->input('order')[0]['dir'] ?? 'desc';
+            $url = "https://reportapi.infocenterlatam.com/api/istadistic/listPost?page=" . $page . "&per_page=" . $request->input('length') . "&sort_by=" . $sortBy . "&sort_direction=" . $sortDirection;
+             
             $response = Http::get($url);
             $datas = $response->json();
             $items = $datas['data'];
             $total = $datas['total'];
             
-            // Ordenar los datos por created_time de manera descendente
-            usort($items, function($a, $b) {
-                return strtotime($b['created_time']) - strtotime($a['created_time']);
-            });
-
+            
             //dd($total);
             return response()->json([
                 'draw' => $request->input('draw'),
@@ -114,5 +148,148 @@ class InstagramController extends Controller
                 'data' => $items,
             ]);
         }
+    }
+
+    public function recuperaridgrafica(Request $request){
+        $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/showPost';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "id": '.$request->id.'
+        }';        
+        $client = new Client();
+        $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $totalLikes = $responseBody['data']['likes_count'];
+        $totalcomments = $responseBody['data']['comments_count'];
+        $totalimpressions = $responseBody['data']['post_impressions'];
+        $totalsaved = $responseBody['data']['saved_count'];
+        $totalshares= $responseBody['data']['shares_count'];
+        $dibujar_torta = ['labels' => ['Likes', 'Comments', 'Impressions','Saved','Shares'],'values' => [$totalLikes,$totalcomments,$totalimpressions,$totalsaved,$totalshares]];
+        return response()->json(['dibujar_torta'=>$dibujar_torta]);  
+    }
+
+    public function getChartData(Request $request){    
+        $url_tendecia = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsReactions';
+        $response = Http::get($url_tendecia);
+        $data = $response->json();
+        $datostendencia = $data['data'];
+        //dd($datostendencia);
+        $trendData = [
+            'dates' => [],
+            'likes' => [],
+            'comments' => []
+        ];
+        //dd($trendData);
+        foreach ($datostendencia as $datatendencia) {
+            $trendData['dates'][] = $datatendencia['date'];
+            $trendData['likes'][] = (int)$datatendencia['likes'];
+            $trendData['comments'][] = (int)$datatendencia['comments'];
+        }
+        $trendDataJson = json_encode($trendData);
+        $datosformateadosTrend = json_decode($trendDataJson, true);
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        // Filtrar los datos según el rango de fechas
+        $filteredData = $this->filterDataByDateRange($datosformateadosTrend, $startDate, $endDate);
+        return response()->json($filteredData);
+    }
+
+    public function getTopPosts(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        // Obtener las fechas de inicio y fin, si se proporcionan
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Construir la consulta
+        $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
+        $response = Http::get($url_top);
+        $data = $response->json();
+        if (!isset($data['data'])) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+        // Convertir los datos en una colección de Laravel
+        $query = collect($data['data']);
+        // Filtrar por fechas si están presentes
+        if ($startDate) {
+            $query = $query->filter(function ($item) use ($startDate) {
+                return $item['date'] >= $startDate;
+            });
+        }
+        if ($endDate) {
+            $query = $query->filter(function ($item) use ($endDate) {
+                return $item['date'] <= $endDate;
+            });
+        }
+        // Ordenar por comments_count en orden descendente y limitar los resultados
+        $query = $query->sortByDesc('comments')->take($limit);
+
+        $posts = $query->map(function ($item) {
+            
+            return (object)[
+                'story' => $item['story'],
+                'date' => $item['date'],
+                'comments' => $item['comments']
+                //'impressions_count' => $item['impressions']
+            ];
+        })->values();
+        
+        return response()->json($posts);
+    }
+
+    public function getTopLike(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        // Obtener las fechas de inicio y fin, si se proporcionan
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Construir la consulta
+        $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
+        $response = Http::get($url_top);
+        $data = $response->json();
+    
+        if (!isset($data['data'])) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+        // Convertir los datos en una colección de Laravel
+        $query = collect($data['data']);
+        // Filtrar por fechas si están presentes
+        if ($startDate) {
+            $query = $query->filter(function ($item) use ($startDate) {
+                return $item['date'] >= $startDate;
+            });
+        }
+        if ($endDate) {
+            $query = $query->filter(function ($item) use ($endDate) {
+                return $item['date'] <= $endDate;
+            });
+        }
+        // Ordenar por comments_count en orden descendente y limitar los resultados
+        $query = $query->sortByDesc('likes')->take($limit);
+        
+        $posts = $query->map(function ($item) {
+            return (object)[
+                'story' => $item['story'],
+                'date' => $item['date'],
+                'likes' => $item['likes'],
+                //'impressions_count' => $item['impressions']
+            ];
+        })->values();
+        
+        return response()->json($posts);
+    }
+    private function filterDataByDateRange($data, $startDate, $endDate){
+        $filteredIndices = array_keys(array_filter($data['dates'], function($date) use ($startDate, $endDate) {
+            return $date >= $startDate && $date <= $endDate;
+        }));
+
+        return [
+            'dates' => array_values(array_intersect_key($data['dates'], array_flip($filteredIndices))),
+            'likes' => array_values(array_intersect_key($data['likes'], array_flip($filteredIndices))),
+            'comments' => array_values(array_intersect_key($data['comments'], array_flip($filteredIndices)))
+        ]; 
     }
 }
