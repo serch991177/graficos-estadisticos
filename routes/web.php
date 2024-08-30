@@ -80,6 +80,8 @@ Route::group(['middleware' => 'auth'], function () {
     //rutas relacionada con informes y graficos de Instagram
     Route::get('/graficos-instagram',[InstagramController::class,'index'])->name('graficos_instagram');
     Route::get('/tabla-post-instagram', [InstagramController::class, 'tablepost'])->name('tablepostinstagram');
+    Route::get('/api/instagram-update',[InstagramController::class,'updatereactions']);
+    
     //rutas python
     Route::post('/analisis',[HomeController::class,'runAnalysis'])->name('informe_python');
 });

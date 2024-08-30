@@ -18,9 +18,10 @@ class InstagramController extends Controller
         $response = Http::get($url_total);
         $data = $response->json();
         $totalLikes = $data['data'][0]['total_likes'];
-        /*$totalShares = $data['data'][0]['share_count'];
-        $totalComments = $data['data'][0]['comments_count'];*/
-        $data = ['labels' => ['Likes'],'values' => [$totalLikes]];
+        $totalSaved = $data['data'][0]['total_saved'];
+        $totalScope = $data['data'][0]['total_scope'];
+        $totalShares = $data['data'][0]['total_shares'];
+        $data = ['labels' => ['Likes','Guardados','Alcance','Compartidas'],'values' => [$totalLikes,$totalSaved,$totalScope,$totalShares]];
         //end count reactions
         $heads = [
             '<i class="fas fa-id-badge"></i>',
@@ -65,8 +66,32 @@ class InstagramController extends Controller
         $dataCities=$sortedDataCollection->values()->all();
         //end service all contries
 
-        return view("dashboard_instagram",compact('totalLikes','data','heads','jsonDataMap','topcountries','dataCities'));
+        return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities'));
     }
+
+    public function updatereactions(Request $request){
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReactionsall';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos_reactions = $responseBody['data'];
+        $data_pie = ['labels' => ['Likes', 'Guardados', 'Alcance','Compartidas'],'values' => [$datos_reactions[0]['total_likes'],$datos_reactions[0]['total_saved'],$datos_reactions[0]['total_scope'],$datos_reactions[0]['total_shares']]];
+        
+        return response()->json([
+            'datos_reactions' => $datos_reactions,
+            'data_pie' => $data_pie
+        ]);
+       
+        
+    }
+
     public function tablepost(Request $request){
         if($request->ajax()){
             $page = $request->input('start') / $request->input('length') + 1;

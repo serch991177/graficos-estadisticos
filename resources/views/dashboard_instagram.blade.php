@@ -5,6 +5,23 @@
 <!--Cards del total de las Reacciones-->
 <div class="container">
     <div class="row">
+        <div class="col-md-4">
+            <label for="">Fecha Inicio</label>
+            <input type="date" class="form-control" name="start_reaction" id="start_reaction">
+        </div>
+        <div class="col-md-4">
+            <label for="">Fecha Fin</label>
+            <input type="date" class="form-control" name="end_reaction" id="end_reaction">
+        </div>
+        <div class="col-md-4">
+            <label for=""></label><br>
+            <button class="btn btn-success" type="button" onclick="updateReactions()">Actualizar Reacciones</button>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row">
         <!-- Total de me gustas -->
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #80D4E5;">
@@ -14,7 +31,7 @@
                 <!--<i class="fas fa-thumbs-up"></i> Total de me gustas-->
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">{{$totalLikes}}</h5>
+                    <h5 class="card-title text-center" id="totallikes">{{$totalLikes}}</h5>
                 </div>
             </div>
         </div>
@@ -23,10 +40,10 @@
             <div class="card text-white" style="background-color: #C080C0;">
                 <div class="card-header">
                     <img src="/img/comentarioinstagram-unscreen.gif" alt="Total de comentarios" style="max-width: 100%;"> 
-                    <div class="text-center">Total de Comentarios</div>
+                    <div class="text-center">Total Guardados</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center"> 4000</h5>
+                    <h5 class="card-title text-center" id="totalsaved">{{$totalSaved}}</h5>
                 </div>
             </div>
         </div>
@@ -35,10 +52,10 @@
             <div class="card text-white" style="background-color: #F497B7;">
                 <div class="card-header">
                     <img src="https://i.pinimg.com/originals/1f/0c/9a/1f0c9a1dfb4fc93e852e559b4c9bd80b.gif" alt="Total de seguidores" style="max-width: 100%;"> 
-                    <div class="text-center">Total de Seguiores</div>
+                    <div class="text-center">Total de Alcance</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center"> 3000</h5>
+                    <h5 class="card-title text-center" id="totalscope">{{$totalScope}}</h5>
                 </div>
             </div>
         </div>
@@ -47,10 +64,10 @@
             <div class="card text-white" style="background-color: #80C0C0;">
                 <div class="card-header">
                     <img src="/img/album.gif" alt="Total de albums" style="max-width: 100%;"> 
-                    <div class="text-center">Total de Media</div>
+                    <div class="text-center">Total de Compartidas</div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center"> 3000</h5>
+                    <h5 class="card-title text-center" id="totalshares">{{$totalShares}}</h5>
                 </div>
             </div>
         </div>
@@ -63,7 +80,7 @@
 <br><br>
 <!--Pie de los totales de las reacciones-->
 <div class="container">
-    <h1 class="text-center">Reacciones de Publicaciones de Facebook</h1>
+    <h1 class="text-center">Reacciones de Publicaciones de Instagram</h1>
     <div class="row">
         <div class="col-md-12 canvas-container" style="display:flex;justify-content:center;">
             <canvas id="myPieChart"></canvas>
@@ -206,15 +223,16 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!---grafico torta-->
 <script>
+    let myPieChartUpdate;
     document.addEventListener('DOMContentLoaded', function () {
         var ctx = document.getElementById('myPieChart').getContext('2d');
-        var myPieChart = new Chart(ctx, {
+        myPieChartUpdate = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: @json($data['labels']),
                 datasets: [{
                     data: @json($data['values']),
-                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9', '#D4B3E6', '#F7C8D9', '#E8A4B8', '#D9D9D9']
+                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9']
                 }]
             },
             options: {
@@ -234,6 +252,54 @@
             }
         });
     });
+
+    function updateReactions(){
+        const startDate = document.getElementById('start_reaction').value;
+        const endDate = document.getElementById('end_reaction').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+        $.ajax({
+            url: '/api/instagram-update', // Ruta a la acción que devolverá los datos
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function (data) {
+                //llenado de datos        
+                document.getElementById("totallikes").innerText = data.datos_reactions[0]['total_likes'];
+                document.getElementById("totalsaved").innerText = data.datos_reactions[0]['total_saved'];
+                document.getElementById("totalscope").innerText = data.datos_reactions[0]['total_scope'];
+                document.getElementById("totalshares").innerText = data.datos_reactions[0]['total_shares'];
+                // Actualización de la gráfica de torta con los nuevos datos
+                myPieChartUpdate.data.labels = data.data_pie.labels;
+                myPieChartUpdate.data.datasets[0].data = data.data_pie.values;
+                myPieChartUpdate.update();
+                // Cerrar el SweetAlert cuando se complete la actualización
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
+            }
+        });
+    }
 </script>
 <!-- inicializacion de data table-->
 <script>
