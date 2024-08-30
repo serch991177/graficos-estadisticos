@@ -454,5 +454,18 @@
         };
     });
 </script>
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+<script>
+    if(document.querySelector('.alert-danger')) {
+        setTimeout(function(){
+            window.location.reload();
+        }, 3000); // Redirige después de 3 segundos
+    }
+</script>
+
 @endsection    
 

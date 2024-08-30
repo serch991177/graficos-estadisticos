@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use Symfony\Component\Process\Process;
 
 class HomeController extends Controller
 {
@@ -1172,4 +1172,44 @@ class HomeController extends Controller
         return view('reportesfacebook');
     }
 
+    public function runAnalysis(Request $request){
+        set_time_limit(300); // Establece el límite a 300 segundos si es necesario
+
+        // Obtener las fechas de inicio y fin desde la solicitud HTTP
+        $date_start = $request->input('start_date_python');
+        $date_end = $request->input('end_date_python');
+        //dd($date_start);
+        // Verificar que las fechas no están vacías
+        if(empty($date_start) || empty($date_end)) {
+            return response()->json([
+                'error' => 'Las fechas de inicio y fin son obligatorias.'
+            ], 400);
+        }
+    
+        // Ruta completa al script de Python (SIN duplicar rutas)
+        $pythonScriptPath = 'C:\\Users\\DADI-\\Downloads\\proyecto_dashboard_completo1.py';
+    
+        // Construir el comando para ejecutar el script con los parámetros
+        $command = escapeshellcmd("python " . escapeshellarg($pythonScriptPath) . " --date_start " . escapeshellarg($date_start) . " --date_end " . escapeshellarg($date_end));
+    
+        // Ejecutar el comando y capturar la salida
+        $output = shell_exec($command . " 2>&1"); // Captura tanto la salida como los errores
+    
+        // Devuelve la salida en la respuesta JSON
+        return response()->json([
+            'output' => $output
+        ]);
+
+        // Ruta del archivo Python
+        /*$pythonScriptPath = "C:\\Users\\DADI-\\Downloads\\hola_mundo.py";
+        // Comando para ejecutar el archivo Python
+        $command = escapeshellcmd("python " . $pythonScriptPath);
+        // Ejecutar el comando
+        putenv('PATH=' . getenv('PATH') . ':/path/to/python');
+        $command = escapeshellcmd("/path/to/python " . $pythonScriptPath . " 2>&1");
+        $output = shell_exec($command);
+        dd($output);
+        // Mostrar el resultado en la vista o redirigir con un mensaje
+        return view('resultado_python', ['output' => $output]);*/
+    }
 }

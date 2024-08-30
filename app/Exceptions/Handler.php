@@ -27,4 +27,16 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception){
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            return redirect()
+                ->back()
+                ->withInput($request->except('_token'))
+                ->with('error', 'Tu sesión ha expirado. Por favor, recarga la página e intenta nuevamente.');
+        }
+
+        return parent::render($request, $exception);
+    }
+
 }
