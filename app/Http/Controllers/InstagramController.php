@@ -703,4 +703,92 @@ class InstagramController extends Controller
             $dompdf->stream ('',array("Attachment" => false));
         }   
     }
+
+    public function getTopSaved(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        // Obtener las fechas de inicio y fin, si se proporcionan
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Construir la consulta
+        $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
+        $response = Http::get($url_top);
+        $data = $response->json();
+    
+        if (!isset($data['data'])) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+        // Convertir los datos en una colección de Laravel
+        $query = collect($data['data']);
+        // Filtrar por fechas si están presentes
+        if ($startDate) {
+            $query = $query->filter(function ($item) use ($startDate) {
+                return $item['date'] >= $startDate;
+            });
+        }
+        if ($endDate) {
+            $query = $query->filter(function ($item) use ($endDate) {
+                return $item['date'] <= $endDate;
+            });
+        }
+        // Ordenar por comments_count en orden descendente y limitar los resultados
+        $query = $query->sortByDesc('saved')->take($limit);
+        
+        $posts = $query->map(function ($item) {
+            return (object)[
+                'story' => $item['story'],
+                'date' => $item['date'],
+                'saved' => $item['saved'],
+                'impressions_count' => $item['scopes']
+            ];
+        })->values();
+        
+        return response()->json($posts);
+    }
+
+    public function getTopShare(Request $request){
+        $limit = $request->input('limit', 15);
+        $limit = in_array($limit, [15, 20, 30]) ? $limit : 15;
+
+        // Obtener las fechas de inicio y fin, si se proporcionan
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        // Construir la consulta
+        $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
+        $response = Http::get($url_top);
+        $data = $response->json();
+    
+        if (!isset($data['data'])) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+        // Convertir los datos en una colección de Laravel
+        $query = collect($data['data']);
+        // Filtrar por fechas si están presentes
+        if ($startDate) {
+            $query = $query->filter(function ($item) use ($startDate) {
+                return $item['date'] >= $startDate;
+            });
+        }
+        if ($endDate) {
+            $query = $query->filter(function ($item) use ($endDate) {
+                return $item['date'] <= $endDate;
+            });
+        }
+        // Ordenar por comments_count en orden descendente y limitar los resultados
+        $query = $query->sortByDesc('shares')->take($limit);
+        
+        $posts = $query->map(function ($item) {
+            return (object)[
+                'story' => $item['story'],
+                'date' => $item['date'],
+                'shares' => $item['shares'],
+                'impressions_count' => $item['scopes']
+            ];
+        })->values();
+        
+        return response()->json($posts);
+    }
 }

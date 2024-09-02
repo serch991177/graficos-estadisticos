@@ -90,7 +90,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/informe_escucha_instagram', [InstagramController::class, 'informeescucha'])->name('informe_escucha_instagram');
     Route::post('/informe_escucha_fechas_instagram', [InstagramController::class, 'informeescuchafecha'])->name('informe_escucha_fechas_instagram');
     Route::post('/recuperar_id_informe_instagram', [InstagramController::class, 'informeescuchaid'])->name('informe_id_escucha_instagram');
-
+    Route::get('/api/instagram-saved', [InstagramController::class, 'getTopSaved']);
+    Route::get('/api/instagram-share', [InstagramController::class, 'getTopShare']);
     //rutas python
     Route::post('/analisis',[HomeController::class,'runAnalysis'])->name('informe_python');
 });

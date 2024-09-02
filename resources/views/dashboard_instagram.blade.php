@@ -35,11 +35,11 @@
                 </div>
             </div>
         </div>
-        <!-- Total de comentarios -->
+        <!-- Total de guardados -->
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #C080C0;">
                 <div class="card-header">
-                    <img src="/img/comentarioinstagram-unscreen.gif" alt="Total de comentarios" style="max-width: 100%;"> 
+                    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExam9wM3o2c3dzN3I4dGRwdTNhd2plOHZhM3Bubmp3eG14MzRoejc1ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/s4iLpJFlclDfdstxvX/giphy.webp" alt="Total de comentarios" style="max-width: 100%;"> 
                     <div class="text-center">Total Guardados</div>
                 </div>
                 <div class="card-body">
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <!-- Total de seguidores -->
+        <!-- Total de alcance -->
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #F497B7;">
                 <div class="card-header">
@@ -59,11 +59,11 @@
                 </div>
             </div>
         </div>
-        <!-- Total de me media -->
+        <!-- Total de compartidos -->
         <div class="col-md-3">
             <div class="card text-white" style="background-color: #80C0C0;">
                 <div class="card-header">
-                    <img src="/img/album.gif" alt="Total de albums" style="max-width: 100%;"> 
+                    <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExejFxeWdmam9ta3BoZnQycmJkaDBxc2pkeGRqZG1waWlxN2tzZnBxayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/yKZWmtqV5ZBHy4aKhd/giphy.webp" alt="Total de albums" style="max-width: 100%;"> 
                     <div class="text-center">Total de Compartidas</div>
                 </div>
                 <div class="card-body">
@@ -317,7 +317,64 @@
         <div id="charttendencialikes" style="width: 100%; height: 600px;"></div>
     </div>
 </div> 
-
+<!--Grafico de tendencias con saved-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas Saved</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="limit">Número de posts:</label>
+            <select id="limit-selector-saved" name="limit-selector-saved" class="form-control">
+                <option value="15">15 publicaciones</option>
+                <option value="20">20 publicaciones</option>
+                <option value="30">30 publicaciones</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="date" id="start_date_saved" name="start_date_saved" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label for="end_date">Fecha de fin:</label>
+            <input type="date" id="end_date_saved" name="end_date_saved" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <br>
+            <button type="button" class="btn btn-success" onclick="fetchTopSaved()">Filtrar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div id="charttendenciasaved" style="width: 100%; height: 600px;"></div>
+    </div>
+</div> 
+<!--Grafico de tendencias con shares-->
+<div class="container">
+    <h1 class="text-center">Grafica de tendencia de publicaciones mas Shares</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="limit">Número de posts:</label>
+            <select id="limit-selector-share" name="limit-selector-share" class="form-control">
+                <option value="15">15 publicaciones</option>
+                <option value="20">20 publicaciones</option>
+                <option value="30">30 publicaciones</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="date" id="start_date_share" name="start_date_share" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label for="end_date">Fecha de fin:</label>
+            <input type="date" id="end_date_share" name="end_date_share" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <br>
+            <button type="button" class="btn btn-success" onclick="fetchTopShare()">Filtrar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div id="charttendenciasshare" style="width: 100%; height: 600px;"></div>
+    </div>
+</div> 
 <!-- Modal Graficas-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -1007,7 +1064,164 @@
         });
     }
 </script>
+<!--grafico de tendencia saved-->
+<script>
+    function fetchTopSaved() {
+        const limit = document.getElementById('limit-selector-saved').value;
+        const startDate = document.getElementById('start_date_saved').value;
+        const endDate = document.getElementById('end_date_saved').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+        $.ajax({
+            url: `/api/instagram-saved`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartSaved(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
+            }
+        });
+    }
+    function renderChartSaved(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.saved));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
+        Highcharts.chart('charttendenciasaved', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Con mas Saved'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Saved'
+                }
+            },
+            series: [{
+                name: 'Saved',
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
+            }
+            ]
+        });
+    }
+</script>
+<!--grafico de tendencia share-->
+<script>
+    function fetchTopShare() {
+        const limit = document.getElementById('limit-selector-share').value;
+        const startDate = document.getElementById('start_date_share').value;
+        const endDate = document.getElementById('end_date_share').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+        $.ajax({
+            url: `/api/instagram-share`,
+            method: 'GET',
+            data: {
+                limit: limit,
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(data) {
+                renderChartShare(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
+            }
+        });
+    }
+    function renderChartShare(posts) {
+        const categories = posts.map(post => post.story);
+        const data = posts.map(post => parseInt(post.shares));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
+
+        Highcharts.chart('charttendenciasshare', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Publicaciones Con mas Shares'
+            },
+            xAxis: {
+                categories: categories,
+                title: {
+                    text: 'Publicaciones'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Número de Shares'
+                }
+            },
+            series: [{
+                name: 'Shared',
+                data: data,
+                color: '#B3E5FC'  // Azul pastel
+            }, {
+                name: 'Alcance',
+                data: impressionsData,
+                color: '#FFCC80'  // Naranja pastel
+            }
+            ]
+        });
+    }
+</script>
 <!--Datos Demograficos-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
