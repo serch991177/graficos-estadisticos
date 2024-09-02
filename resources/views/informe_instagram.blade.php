@@ -166,6 +166,8 @@
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:320px; left:328px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Comentarios</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:360px; left:280px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostSharedPost']['shares_count']}}</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:380px; left:358px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Veces Compartidas</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:180px; left:690px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostSharedPost']['post_impressions']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:200px; left:700px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Alcance</div>
         </div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
     </div>
@@ -185,6 +187,8 @@
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:320px; left:328px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Comentarios</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:360px; left:280px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostCommentsPost']['shares_count']}}</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:380px; left:358px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Veces Compartidas</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:180px; left:690px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostCommentsPost']['post_impressions']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:200px; left:700px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Alcance</div>
         </div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
     </div>

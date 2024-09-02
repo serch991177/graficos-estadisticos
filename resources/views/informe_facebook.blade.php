@@ -86,11 +86,12 @@
     <div class="page-3">
         <!-- Contenido de la tercera página aquí -->
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:100px; left:500px; font-size:21px;"> <h1 style="color:white;font-size: 100px;">{{$datos['allPost']}} PUBLICACIONES</h1></div>
-        {{--<div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:300px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['']}} Artes graficas</h1></div>--}}
+        <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:300px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allScope']}} de Alcances</h1></div>
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:380px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allLife']}}  Transmisiones en vivo</h1></div>
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:460px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allAlbum']}} Albumes de fotos</h1></div>
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:540px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allShare']}} Contenido compartido</h1></div>
         <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:620px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allVideo']}} Videos</h1></div>
+        <div style="color: rgb(0, 0, 0) !important; text-align:center ; position:absolute; top:700px; left:800px; font-size:21px;"> <h1 style="color:white;font-size:50px">{{$datos['allClicks']}} Clicks</h1></div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
     </div>
     <div class="page-break"></div>
@@ -164,6 +165,10 @@
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:320px; left:328px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Comentarios</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:360px; left:280px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostSharedPost']['share_count']}}</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:380px; left:358px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Veces Compartidas</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:180px; left:690px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostSharedPost']['post_impressions']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:200px; left:700px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Alcance</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:240px; left:690px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostSharedPost']['post_click']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:700px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Clicks</div>
         </div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
     </div>
@@ -183,6 +188,11 @@
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:320px; left:328px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Comentarios</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:360px; left:280px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostCommentsPost']['share_count']}}</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:380px; left:358px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Veces Compartidas</div>
+
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:180px; left:690px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostCommentsPost']['post_impressions']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:200px; left:700px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Alcance</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:240px; left:690px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['getMostCommentsPost']['post_click']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:700px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Clicks</div>
         </div>
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
     </div>
