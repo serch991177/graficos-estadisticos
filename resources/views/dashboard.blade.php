@@ -1230,6 +1230,24 @@
     function updateChartTrend() {
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: '/get-chart-data', // Ruta a la acción que devolverá los datos
             method: 'GET',
@@ -1251,6 +1269,11 @@
                     { name: 'Impressions', data: data.impressions } // Melocotón pastel
                 ]
                 });
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1264,7 +1287,24 @@
         const limit = document.getElementById('limit').value;
         const startDate = document.getElementById('start_date').value;
         const endDate = document.getElementById('end_date').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-posts`,
             method: 'GET',
@@ -1275,6 +1315,11 @@
             },
             success: function(data) {
                 renderChart(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1320,7 +1365,24 @@
         const limit = document.getElementById('limit-selector-likes').value;
         const startDate = document.getElementById('start_date_likes').value;
         const endDate = document.getElementById('end_date_likes').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-likes`,
             method: 'GET',
@@ -1331,6 +1393,11 @@
             },
             success: function(data) {
                 renderChartLikes(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1377,7 +1444,24 @@
         const limit = document.getElementById('limit-selector-loves').value;
         const startDate = document.getElementById('start_date_loves').value;
         const endDate = document.getElementById('end_date_loves').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-loves`,
             method: 'GET',
@@ -1388,6 +1472,11 @@
             },
             success: function(data) {
                 renderChartLoves(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1433,7 +1522,24 @@
         const limit = document.getElementById('limit-selector-hahas').value;
         const startDate = document.getElementById('start_date_hahas').value;
         const endDate = document.getElementById('end_date_hahas').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-haha`,
             method: 'GET',
@@ -1444,6 +1550,11 @@
             },
             success: function(data) {
                 renderChartHahas(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1490,7 +1601,24 @@
         const limit = document.getElementById('limit-selector-wows').value;
         const startDate = document.getElementById('start_date_wows').value;
         const endDate = document.getElementById('end_date_wows').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-wow`,
             method: 'GET',
@@ -1501,6 +1629,11 @@
             },
             success: function(data) {
                 renderChartWows(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1508,7 +1641,7 @@
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.wows_count));
         const impressionsData = posts.map(post => parseInt(post.impressions_count));
-
+        
         Highcharts.chart('charttendenciawows', {
             chart: {
                 type: 'column'
@@ -1547,7 +1680,24 @@
         const limit = document.getElementById('limit-selector-sads').value;
         const startDate = document.getElementById('start_date_sads').value;
         const endDate = document.getElementById('end_date_sads').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-sad`,
             method: 'GET',
@@ -1558,6 +1708,11 @@
             },
             success: function(data) {
                 renderChartSads(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1565,7 +1720,7 @@
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.sads_count));
         const impressionsData = posts.map(post => parseInt(post.impressions_count));
-
+        
         Highcharts.chart('charttendenciasads', {
             chart: {
                 type: 'column'
@@ -1604,7 +1759,24 @@
         const limit = document.getElementById('limit-selector-angries').value;
         const startDate = document.getElementById('start_date_angries').value;
         const endDate = document.getElementById('end_date_angries').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-angry`,
             method: 'GET',
@@ -1615,6 +1787,11 @@
             },
             success: function(data) {
                 renderChartAngries(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1661,7 +1838,24 @@
         const limit = document.getElementById('limit-selector-shares').value;
         const startDate = document.getElementById('start_date_shares').value;
         const endDate = document.getElementById('end_date_shares').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-share`,
             method: 'GET',
@@ -1672,6 +1866,11 @@
             },
             success: function(data) {
                 renderChartShares(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1718,7 +1917,24 @@
         const limit = document.getElementById('limit-selector-all').value;
         const startDate = document.getElementById('start_date_all').value;
         const endDate = document.getElementById('end_date_all').value;
-          
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/facebook-all`,
             method: 'GET',
@@ -1729,6 +1945,11 @@
             },
             success: function(data) {
                 renderChartAll(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -1888,6 +2109,24 @@
     function UpdateTrend() {
         const startDate = document.getElementById('start_trend').value;
         const endDate = document.getElementById('end_trend').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: '/get-chart-follows', // Ruta a la acción que devolverá los datos
             method: 'GET',
@@ -1911,6 +2150,10 @@
                     { name: 'Unfollows', data: data.filteredData.Unfollows }
                 ]
                 });
+                Swal.close();
+            },
+            error:function(){
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }

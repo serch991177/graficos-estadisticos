@@ -803,6 +803,24 @@
     function updateChartTrend() {
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: '/get-chart-data-instagram', // Ruta a la acción que devolverá los datos
             method: 'GET',
@@ -821,6 +839,11 @@
                     { name: 'alcances', data: data.scopes}
                 ]
                 });
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -833,7 +856,24 @@
         const limit = document.getElementById('limit').value;
         const startDate = document.getElementById('start_date').value;
         const endDate = document.getElementById('end_date').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/instagram-posts`,
             method: 'GET',
@@ -844,6 +884,11 @@
             },
             success: function(data) {
                 renderChart(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
@@ -889,7 +934,24 @@
         const limit = document.getElementById('limit-selector-likes').value;
         const startDate = document.getElementById('start_date_likes').value;
         const endDate = document.getElementById('end_date_likes').value;
-
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
         $.ajax({
             url: `/api/instagram-likes`,
             method: 'GET',
@@ -900,6 +962,11 @@
             },
             success: function(data) {
                 renderChartLikes(data);
+                Swal.close();
+            },
+            error: function() {
+                // Manejo del error
+                Swal.fire('Error', 'Hubo un problema al actualizar los datos.', 'error');
             }
         });
     }
