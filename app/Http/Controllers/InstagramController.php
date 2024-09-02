@@ -12,6 +12,9 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class InstagramController extends Controller
 {
+    public function cargarinstagraminforme(Request $request){
+        return view('reportesinstagram');
+    }
     public function index(){
         //counts reactions
         $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReactionsall';
@@ -177,13 +180,20 @@ class InstagramController extends Controller
         $trendData = [
             'dates' => [],
             'likes' => [],
-            'comments' => []
+            'comments' => [],
+            'saved'=>[],
+            'scopes'=>[],
+            'shares'=>[]
         ];
         //dd($trendData);
         foreach ($datostendencia as $datatendencia) {
             $trendData['dates'][] = $datatendencia['date'];
             $trendData['likes'][] = (int)$datatendencia['likes'];
             $trendData['comments'][] = (int)$datatendencia['comments'];
+            $trendData['saved'][] = (int)$datatendencia['saved'];
+            $trendData['scopes'][] = (int)$datatendencia['scopes'];
+            $trendData['shares'][] = (int)$datatendencia['shares'];
+
         }
         $trendDataJson = json_encode($trendData);
         $datosformateadosTrend = json_decode($trendDataJson, true);
@@ -230,8 +240,8 @@ class InstagramController extends Controller
             return (object)[
                 'story' => $item['story'],
                 'date' => $item['date'],
-                'comments' => $item['comments']
-                //'impressions_count' => $item['impressions']
+                'comments' => $item['comments'],
+                'impressions_count' => $item['scopes']
             ];
         })->values();
         
@@ -275,7 +285,7 @@ class InstagramController extends Controller
                 'story' => $item['story'],
                 'date' => $item['date'],
                 'likes' => $item['likes'],
-                //'impressions_count' => $item['impressions']
+                'impressions_count' => $item['scopes']
             ];
         })->values();
         
@@ -289,7 +299,408 @@ class InstagramController extends Controller
         return [
             'dates' => array_values(array_intersect_key($data['dates'], array_flip($filteredIndices))),
             'likes' => array_values(array_intersect_key($data['likes'], array_flip($filteredIndices))),
-            'comments' => array_values(array_intersect_key($data['comments'], array_flip($filteredIndices)))
+            'comments' => array_values(array_intersect_key($data['comments'], array_flip($filteredIndices))),
+            'saved' => array_values(array_intersect_key($data['saved'], array_flip($filteredIndices))),
+            'scopes' => array_values(array_intersect_key($data['scopes'], array_flip($filteredIndices))),
+            'shares' => array_values(array_intersect_key($data['scopes'], array_flip($filteredIndices)))
         ]; 
+    }
+
+    public function informeinstagram(Request $request){
+       
+        set_time_limit(300); // Establece el límite a 300 segundos si es necesario
+        $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date|before_or_equal:today',
+        ]);
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/reportfordate';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos = $responseBody['data'];
+        //dd($datos['TopPost'][0]['type_post']);
+        if(empty($datos['TopPost'])){
+            Alert::error('No se encontraron Publicaciones en la fecha');
+            return redirect('/reportes-facebook');
+        }else{
+            //$total_seguidores= $datos['follwers']['total_seguidores_ultimo'];
+            //$nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
+            //$unfollows = $datos['follwers']['total_seguidores_perdidos'];
+            $sumatotalinteraccionespost1 = $datos['TopPost'][0]['comments_count'] + $datos['TopPost'][0]['shares_count'] + $datos['TopPost'][0]['saved_count'] + $datos['TopPost'][0]['likes_count'];
+            if(isset($datos['TopPost'][1])) {
+                $sumatotalinteraccionespost2 = $datos['TopPost'][1]['comments_count'] + $datos['TopPost'][1]['shares_count'] + $datos['TopPost'][1]['saved_count'] + $datos['TopPost'][1]['likes_count'];      
+            }else {$sumatotalinteraccionespost2 = 0; }
+            $sumatotalinteraccionesCompartido = $datos['getMostSharedPost']['comments_count'] + $datos['getMostSharedPost']['shares_count'] + $datos['getMostSharedPost']['saved_count'] + $datos['getMostSharedPost']['likes_count'];
+            $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost']['comments_count'] + $datos['getMostCommentsPost']['shares_count'] + $datos['getMostCommentsPost']['saved_count'] + $datos['getMostCommentsPost']['likes_count'];
+            
+            $imageUrlCompartido = $datos['getMostSharedPost']['media_url'];
+            if (empty($imageUrlCompartido)) {
+                $imageUrlCompartido = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $responseCompartido = Http::get($imageUrlCompartido);
+                $imageContentsCompartido = $responseCompartido->body();
+                $imageBase64Compartidos = base64_encode($imageContentsCompartido);
+                $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+            }else{    
+                $responseCompartido = Http::get($imageUrlCompartido);
+                $imageContentsCompartido = $responseCompartido->body();
+                $imageBase64Compartidos = base64_encode($imageContentsCompartido);
+                $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+            }
+            
+            $imageUrlComentario = $datos['getMostCommentsPost']['media_url'];
+            if (empty($imageUrlComentario)) {
+                $imageUrlComentario = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $responseComentario = Http::get($imageUrlComentario);
+                $imageContentsComentario = $responseComentario->body();
+                $imageBase64Comentario = base64_encode($imageContentsComentario);
+                $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+            }else{    
+                $responseComentario = Http::get($imageUrlComentario);
+                $imageContentsComentario = $responseComentario->body();
+                $imageBase64Comentario = base64_encode($imageContentsComentario);
+                $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+            }
+
+
+            $imageUrlMayorAlcance1 = $datos['TopPost'][0]['media_url'];
+            if (empty($imageUrlMayorAlcance1)) {
+                $imageUrlMayorAlcance1 = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
+                $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
+                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
+                $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+            }else{
+                $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
+                $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
+                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
+                $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+            }
+
+            /*$imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
+            if (empty($imageUrlMayorAlcance2)){
+                $imageUrlMayorAlcance2 = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+                $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
+                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
+                $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+            }else{
+                $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+                $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
+                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
+                $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+            }*/
+
+            $imageUrlMayorAlcance2 = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            // Verificar si el índice 1 existe en $datos['TopPost'] y si el campo 'media_url' no está vacío
+            if (isset($datos['TopPost'][1]) && !empty($datos['TopPost'][1]['media_url'])) {
+                $imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
+            }
+            // Obtener la imagen desde la URL
+            $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+            $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
+            $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
+            $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+
+
+
+            /**grafico 1 de tendencia */  
+            $allReactions = $responseBody['data']['allReactions'];
+            $totalReactionsSum = 0;
+            foreach ($allReactions as $reactions) {
+                $totalReactionsSum += (int) $reactions['total_reactions'];
+            }
+            $dates = [];
+            $postCounts = [];
+            $totalReactions = [];
+            foreach ($allReactions as $reaction) {
+                $dates[] = $reaction['date'];
+                $postCounts[] = $reaction['post_count'];
+                $totalReactions[] = $reaction['total_reactions'];
+            }
+            $chartData = [
+                'type' => 'line',
+                'data' => [
+                    'labels' => $dates,
+                    'datasets' => [
+                        [
+                            'label' => 'Conteo de Publicaciones',
+                            'data' => $postCounts,
+                            'borderColor' => 'rgba(75, 192, 192, 1)',
+                            'fill' => false,
+                        ],
+                        [
+                            'label' => 'Total de Reacciones',
+                            'data' => $totalReactions,
+                            'borderColor' => 'rgba(255, 99, 132, 1)',
+                            'fill' => false,
+                        ],
+                    ],
+                ],
+            ];
+            $chartUrl = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chartData));
+            /**Fin grafico 11 de tendencia */
+
+            /**Grafico 2 de tendencia */
+            /*$dailyResults = $responseBody['data']['follwers']['daily_results'];
+            $datesSeguidores = [];
+            $totalSeguidores = [];
+            $nuevosSeguidores = [];
+            $seguidoresPerdidos = [];
+            foreach ($dailyResults as $date => $result) {
+                $datesSeguidores[] = $date;
+                $totalSeguidores[] = $result['total_seguidores'];
+                $nuevosSeguidores[] = $result['nuevos_seguidores'];
+                $seguidoresPerdidos[] = $result['seguidores_perdidos'];
+            }
+            $chartDataSeguidores = [
+                'type' => 'line',
+                'data' => [
+                    'labels' => $datesSeguidores,
+                    'datasets' => [
+                        [
+                            'label' => 'Nuevos Seguidores',
+                            'data' => $nuevosSeguidores,
+                            'borderColor' => 'rgba(75, 192, 192, 1)',
+                            'fill' => false,
+                        ],
+                        [
+                            'label' => 'Seguidores Perdidos',
+                            'data' => $seguidoresPerdidos,
+                            'borderColor' => 'rgba(255, 99, 132, 1)',
+                            'fill' => false,
+                        ],
+                    ],
+                ],
+            ];
+            $chartUrlSeguidores = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chartDataSeguidores));*/
+            /**Fin Grafico 2 de tendencia */
+            
+            //Imagenes de Facebook
+            $inicio = public_path() . '/img/inicio.png';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+            $facebook = public_path() . '/img/instagram.png';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            $overview = public_path() . '/img/overview.png';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+            $resultado_facebook = public_path() . '/img/resultado_facebook.png';
+            $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
+            $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
+            $mayoralcance_facebook = public_path() . '/img/mayoralcance.png';
+            $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
+            $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
+            $compartido_facebook = public_path() . '/img/compartido.png';
+            $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
+            $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
+            $comentado_facebook = public_path() . '/img/comentado.png';
+            $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
+            $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
+            $reacciones_facebook = public_path() . '/img/reacciones.png';
+            $imagereacciones_facebook = base64_encode(file_get_contents($reacciones_facebook));
+            $src_reacciones_facebook = 'data:' . mime_content_type($reacciones_facebook) . ';base64,' . $imagereacciones_facebook;
+            $gracias = public_path() . '/img/gracias.png';
+            $imagegracias = base64_encode(file_get_contents($gracias));
+            $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+            //Fin Imagenes de Faceboo
+            $vista = view('informe_instagram', [
+                'src_inicio' => $src_inicio,
+                'src_facebook' => $src_facebook,
+                'src_overview' => $src_overview,
+                'src_resultado_facebook' => $src_resultado_facebook,
+                'src_mayoralcance' => $src_mayoralcance, 
+                'src_compartido' => $src_compartido,
+                'src_comentado_facebook' => $src_comentado_facebook,
+                'src_reacciones_facebook' => $src_reacciones_facebook,
+                'src_gracias' => $src_gracias,
+                'datos'=>$datos,
+                'chartUrl'=>$chartUrl,
+                'totalReactionsSum'=>$totalReactionsSum,
+                //'chartUrlSeguidores'=>$chartUrlSeguidores,
+                'fecha_inicio' => $fecha_inicio, 
+                'fecha_fin' => $fecha_fin,
+                //'total_seguidores' => $total_seguidores ,
+                //'nuevos_seguidores' => $nuevos_seguidores,
+                //'unfollows' => $unfollows,
+                'imageSrcMayorAlcance1'=>$imageSrcMayorAlcance1, 
+                'imageSrcMayorAlcance2'=>$imageSrcMayorAlcance2,
+                'sumatotalinteraccionespost1' =>$sumatotalinteraccionespost1,
+                'sumatotalinteraccionespost2'=>$sumatotalinteraccionespost2,
+                'imageSrcCompartido'=>$imageSrcCompartido,
+                'imageSrcComentario'=>$imageSrcComentario,
+                'sumatotalinteraccionesCompartido' => $sumatotalinteraccionesCompartido,
+                'sumatotalinteraccionesComentarios' => $sumatotalinteraccionesComentarios
+            ]);
+            //file_put_contents(public_path('output.html'), $vista);
+            //$options = new Options();
+            $options = new Options();
+            $options->set('isRemoteEnabled',TRUE);
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('isPhpEnabled', true);
+            $dompdf = new Dompdf($options);
+            //$dompdf = new Dompdf($options);
+            $dompdf->loadHtml($vista);
+            //$dompdf->setPaper('letter','Landscape');
+            $dompdf->setPaper(array(0, 0, 630, 1300), 'Landscape'); // 8.5 x 13 pulgadas
+            //$dompdf->set_option('isPhpEnabled', true);
+            $dompdf->render();
+            $dompdf->stream('',array("Attachment" => false));
+        }
+    }
+
+    public function informeescucha(){
+        set_time_limit(300); // Establece el límite a 300 segundos si es necesario
+        
+        $url_informe = 'https://reportapi.infocenterlatam.com/api/istadistic/topPost';
+        $response_informe = retry(3, function () {
+            return Http::timeout(30)->get('https://reportapi.infocenterlatam.com/api/istadistic/topPost');
+        }, 100);        
+        $data_informe = $response_informe->json();
+        $postData = $data_informe['data'];
+        $total_reacciones = $postData['comments_count'] + $postData['likes_count'] + $postData['shares_count'] + $postData['saved_count'] ;
+       
+
+        $imageUrl = $postData['media_url'];
+        if (empty($imageUrl)) {
+            $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }else{    
+            
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }
+
+        
+        
+        $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
+        $options = new Options(); 
+        $options->set('isRemoteEnabled', TRUE);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($vista);
+        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->set_option('isPhpEnabled', true);
+        //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
+        // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+        $dompdf->render();
+        // $dompdf->stream('autorizaciones.pdf');
+        $dompdf->stream ('',array("Attachment" => false));
+    }
+
+    public function informeescuchafecha(Request $request){
+        set_time_limit(300); 
+        $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date|before_or_equal:today',
+            'grafico_tortas' => 'image' ,
+            'grafico_bar'=> 'image'
+        ]);
+        if(!empty($request->file('grafico_tortas'))){
+            $file_cake = $request->file('grafico_tortas');
+            $imageChartBase64 = base64_encode(file_get_contents($file_cake));   
+        }else {
+            $imageChartBase64 = null; 
+        }
+        if(!empty($request->file('grafico_bar'))){
+            $file_bar = $request->file('grafico_bar');
+            $imageChartBarBase64 = base64_encode(file_get_contents($file_bar));
+        }else{
+            $imageChartBarBase64 = null;
+        }
+        $fecha_inicio = $request->start_date;
+        $fecha_fin = $request->end_date; 
+        if($request->reaccion_reporte){
+            $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReportListen?sort_direction=desc&order_by='.$request->reaccion_reporte;
+        }else{
+            $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReportListen';
+        }
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "date_start" : "'.$fecha_inicio.'",
+            "date_end" : "'.$fecha_fin.'"
+        }';        
+        $client = new Client();
+        $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos = $responseBody['data'];
+        $total_reacciones = $datos['comments_count'] + $datos['shares_count'] + $datos['likes_count'] + $datos['saved_count'] ;
+
+        $imageUrl = $datos['media_url'];
+        if (empty($imageUrl)) {
+            $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }else{    
+            
+            $response = Http::get($imageUrl);
+            $imageContents = $response->body();
+            $imageBase64 = base64_encode($imageContents);
+            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+        }
+
+        $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64]);
+        $options = new Options(); 
+        $options->set('isRemoteEnabled', TRUE);
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($vista);
+        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->set_option('isPhpEnabled', true);
+        $dompdf->render();
+        $dompdf->stream ('',array("Attachment" => false));
+    }
+
+    public function informeescuchaid(Request $request){
+        $url_informe = 'https://reportapi.infocenterlatam.com/api/istadistic/topPostforId/'.$request->id;
+        $response_informe = Http::get($url_informe);
+        $data_informe = $response_informe->json();
+        $postData = $data_informe['data'];
+        $total_reacciones = $postData['comments_count'] + $postData['likes_count'] + $postData['shares_count'] + $postData['saved_count'] ;
+        
+        
+        if(empty($postData)){
+            echo "No hay comentarios disponibles."; 
+        }else{
+            // dd($postData[0]->full_picture);
+            $imageUrl = $postData['media_url'];
+            if (empty($imageUrl)) {
+                $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            }else{    
+                
+                $response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            }
+            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
+            $options = new Options(); 
+            $options->set('isRemoteEnabled', TRUE);
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($vista);
+            $dompdf->setPaper('letter', 'portrait');
+            $dompdf->set_option('isPhpEnabled', true);
+            //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
+            // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+            $dompdf->render();
+            // $dompdf->stream('autorizaciones.pdf');
+            $dompdf->stream ('',array("Attachment" => false));
+        }   
     }
 }

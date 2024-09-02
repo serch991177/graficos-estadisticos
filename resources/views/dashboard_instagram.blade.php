@@ -487,7 +487,7 @@
                             <i class="fas fa-chart-bar"></i>
                         </button>
                         <br><br>
-                        <form action="{{ route('informe_id_escucha') }}" method="post" target="_blank">
+                        <form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
                             @csrf 
                             <input type="hidden" name="id" value="${row.id}">
                             <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
@@ -792,7 +792,10 @@
             yAxis: { title: { text: 'Cantidad' } },
             series: [
             { name: 'likes', data: [] },    
-            { name: 'comments', data: []}
+            { name: 'comments', data: []},
+            { name: 'saved', data: []},
+            { name: 'shares', data: []},
+            { name: 'alcance', data: []}
         ]
         });
     }
@@ -812,7 +815,10 @@
                     xAxis: { categories: data.dates },
                     series: [
                     { name: 'likes', data: data.likes },
-                    { name: 'comments', data: data.comments }
+                    { name: 'comments', data: data.comments },
+                    { name: 'saved', data: data.saved},
+                    { name: 'shares', data: data.shares},
+                    { name: 'alcances', data: data.scopes}
                 ]
                 });
             }
@@ -845,7 +851,7 @@
     function renderChart(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.comments));
-        //const impressionsData = posts.map(post => parseInt(post.impressions_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
         Highcharts.chart('charttendenciacomment', {
             chart: {
                 type: 'column'
@@ -869,11 +875,11 @@
             name: 'Comentarios',
             data: data,
             color: '#B3E5FC'  // Azul pastel
-            }/*, {
+            }, {
                 name: 'Alcance',
                 data: impressionsData,
                 color: '#FFCC80'  // Naranja pastel
-            }*/]
+            }]
         });
     }
 </script>
@@ -900,7 +906,7 @@
     function renderChartLikes(posts) {
         const categories = posts.map(post => post.story);
         const data = posts.map(post => parseInt(post.likes));
-        //const impressionsData = posts.map(post => parseInt(post.impressions_count));
+        const impressionsData = posts.map(post => parseInt(post.impressions_count));
 
         Highcharts.chart('charttendencialikes', {
             chart: {
@@ -925,11 +931,11 @@
                 name: 'Likes',
                 data: data,
                 color: '#B3E5FC'  // Azul pastel
-            }/*s, {
+            }, {
                 name: 'Alcance',
                 data: impressionsData,
                 color: '#FFCC80'  // Naranja pastel
-            }*/
+            }
             ]
         });
     }

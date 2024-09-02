@@ -85,6 +85,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-chart-data-instagram', [InstagramController::class, 'getChartData']);
     Route::get('/api/instagram-posts', [InstagramController::class, 'getTopPosts']);
     Route::get('/api/instagram-likes', [InstagramController::class, 'getTopLike']);
+    Route::get('/reportes-instagram', [InstagramController::class, 'cargarinstagraminforme'])->name('reportes_instagram');
+    Route::post('/informe_instagram', [InstagramController::class, 'informeinstagram'])->name('informe_actualizado_instagram');
+    Route::post('/informe_escucha_instagram', [InstagramController::class, 'informeescucha'])->name('informe_escucha_instagram');
+    Route::post('/informe_escucha_fechas_instagram', [InstagramController::class, 'informeescuchafecha'])->name('informe_escucha_fechas_instagram');
+    Route::post('/recuperar_id_informe_instagram', [InstagramController::class, 'informeescuchaid'])->name('informe_id_escucha_instagram');
 
     //rutas python
     Route::post('/analisis',[HomeController::class,'runAnalysis'])->name('informe_python');

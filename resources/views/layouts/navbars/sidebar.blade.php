@@ -45,8 +45,8 @@
                                 <p>{{ _('Graficos') }}</p>
                             </a>
                         </li>
-                        <li @if ($pageSlug == 'users') class="active " @endif>
-                            <a href="">
+                        <li @if ($pageSlug == 'reportes_instagram') class="active " @endif>
+                            <a href="{{route('reportes_instagram')}}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
                                 <p>{{ _('Reportes') }}</p>
                             </a>
