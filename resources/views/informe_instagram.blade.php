@@ -145,7 +145,7 @@
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:510px; left:1220px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Reacciones</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:550px; left:1180px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['TopPost'][1]['comments_count']}}</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:570px; left:1220px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Comentarios</div>
-            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:610px; left:1180px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['TopPost'][1]['share_count']}}</div>
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:610px; left:1180px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">{{$datos['TopPost'][1]['shares_count']}}</div>
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:630px; left:1250px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;">Veces Compartidas</div>
         @endif
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
