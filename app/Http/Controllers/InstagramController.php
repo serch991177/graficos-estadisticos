@@ -492,7 +492,7 @@ class InstagramController extends Controller
             $overview = public_path() . '/img/overview.png';
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-            $resultado_facebook = public_path() . '/img/resultado_facebook.png';
+            $resultado_facebook = public_path() . '/img/resultado_instagram.jpg';
             $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
             $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
             $mayoralcance_facebook = public_path() . '/img/mayoralcance.png';
@@ -790,5 +790,60 @@ class InstagramController extends Controller
         })->values();
         
         return response()->json($posts);
+    }
+
+    public function comparativainstagram(){
+        return view('comparativainstagram');
+    }
+
+    public function servicesinstagram(Request $request){      
+        $FirstPage = 'https://graph.facebook.com/v20.0/17841444478446953?fields=business_discovery.username('.$request->firstPage.')%7Bfollowers_count%2Cmedia_count%2Cmedia%7Bcomments_count%2Ccreated_time%2Clike_count%2Cmedia_url%7D%7D&access_token=EAAObpSBCZBMwBOzKJQiKstgerFvrSaLe1y684ETkZAsMkC4IfZC76sR2hgrcafAfFUBC5Hai5uYlu3aNPtN8I8pGvXZBZBscZCmra9PKAMpCnFR7qE4SNUazGNL8H4EZBeVuIZAcXVkVMmEFd0fo9OI1vZC0Ymo1zKZAAz2uK6df1tJ9SgZAk3nPX59IZCJsyW6emdA8ZAQOhUR03';
+        $responsefirstpage = Http::get($FirstPage);
+        $datafirstpage = $responsefirstpage->json();
+        $statuscodefirstpage = $responsefirstpage->getStatusCode();
+
+        $SecondPage = 'https://graph.facebook.com/v20.0/17841444478446953?fields=business_discovery.username('.$request->secondPage.')%7Bfollowers_count%2Cmedia_count%2Cmedia%7Bcomments_count%2Ccreated_time%2Clike_count%2Cmedia_url%7D%7D&access_token=EAAObpSBCZBMwBOzKJQiKstgerFvrSaLe1y684ETkZAsMkC4IfZC76sR2hgrcafAfFUBC5Hai5uYlu3aNPtN8I8pGvXZBZBscZCmra9PKAMpCnFR7qE4SNUazGNL8H4EZBeVuIZAcXVkVMmEFd0fo9OI1vZC0Ymo1zKZAAz2uK6df1tJ9SgZAk3nPX59IZCJsyW6emdA8ZAQOhUR03';
+        $responsesecondpage = Http::get($SecondPage);
+        $datasecondpage = $responsesecondpage->json();
+        $statuscodesecondpage = $responsesecondpage->getStatusCode();
+        
+        if ($statuscodefirstpage == 200 && $statuscodesecondpage == 200) {
+            //datos de la primera pagina
+            $countfirstpage = $datafirstpage['business_discovery']['media']['data'];
+            $arraylikesfirstpage = array();
+            $arraycommentsfirstpage = array();
+            for($i=0;$i<count($countfirstpage); $i++){
+                array_push($arraylikesfirstpage,$countfirstpage[$i]['like_count']);
+                array_push($arraycommentsfirstpage,$countfirstpage[$i]['comments_count']);
+            }
+            $countfollowsfirstpage = array();
+            array_push($countfollowsfirstpage,$datafirstpage['business_discovery']['followers_count']);
+            $countmediasfirstpage = array();
+            array_push($countmediasfirstpage,$datafirstpage['business_discovery']['media_count']);
+            //datos de la segunda pagina
+            $countsecondpage = $datasecondpage['business_discovery']['media']['data'];
+            $arraylikessecondpage = array();
+            $arraycommentssecondpage= array();
+            for($i=0;$i<count($countsecondpage);$i++){
+                array_push($arraylikessecondpage,$countsecondpage[$i]['like_count']);
+                array_push($arraycommentssecondpage,$countsecondpage[$i]['comments_count']);
+            }
+            $countfollowssecondpage = array();
+            array_push($countfollowssecondpage,$datasecondpage['business_discovery']['followers_count']);
+            $countmediassecondpage = array();
+            array_push($countmediassecondpage,$datasecondpage['business_discovery']['media_count']);
+            
+            $array_follows = array();
+            array_push($array_follows,$countfollowsfirstpage,$countfollowssecondpage);
+            
+            $array_medias = array();
+            array_push($array_medias,$countmediasfirstpage,$countmediassecondpage);
+
+
+            return response()->json(['success' => true,'array_follows'=>$array_follows ,'array_medias'=>$array_medias,'nombrepagina1'=>$request->firstPage,'nombrepagina2'=>$request->secondPage,'countfollowsfirstpage'=>$countfollowsfirstpage,'countfollowssecondpage'=>$countfollowssecondpage,'countmediasfirstpage'=>$countmediasfirstpage,'countmediassecondpage'=>$countmediassecondpage,'arraylikesfirstpage'=>$arraylikesfirstpage,'arraylikessecondpage'=>$arraylikessecondpage,'arraycommentsfirstpage'=>$arraycommentsfirstpage,'arraycommentssecondpage'=>$arraycommentssecondpage]);
+        } else {
+            return response()->json(['error' => true]); 
+        }
+        
     }
 }
