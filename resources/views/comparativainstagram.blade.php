@@ -81,8 +81,6 @@
                     if(data.error){
                         Swal.fire('error','Por favor verifique que los nombres de las paginas sean validas','error')
                     }else{
-                        console.log(data);
-                        console.log(data.arraylikesfirstpage);
                         Highcharts.chart('graficacomparativalikes', {
                             chart: {
                                 type: 'column'
@@ -105,13 +103,7 @@
                             }, {
                                 name: 'Likes '+data.nombrepagina2,
                                 data: data.arraylikessecondpage
-                            }/*, {
-                                name: 'Comentarios '+data.nombrepagina1,
-                                data: data.arraycommentsfirstpage 
-                            }, {
-                                name: 'Comentarios '+data.nombrepagina2,
-                                data: data.arraycommentssecondpage
-                            }*/]
+                            }]
                         });
                         Highcharts.chart('graficacomparativacomentarios', {
                             chart: {
@@ -173,7 +165,6 @@
                 },
                 error: function(data) {
                     // Manejo del error
-                    console.log(data);
                     Swal.fire('Error', 'Hubo un problema al comparar los datos.', 'error');
                 }
             });
