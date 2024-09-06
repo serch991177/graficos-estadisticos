@@ -9,4 +9,7 @@ class FacebookController extends Controller
 {
     public function index(){
     }
+    public function privacypolicy(){
+        return view('privacypolicy');
+    }
 }
