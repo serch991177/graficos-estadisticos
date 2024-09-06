@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FacebookController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -34,6 +35,7 @@ Route::get('/datatable', function(){
     return view('tabla');
 });
 
+Route::get('/privacy-policy',[FacebookController::class,'privacypolicy']);
 // Rutas de autenticación
 Auth::routes();
 
@@ -94,6 +96,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/instagram-share', [InstagramController::class, 'getTopShare']);
     Route::get('/comparativa-instagram', [InstagramController::class, 'comparativainstagram'])->name('comparativa_instagram');
     Route::get('/services-instagram',[InstagramController::class, 'servicesinstagram'])->name('services_instagram');
+
+    Route::get('/maquetacion',[InstagramController::class,'tablamanfred'])->name('maquetacion_manfred');
     //rutas python
     Route::post('/analisis',[HomeController::class,'runAnalysis'])->name('informe_python');
 });
