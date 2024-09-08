@@ -12,4 +12,7 @@ class FacebookController extends Controller
     public function privacypolicy(){
         return view('privacypolicy');
     }
+    public function termsandcondition(){
+        return view('termsandcondition');
+    }
 }

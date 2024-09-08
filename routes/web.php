@@ -36,6 +36,9 @@ Route::get('/datatable', function(){
 });
 
 Route::get('/privacy-policy',[FacebookController::class,'privacypolicy']);
+Route::get('/terms-and-condition',[FacebookController::class,'termsandcondition']);
+
+
 // Rutas de autenticación
 Auth::routes();
 

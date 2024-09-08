@@ -68,28 +68,29 @@
         <p><strong>Última actualización:</strong> 01/09/2024</p>
 
         <h2>1. Introducción</h2>
-        <p>En <strong>Infocenter Latam</strong> (https://infocenterlatam.com/),  nos comprometemos a proteger el derecho fundamental a la privacidad de nuestros usuarios, conforme al inciso 2 del Artículo 21° de la Constitución Política del Estado Plurinacional de Bolivia. Respetamos y garantizamos la confidencialidad de los datos que recolectamos y procesamos, asegurándonos de que sean utilizados de manera ética y transparente.</p>
+        <p>En <strong>Infocenter Latam</strong> (https://infocenterlatam.com/), proyecto desarrollado por el Gobierno Autónomo Municipal de Cochabamba (GAMC), nos comprometemos a proteger el derecho fundamental a la privacidad de nuestros usuarios, conforme al inciso 2 del Artículo 21° de la Constitución Política del Estado Plurinacional de Bolivia. Respetamos y garantizamos la confidencialidad de los datos que recolectamos y procesamos, asegurándonos de que sean utilizados de manera ética y transparente  y en cumplimiento de las políticas de las plataformas de redes sociales de donde provienen los datos, tales como Facebook y otras.</p>
         <p>Esta política de privacidad describe cómo recolectamos, utilizamos y protegemos la información obtenida a través de redes sociales para generar análisis y facilitar la toma de decisiones basada en la interactividad de dichas plataformas.</p>
+        <p>El <strong>Gobierno Autónomo Municipal de Cochabamba (GAMC)</strong> es el responsable del manejo y procesamiento de los datos recolectados a través de este proyecto</p>
         <h2>2. Recolección de Información</h2>
-        <p>Recopilamos exclusivamente datos públicos disponibles en redes sociales, tales como:</p>
+        <p>Recopilamos exclusivamente datos públicos disponibles en redes sociales, sin obtener información que pueda identificar personalmente a los usuarios, la información recolectada es:</p>
         <ul>
             <li>Cantidad de seguidores</li>
             <li>Interacciones con publicaciones (me gusta, comentarios, compartidos)</li>
             <li>Datos de alcance y desempeño de publicaciones</li>
         </ul>
-        <p>No recolectamos ni accedemos a información privada de los usuarios o sus cuentas personales sin su consentimiento explícito.</p>
+        <p>No recolectamos ni accedemos a información privada de los usuarios o sus cuentas personales.</p>
 
         <h2>3. Uso de la Información</h2>
-        <p>La información pública recopilada es procesada con los siguientes fines:</p>
+        <p>Los datos recolectados son procesados con el fin de: </p>
         <ul>
             <li>Realizar análisis comparativos sobre el desempeño y alcance de publicaciones en redes sociales.</li>
-            <li>Generar reportes estadísticos sobre la interactividad y tendencias.</li>
+            <li>Generar reportes estadísticos sobre la interactividad y tendencias en redes sociales.</li>
             <li>Facilitar la toma de decisiones estratégicas basadas en la actividad pública de las cuentas analizadas.</li>
         </ul>
-        <p>Toda la información es usada exclusivamente con fines analíticos y nunca con la intención de identificar a usuarios individuales o vulnerar su privacidad.</p>
+        <p>Toda la información es utilizada únicamente con fines analíticos y para la mejora de decisiones estratégicas basadas en patrones de interactividad. No utilizamos los datos con ningún otro fin ni para el seguimiento individual de usuarios.</p>
 
         <h2>4. Protección de los Datos</h2>
-        <p>En cumplimiento del derecho fundamental de privacidad garantizado por la Constitución Política del Estado Plurinacional de Bolivia, implementamos medidas de seguridad adecuadas para proteger la información que recolectamos. Estas incluyen:</p>
+        <p>En cumplimiento del derecho fundamental de privacidad garantizado por la Constitución Política del Estado Plurinacional de Bolivia, Implementamos medidas de seguridad adecuadas y conforme a estándares internacionales para proteger la información que recolectamos. Estas incluyen:</p>
         <ul>
             <li>Almacenamiento seguro de los datos.</li>
             <li>Restricción de acceso a la información solo a personal autorizado.</li>
@@ -97,10 +98,10 @@
         </ul>
 
         <h2>5. Divulgación de Información</h2>
-        <p>No compartimos ni divulgamos la información recolectada con terceros, excepto cuando sea requerido por ley o una solicitud legal válida, siempre en cumplimiento con la legislación boliviana.</p>
+        <p>No compartimos ni divulgamos la información recolectada con terceros, excepto cuando sea requerido por ley o por una solicitud legal válida, siempre en cumplimiento con la legislación boliviana.</p>
 
         <h2>6. Derechos de los Usuarios</h2>
-        <p>Respetamos el derecho de los usuarios a la privacidad y confidencialidad. Si en algún momento un usuario desea revisar, modificar o eliminar información relacionada con su cuenta pública en redes sociales, puede comunicarse con nosotros a través del siguiente correo: <span class="email">infocentersupport@infocenterlatam.com</span>.</p>
+        <p>Respetamos el derecho de los usuarios a la privacidad y confidencialidad. Si en algún momento un usuario tiene inquietudes o desea revisar, modificar o eliminar información pública relacionada con su cuenta en redes sociales que esté siendo utilizada en nuestros análisis, puede comunicarse con nosotros a través del siguiente correo: <span class="email">infocentersupport@infocenterlatam.com</span>.</p>
 
         <h2>7. Cambios en la Política de Privacidad</h2>
         <p>Nos reservamos el derecho de modificar esta política de privacidad cuando sea necesario. Cualquier cambio será notificado a través de nuestra página web y entrará en vigor a partir de su publicación.</p>
