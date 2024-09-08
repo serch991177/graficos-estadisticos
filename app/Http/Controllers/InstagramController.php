@@ -306,8 +306,8 @@ class InstagramController extends Controller
         ]; 
     }
 
+    //publicacion que sirve ahora se comentara y cambiara por otros datos
     public function informeinstagram(Request $request){
-       
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
         $request->validate([
             'start_date' => 'required|date|before:end_date',
@@ -483,31 +483,39 @@ class InstagramController extends Controller
             /**Fin Grafico 2 de tendencia */
             
             //Imagenes de Facebook
-            $inicio = public_path() . '/img/inicio.png';
+            $inicio = public_path() . '/img/1.jpg';
             $imageInicio = base64_encode(file_get_contents($inicio));
             $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-            $facebook = public_path() . '/img/instagram.png';
+
+            $facebook = public_path() . '/img/2.jpg';
             $imagefacebook = base64_encode(file_get_contents($facebook));
             $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-            $overview = public_path() . '/img/overview.png';
+            
+            $overview = public_path() . '/img/3.jpg';
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-            $resultado_facebook = public_path() . '/img/resultado_instagram.jpg';
+            
+            $resultado_facebook = public_path() . '/img/4.jpg';
             $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
             $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
-            $mayoralcance_facebook = public_path() . '/img/mayoralcance.png';
+            
+            $mayoralcance_facebook = public_path() . '/img/5.jpg';
             $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
             $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
-            $compartido_facebook = public_path() . '/img/compartido.png';
+            
+            $compartido_facebook = public_path() . '/img/6.jpg';
             $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
             $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
-            $comentado_facebook = public_path() . '/img/comentado.png';
+            
+            $comentado_facebook = public_path() . '/img/7.jpg';
             $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
             $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
-            $reacciones_facebook = public_path() . '/img/reacciones.png';
-            $imagereacciones_facebook = base64_encode(file_get_contents($reacciones_facebook));
-            $src_reacciones_facebook = 'data:' . mime_content_type($reacciones_facebook) . ';base64,' . $imagereacciones_facebook;
-            $gracias = public_path() . '/img/gracias.png';
+            
+            //$reacciones_facebook = public_path() . '/img/8.jpg';
+            //$imagereacciones_facebook = base64_encode(file_get_contents($reacciones_facebook));
+            //$src_reacciones_facebook = 'data:' . mime_content_type($reacciones_facebook) . ';base64,' . $imagereacciones_facebook;
+            
+            $gracias = public_path() . '/img/8.jpg';
             $imagegracias = base64_encode(file_get_contents($gracias));
             $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
             //Fin Imagenes de Faceboo
@@ -519,7 +527,7 @@ class InstagramController extends Controller
                 'src_mayoralcance' => $src_mayoralcance, 
                 'src_compartido' => $src_compartido,
                 'src_comentado_facebook' => $src_comentado_facebook,
-                'src_reacciones_facebook' => $src_reacciones_facebook,
+                //'src_reacciones_facebook' => $src_reacciones_facebook,
                 'src_gracias' => $src_gracias,
                 'datos'=>$datos,
                 'chartUrl'=>$chartUrl,
@@ -549,12 +557,14 @@ class InstagramController extends Controller
             //$dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             //$dompdf->setPaper('letter','Landscape');
-            $dompdf->setPaper(array(0, 0, 630, 1300), 'Landscape'); // 8.5 x 13 pulgadas
+            //$dompdf->setPaper(array(0, 0, 630, 1300), 'Landscape'); // 8.5 x 13 pulgadas
+            $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
             //$dompdf->set_option('isPhpEnabled', true);
             $dompdf->render();
             $dompdf->stream('',array("Attachment" => false));
         }
     }
+    
 
     public function informeescucha(){
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
@@ -602,10 +612,10 @@ class InstagramController extends Controller
     public function informeescuchafecha(Request $request){
         set_time_limit(300); 
         $request->validate([
-            'start_date' => 'required|date|before:end_date',
-            'end_date' => 'required|date|after:start_date|before_or_equal:today',
-            'grafico_tortas' => 'image' ,
-            'grafico_bar'=> 'image'
+            //'start_date_listen' => 'required|date|before:end_date',
+            //'end_date_listen' => 'required|date|after:start_date|before_or_equal:today',
+            //'grafico_tortas' => 'image' ,
+            //'grafico_bar'=> 'image'
         ]);
         if(!empty($request->file('grafico_tortas'))){
             $file_cake = $request->file('grafico_tortas');
@@ -619,8 +629,8 @@ class InstagramController extends Controller
         }else{
             $imageChartBarBase64 = null;
         }
-        $fecha_inicio = $request->start_date;
-        $fecha_fin = $request->end_date; 
+        $fecha_inicio = $request->start_date_listen;
+        $fecha_fin = $request->end_date_listen; 
         if($request->reaccion_reporte){
             $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReportListen?sort_direction=desc&order_by='.$request->reaccion_reporte;
         }else{
@@ -846,4 +856,10 @@ class InstagramController extends Controller
         }
         
     }
+
+    public function tablamanfred(){
+        return view('tablamanfred');
+    }
+    
+    
 }

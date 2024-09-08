@@ -21,6 +21,16 @@
     </div>
 </div>
 <br>
+<style>
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+        height: 80%;
+        min-height: 250px; /* Ajusta según tu preferencia */
+    }
+</style>
 <div class="container">
     <div class="row">
         <style>
@@ -58,7 +68,7 @@
 
         </style>
         <!-- Total de me gustas -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #80D4E5;">
                 <div class="card-header">
                 <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/e4299734559659.56d57de04bda4.gif" alt="Total de me gustas" style="max-width: 100%; "> 
@@ -71,7 +81,7 @@
             </div>
         </div>
         <!-- Total de me enamoras -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #C080C0;">
                 <div class="card-header">
                     <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/65ea2034559659.56d57de06cea2.gif" alt="Total de me enamoras" style="max-width: 100%;"> 
@@ -83,7 +93,7 @@
             </div>
         </div>
         <!-- Total de me diviertes -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #F497B7;">
                 <div class="card-header">
                     <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/35c9bf34559659.56d57de0eb467.gif" alt="Total de me diviertes" style="max-width: 100%;"> 
@@ -95,7 +105,7 @@
             </div>
         </div>
         <!-- Total de me asombras -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #E89A9A;">
                 <div class="card-header">
                     <img src="/img/emoji-wow.gif" alt="Total de me asombras" style="max-width: 100%;"> 
@@ -107,7 +117,7 @@
             </div>
         </div>
         <!-- Total de me entristece -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #D080D0;">
                 <div class="card-header">
                     <img src="/img/emoji-sad.gif" alt="Total de me entristece" style="max-width: 100%;"> 
@@ -119,7 +129,7 @@
             </div>
         </div>
         <!-- Total de me enojas -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #F4A4A4;">
                 <div class="card-header">
                     <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/e66e6e34559659.56d57de095aee.gif" alt="Total de me enojas" style="max-width: 100%;"> 
@@ -131,7 +141,7 @@
             </div>
         </div>
         <!-- Total de compartidas -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #C0C0C0;"> 
                 <div class="card-header">
                     <img src="/img/compartir.gif" alt="Total de compartidas" style="max-width: 100%;"> 
@@ -143,7 +153,7 @@
             </div>
         </div>
         <!-- Total de Comentarios -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #80C0C0;"> 
                 <div class="card-header">
                     <img src="/img/comentarios.gif" alt="Total de compartidas" style="max-width: 100%;"> 
@@ -155,7 +165,7 @@
             </div>
         </div>
         <!--Total Clicks-->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #D080D0;">
                 <div class="card-header">
                     <img src="/img/click.gif" alt="total clicks" style="max-width: 100%;">
@@ -167,7 +177,7 @@
             </div>
         </div>
         <!-- Total de Seguidores -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #FFFFFF;"> 
                 <div class="card-header">
                     <img src="/img/followersface.gif" alt="Total de seguidores" style="max-width: 100%;"> 
@@ -179,7 +189,7 @@
             </div>
         </div>
         <!-- Total de Nuevos Seguidores -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #A9CCE3;"> 
                 <div class="card-header">
                     <img src="/img/new_follower.gif" alt="Total de nuevos seguidores" style="max-width: 100%;"> 
@@ -195,7 +205,7 @@
             </div>
         </div>
         <!-- Total de Seguidores perdidos -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card text-white" style="background-color: #F7CAC9;"> 
                 <div class="card-header">
                     <img src="/img/unfollowvideo.gif" alt="Total de seguidores perdidos" style="max-width: 100%;"> 
