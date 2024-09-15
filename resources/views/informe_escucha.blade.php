@@ -66,7 +66,7 @@
     <div class="page-2">
         <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{$postData['created_time']}}</h1></div>
         <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 30px;">{{$postData['story']}}</h1></div>
-        <div style="position:absolute; top:490px; left:290px;"><h1 style="color:black;font-size: 30px;">Instagram</h1></div>
+        <div style="position:absolute; top:490px; left:290px;"><h1 style="color:black;font-size: 30px;">Facebook</h1></div>
         <div style="position:absolute; top:610px; left:420px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
         <div style="position:absolute; top:750px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
         <div style="position:absolute; top:890px; left:420px;"><h1 style="color:black;font-size: 12px;">{!! $reactionstop !!}</h1></div>

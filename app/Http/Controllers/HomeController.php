@@ -685,18 +685,32 @@ class HomeController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
             }else{    
-                
-                $response = Http::get($imageUrl);
+                /*$response = Http::get($imageUrl);
                 $imageContents = $response->body();
-                $imageBase64 = base64_encode($imageContents);
-                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+                $imageBase64 = base64_encode($imageContents);*/
+                $imageSrc = $imageUrl;
             }
-            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
+
+            $inicio = public_path() . '/img/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+    
+            $facebook = public_path() . '/img/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            
+            $overview = public_path() . '/img/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+           
+
+
+            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
-            $dompdf->setPaper('letter', 'portrait');
+            $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
             $dompdf->set_option('isPhpEnabled', true);
             //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
             // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
