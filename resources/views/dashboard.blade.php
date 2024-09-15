@@ -844,7 +844,7 @@
         "info": true,
         "autoWidth": false,
         "responsive": true,
-        "pageLength": 15 // Asegúrate de que esté configurado según tus necesidades
+        "pageLength": 10 // Asegúrate de que esté configurado según tus necesidades
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
