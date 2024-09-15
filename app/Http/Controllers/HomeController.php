@@ -287,21 +287,32 @@ class HomeController extends Controller
             $imageBase64 = base64_encode($imageContents);
             $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
         }else{    
-            
-            $response = Http::get($imageUrl);
+            /*$response = Http::get($imageUrl);
             $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            $imageBase64 = base64_encode($imageContents);*/
+            $imageSrc = $imageUrl;
         }
 
         
+        $inicio = public_path() . '/img/escucha_1.jpg';
+        $imageInicio = base64_encode(file_get_contents($inicio));
+        $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+        $facebook = public_path() . '/img/escucha_2.jpg';
+        $imagefacebook = base64_encode(file_get_contents($facebook));
+        $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
         
-        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
+        $overview = public_path() . '/img/escucha_3.jpg';
+        $imageoverview = base64_encode(file_get_contents($overview));
+        $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+        
+        
+        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($vista);
-        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
         $dompdf->set_option('isPhpEnabled', true);
         //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
         // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
@@ -313,10 +324,10 @@ class HomeController extends Controller
     public function informeescuchafecha(Request $request){
         set_time_limit(300); 
         $request->validate([
-            'start_date' => 'required|date|before:end_date',
-            'end_date' => 'required|date|after:start_date|before_or_equal:today',
-            'grafico_tortas' => 'image' ,
-            'grafico_bar'=> 'image'
+            //'start_date' => 'required|date|before:end_date',
+            //'end_date' => 'required|date|after:start_date|before_or_equal:today',
+            //'grafico_tortas' => 'image' ,
+            //'grafico_bar'=> 'image'
         ]);
         if(!empty($request->file('grafico_tortas'))){
             $file_cake = $request->file('grafico_tortas');
@@ -330,8 +341,8 @@ class HomeController extends Controller
         }else{
             $imageChartBarBase64 = null;
         }
-        $fecha_inicio = $request->start_date;
-        $fecha_fin = $request->end_date; 
+        $fecha_inicio = $request->start_date_listen;
+        $fecha_fin = $request->end_date_listen; 
         if($request->reaccion_reporte){
             $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getReportListen?sort_direction=desc&order_by='.$request->reaccion_reporte;
         }else{
@@ -345,33 +356,49 @@ class HomeController extends Controller
         $client = new Client();
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
-        $datos = $responseBody['data'];
-        $total_reacciones = $datos['like_count'] + $datos['love_count'] + $datos['haha_count'] + $datos['wow_count'] + $datos['sad_count'] + $datos['angry_count'];
+        $datos = $responseBody['data'] ?? null;
+        if(empty($datos)){
+            Alert::error('No se encontraron Publicaciones en la fecha');
+            return redirect('/reportes-facebook');
+        }else{
+            $total_reacciones = $datos['like_count'] + $datos['love_count'] + $datos['haha_count'] + $datos['wow_count'] + $datos['sad_count'] + $datos['angry_count'];
+            $imageUrl = $datos['full_picture'];
+            if (empty($imageUrl)) {
+                $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            }else{    
+                /*$response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);*/
+                $imageSrc = $imageUrl;
+            }
 
-        $imageUrl = $datos['full_picture'];
-        if (empty($imageUrl)) {
-            $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
-        }else{    
+            $inicio = public_path() . '/img/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+    
+            $facebook = public_path() . '/img/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
             
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
-        }
+            $overview = public_path() . '/img/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+           
 
-        $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64]);
-        $options = new Options(); 
-        $options->set('isRemoteEnabled', TRUE);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($vista);
-        $dompdf->setPaper('letter', 'portrait');
-        $dompdf->set_option('isPhpEnabled', true);
-        $dompdf->render();
-        $dompdf->stream ('',array("Attachment" => false));
+            $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+            $options = new Options(); 
+            $options->set('isRemoteEnabled', TRUE);
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($vista);
+            $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
+            $dompdf->set_option('isPhpEnabled', true);
+            $dompdf->render();
+            $dompdf->stream ('',array("Attachment" => false));
+        }
     }
 
     public function informefacebook(Request $request){
@@ -414,10 +441,10 @@ class HomeController extends Controller
                 $imageBase64Compartidos = base64_encode($imageContentsCompartido);
                 $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
             }else{    
-                $responseCompartido = Http::get($imageUrlCompartido);
+                /*$responseCompartido = Http::get($imageUrlCompartido);
                 $imageContentsCompartido = $responseCompartido->body();
-                $imageBase64Compartidos = base64_encode($imageContentsCompartido);
-                $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+                $imageBase64Compartidos = base64_encode($imageContentsCompartido);*/
+                $imageSrcCompartido = $imageUrlCompartido;
             }
             
             $imageUrlComentario = $datos['getMostCommentsPost']['full_picture'];
@@ -428,10 +455,10 @@ class HomeController extends Controller
                 $imageBase64Comentario = base64_encode($imageContentsComentario);
                 $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
             }else{    
-                $responseComentario = Http::get($imageUrlComentario);
+                /*$responseComentario = Http::get($imageUrlComentario);
                 $imageContentsComentario = $responseComentario->body();
-                $imageBase64Comentario = base64_encode($imageContentsComentario);
-                $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+                $imageBase64Comentario = base64_encode($imageContentsComentario);*/
+                $imageSrcComentario = $imageUrlComentario;
             }
 
 
@@ -443,10 +470,10 @@ class HomeController extends Controller
                 $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
                 $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
             }else{
-                $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
+                /*$responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
                 $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
-                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
-                $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);*/
+                $imageSrcMayorAlcance1 = $imageUrlMayorAlcance1;
             }
             $imageUrlMayorAlcance2 = $datos['TopPost'][1]['full_picture'];
             if (empty($imageUrlMayorAlcance2)){
@@ -456,10 +483,10 @@ class HomeController extends Controller
                 $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
                 $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
             }else{
-                $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+                /*$responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
                 $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
-                $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);*/
+                $imageSrcMayorAlcance2 = $imageUrlMayorAlcance2;
             }
             /**grafico 1 de tendencia */  
             $allReactions = $responseBody['data']['allReactions'];
@@ -534,33 +561,43 @@ class HomeController extends Controller
             /**Fin Grafico 2 de tendencia */
             
             //Imagenes de Facebook
-            $inicio = public_path() . '/img/inicio.png';
+            $inicio = public_path() . '/img/facebook_1.jpg';
             $imageInicio = base64_encode(file_get_contents($inicio));
             $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-            $facebook = public_path() . '/img/facebook.png';
+            
+            $facebook = public_path() . '/img/facebook_2.jpg';
             $imagefacebook = base64_encode(file_get_contents($facebook));
             $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-            $overview = public_path() . '/img/overview.png';
+            
+            $overview = public_path() . '/img/facebook_3.jpg';
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-            $resultado_facebook = public_path() . '/img/resultado_facebook.png';
+
+            
+            $interaccion_facebook = public_path() . '/img/facebook_4.jpg';
+            $imaginteraccion_facebook = base64_encode(file_get_contents($interaccion_facebook));
+            $src_interaccion_facebook = 'data:' . mime_content_type($interaccion_facebook) . ';base64,' . $imaginteraccion_facebook;
+            
+            $resultado_facebook = public_path() . '/img/facebook_5.jpg';
             $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
             $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
-            $mayoralcance_facebook = public_path() . '/img/mayoralcance.png';
+            
+            $mayoralcance_facebook = public_path() . '/img/facebook_7.jpg';
             $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
             $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
-            $compartido_facebook = public_path() . '/img/compartido.png';
+            
+            $compartido_facebook = public_path() . '/img/facebook_8.jpg';
             $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
             $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
-            $comentado_facebook = public_path() . '/img/comentado.png';
+            
+            $comentado_facebook = public_path() . '/img/facebook_9.jpg';
             $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
             $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
-            $reacciones_facebook = public_path() . '/img/reacciones.png';
-            $imagereacciones_facebook = base64_encode(file_get_contents($reacciones_facebook));
-            $src_reacciones_facebook = 'data:' . mime_content_type($reacciones_facebook) . ';base64,' . $imagereacciones_facebook;
-            $gracias = public_path() . '/img/gracias.png';
+            
+            $gracias = public_path() . '/img/facebook_10.jpg';
             $imagegracias = base64_encode(file_get_contents($gracias));
             $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+            
             //Fin Imagenes de Faceboo
             $vista = view('informe_facebook', [
                 'src_inicio' => $src_inicio,
@@ -570,7 +607,7 @@ class HomeController extends Controller
                 'src_mayoralcance' => $src_mayoralcance, 
                 'src_compartido' => $src_compartido,
                 'src_comentado_facebook' => $src_comentado_facebook,
-                'src_reacciones_facebook' => $src_reacciones_facebook,
+                'src_interaccion_facebook' => $src_interaccion_facebook,
                 'src_gracias' => $src_gracias,
                 'datos'=>$datos,
                 'chartUrl'=>$chartUrl,
@@ -600,7 +637,7 @@ class HomeController extends Controller
             //$dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             //$dompdf->setPaper('letter','Landscape');
-            $dompdf->setPaper(array(0, 0, 630, 1300), 'Landscape'); // 8.5 x 13 pulgadas
+            $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
             //$dompdf->set_option('isPhpEnabled', true);
             $dompdf->render();
             $dompdf->stream('',array("Attachment" => false));

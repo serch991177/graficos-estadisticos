@@ -328,7 +328,7 @@ class InstagramController extends Controller
         //dd($datos['TopPost'][0]['type_post']);
         if(empty($datos['TopPost'])){
             Alert::error('No se encontraron Publicaciones en la fecha');
-            return redirect('/reportes-facebook');
+            return redirect('/reportes-instagram');
         }else{
             //$total_seguidores= $datos['follwers']['total_seguidores_ultimo'];
             //$nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
@@ -348,10 +348,10 @@ class InstagramController extends Controller
                 $imageBase64Compartidos = base64_encode($imageContentsCompartido);
                 $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
             }else{    
-                $responseCompartido = Http::get($imageUrlCompartido);
+                /*$responseCompartido = Http::get($imageUrlCompartido);
                 $imageContentsCompartido = $responseCompartido->body();
-                $imageBase64Compartidos = base64_encode($imageContentsCompartido);
-                $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+                $imageBase64Compartidos = base64_encode($imageContentsCompartido);*/
+                $imageSrcCompartido = $imageUrlCompartido;
             }
             
             $imageUrlComentario = $datos['getMostCommentsPost']['media_url'];
@@ -362,10 +362,10 @@ class InstagramController extends Controller
                 $imageBase64Comentario = base64_encode($imageContentsComentario);
                 $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
             }else{    
-                $responseComentario = Http::get($imageUrlComentario);
+                /*$responseComentario = Http::get($imageUrlComentario);
                 $imageContentsComentario = $responseComentario->body();
-                $imageBase64Comentario = base64_encode($imageContentsComentario);
-                $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+                $imageBase64Comentario = base64_encode($imageContentsComentario);*/
+                $imageSrcComentario = $imageUrlComentario;
             }
 
 
@@ -377,10 +377,10 @@ class InstagramController extends Controller
                 $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
                 $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
             }else{
-                $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
+                /*$responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
                 $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
-                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
-                $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);*/
+                $imageSrcMayorAlcance1 = $imageUrlMayorAlcance1;
             }
 
             /*$imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
@@ -403,10 +403,10 @@ class InstagramController extends Controller
                 $imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
             }
             // Obtener la imagen desde la URL
-            $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
+            /*$responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
             $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-            $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
-            $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+            $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);*/
+            $imageSrcMayorAlcance2 = $imageUrlMayorAlcance2;
 
 
 
@@ -586,21 +586,31 @@ class InstagramController extends Controller
             $imageBase64 = base64_encode($imageContents);
             $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
         }else{    
-            
-            $response = Http::get($imageUrl);
+            /*$response = Http::get($imageUrl);
             $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            $imageBase64 = base64_encode($imageContents);*/
+            $imageSrc = $imageUrl;
         }
 
+        $inicio = public_path() . '/img/escucha_1.jpg';
+        $imageInicio = base64_encode(file_get_contents($inicio));
+        $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+        $facebook = public_path() . '/img/escucha_2.jpg';
+        $imagefacebook = base64_encode(file_get_contents($facebook));
+        $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
         
+        $overview = public_path() . '/img/escucha_3.jpg';
+        $imageoverview = base64_encode(file_get_contents($overview));
+        $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
         
-        $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
+        $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($vista);
-        $dompdf->setPaper('letter', 'portrait');
+        //$dompdf->setPaper('letter', 'portrait');
+        $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
         $dompdf->set_option('isPhpEnabled', true);
         //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
         // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
@@ -644,33 +654,50 @@ class InstagramController extends Controller
         $client = new Client();
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
-        $datos = $responseBody['data'];
-        $total_reacciones = $datos['comments_count'] + $datos['shares_count'] + $datos['likes_count'] + $datos['saved_count'] ;
+        $datos = $responseBody['data'] ?? null;
 
-        $imageUrl = $datos['media_url'];
-        if (empty($imageUrl)) {
-            $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
-        }else{    
+        if(empty($datos)){
+            Alert::error('No se encontraron Publicaciones en la fecha');
+            return redirect('/reportes-instagram');
+        }else{
+            $total_reacciones = $datos['comments_count'] + $datos['shares_count'] + $datos['likes_count'] + $datos['saved_count'] ;
+            $imageUrl = $datos['media_url'];
+            if (empty($imageUrl)) {
+                $imageUrl = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
+                $response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            }else{    
+                /*$response = Http::get($imageUrl);
+                $imageContents = $response->body();
+                $imageBase64 = base64_encode($imageContents);*/
+                $imageSrc = $imageUrl;
+            }
+
+            $inicio = public_path() . '/img/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+            $facebook = public_path() . '/img/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
             
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
-        }
+            $overview = public_path() . '/img/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+            
 
-        $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64]);
-        $options = new Options(); 
-        $options->set('isRemoteEnabled', TRUE);
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($vista);
-        $dompdf->setPaper('letter', 'portrait');
-        $dompdf->set_option('isPhpEnabled', true);
-        $dompdf->render();
-        $dompdf->stream ('',array("Attachment" => false));
+            $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+            $options = new Options(); 
+            $options->set('isRemoteEnabled', TRUE);
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($vista);
+            $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
+            $dompdf->set_option('isPhpEnabled', true);
+            $dompdf->render();
+            $dompdf->stream ('',array("Attachment" => false));
+        }
     }
 
     public function informeescuchaid(Request $request){
@@ -693,18 +720,30 @@ class InstagramController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
             }else{    
-                
-                $response = Http::get($imageUrl);
+                /*$response = Http::get($imageUrl);
                 $imageContents = $response->body();
-                $imageBase64 = base64_encode($imageContents);
-                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+                $imageBase64 = base64_encode($imageContents);*/
+                $imageSrc = $imageUrl;
             }
-            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones]);
+
+            $inicio = public_path() . '/img/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+            $facebook = public_path() . '/img/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            
+            $overview = public_path() . '/img/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+            
+            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
-            $dompdf->setPaper('letter', 'portrait');
+            $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
             $dompdf->set_option('isPhpEnabled', true);
             //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
             // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));

@@ -4,36 +4,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informe de Escucha</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+         @page {
+            margin: 0in;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+
+        /* Estilo para la primera página */
+        .page-1 {
+            background-image: url('{{ $src_inicio }}');
+            background-size: cover;
+            height: 100vh;
         }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
+
+        /* Estilo para la segunda página */
+        .page-2 {
+            background-image: url('{{ $src_escucha }}');
+            background-size: cover;
+            height: 100vh;
         }
-        caption {
-            caption-side: top;
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        h1, h4,p,a,img {
-            text-align: center;
-        }
-        .image-center {
-            text-align: center;
-            width: 100%;
+
+        /* Estilo para la tercera página */
+        .page-3 {
+            background-image: url('{{ $src_gracias }}');
+            background-size: cover;
+            height: 100vh;
         }
     </style>
 </head>
-<body>
-    <h1 class="text-center">Departamento de Redes Sociales</h1>
-    <h4 class="text-center">Informe de Escucha Activa</h4>    
+<body>    
     {{-- Process top reactions --}}
     @php
         $topReactionsArray = $postData['top_reactions'];
@@ -57,69 +54,44 @@
         }
 
         $reactionstop = implode(' ', $reactionTexts);
-
-        // Debugging output
-        //echo '<pre>';
-        //echo 'Processed reaction texts: ';
-        //var_dump($reactionTexts);
-        //echo '</pre>';
     @endphp
 
-    <table>
-        <caption>DATOS DE LA PUBLICACION</caption>
-        <tr>
-            <td>FECHA</td>
-            <td>{{$postData['created_time']}}</td>
-        </tr>
-        <tr>
-            <td>TEMA</td>
-            <td>{{$postData['story']}}</td>
-        </tr>
-        <tr>
-            <td>PAGINA</td>
-            <td>Instagram</td>
-        </tr>
-        <tr>
-            <td>TIEMPO DE LA MUESTRA</td>
-            <td>{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</td>
-        </tr>
-        <tr>
-            <td>TOTAL REACCIONES</td>
-            <td>{{$total_reacciones}}</td>
-        </tr>
-        <tr>
-            <td>TENDENCIA DE REACCIONES</td>
-            <td>{!! $reactionstop !!}</td>
-        </tr>
-        <tr>
-            <td>COMPARTIDOS</td>
-            <td>{{$postData['shares_count']}}</td>
-        </tr>
-        <tr>
-            <td>COMENTARIOS</td>
-            <td>{{$postData['comments_count']}}</td>
-        </tr>
-    </table>
 
-    <h1 class="text-center">Imagen de la Publicacion</h1>
-    <table class="image-center">
-        <tr>
-            <td>
-                <img src="{{$imageSrc}}" alt="" width="200px">
-            </td>
-        </tr>
-    </table>
-    <h1 class="text-center">Comentario mas relevante</h1>
-    @if(isset($postData['comment_pop']['message']))
-        <p class="text-center">{{$postData['comment_pop']['message']}}</p>
-    @else
-        <p>No hay comentarios.</p>
-    @endif
-    
-    {{--<h1>Link Del Comentario</h1>
-    <a href="{{$postData[0]->permalink_url}}" target="_blank" >Ver Comentario</a>
-    <h1>Numero de Sub Comentarios</h1>
-    <p>{{$postData[0]->comment_count}}</p>--}}
+    <div class="page-1" >
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+    <!-- Contenido de informe escucha -->
+    <div class="page-2">
+        <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{$postData['created_time']}}</h1></div>
+        <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 30px;">{{$postData['story']}}</h1></div>
+        <div style="position:absolute; top:490px; left:290px;"><h1 style="color:black;font-size: 30px;">Instagram</h1></div>
+        <div style="position:absolute; top:610px; left:420px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
+        <div style="position:absolute; top:750px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
+        <div style="position:absolute; top:890px; left:420px;"><h1 style="color:black;font-size: 30px;">{!! $reactionstop !!}</h1></div>
+        <div style="position:absolute; top:1000px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$postData['shares_count']}}</h1></div>
+        <div style="position:absolute; top:1100px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count']}}</h1></div>
+        <div style="position:absolute; top:660px; left:950px;width:450px; height:470px; overflow:hidden;"><img src="{{$imageSrc}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
+        @if(isset($postData['comment_pop']['message']))
+            <div style="position:absolute; top:200px; left:870px;width:790px;"><h1 style="color:black;font-size: 15px;">{{$postData['comment_pop']['message']}}</h1></div>
+        @else
+            <div style="position:absolute; top:200px; left:870px;width:790px;"><h1 style="color:black;font-size: 20px;">No hay comentarios.</h1></div>
+        @endif
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+    <!--Gracias -->
+    <div class="page-3">
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+
+
+
+
+
+    {{--
+
     @if(isset($imageChartBase64) || isset($imageChartBarBase64))
         <h1 class="text-center">Resultado de La Escucha Activa</h1><br>
         @if(isset($imageChartBase64))
@@ -142,6 +114,6 @@
         @endif
     @else
     
-    @endif
+    @endif--}}
 </body>
 </html>
