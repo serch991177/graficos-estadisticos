@@ -61,10 +61,11 @@ class HomeController extends Controller
         //end servicio de mapas
 
         //servicio top 10 countries
-        $url_top_ten = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getCitiesGroupedByCountry?date=2024-09-10';
+        $url_top_ten = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getCitiesGroupedByCountry';
         $response_top_ten = Http::get($url_top_ten);
         $data_top_ten = $response_top_ten->json();
         $top_countries = $data_top_ten['data'];
+        $ultimafechatable = \Carbon\Carbon::parse($data_top_ten['end_tiem_min'])->format('Y-m-d');
         $order_countries = collect($top_countries);
         // Ordenar por fan_count en orden descendente
         $sortedCountries = $order_countries->sortByDesc('fan_count');
@@ -177,7 +178,7 @@ class HomeController extends Controller
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
-        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps'));           
+        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable'));           
     }
 
     public function filtrarDatosMapa(Request $request) {
