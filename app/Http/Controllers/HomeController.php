@@ -50,15 +50,18 @@ class HomeController extends Controller
         $url_mapa_country = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcountry';
         $response_mapa_country = Http::get($url_mapa_country);
         $dataMapCountry = $response_mapa_country->json();
+        //$ultimafechamaps = $dataMapCountry['end_time_min'];
+        $ultimafechamaps = \Carbon\Carbon::parse($dataMapCountry['end_time_min'])->format('Y-m-d');
         $dataCollection = collect($dataMapCountry['data']);
         // Formatea los datos para Highcharts
         $formattedDataMap = $dataCollection->map(function($item) {return [strtolower($item['country_name']), $item['fan_count']];});
         // Convierte a JSON para ser utilizado en JavaScript
         $jsonDataMap = $formattedDataMap->toJson();
+        //dd($jsonDataMap);
         //end servicio de mapas
 
         //servicio top 10 countries
-        $url_top_ten = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getCitiesGroupedByCountry';
+        $url_top_ten = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getCitiesGroupedByCountry?date=2024-09-10';
         $response_top_ten = Http::get($url_top_ten);
         $data_top_ten = $response_top_ten->json();
         $top_countries = $data_top_ten['data'];
@@ -89,6 +92,7 @@ class HomeController extends Controller
             $item['percentage'] = round(($item['fan_count'] / $totalFans) * 100, 2);
             return $item;
         });
+        
         //end service all contries
 
         //service age and gender
@@ -173,8 +177,28 @@ class HomeController extends Controller
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
-        ,'groupedData','percentageData','percentageDataCities','groupedTime'));           
+        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps'));           
     }
+
+    public function filtrarDatosMapa(Request $request) {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+    
+        // Llamada al servicio con la fecha como parámetro
+        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcountry?date={$endDate}"; // Usa startDate para filtrar
+        $response_mapa_country = Http::get($url_mapa_country);
+        $dataMapCountry = $response_mapa_country->json();
+        
+        $dataCollection = collect($dataMapCountry['data']);
+        
+        // Formatea los datos para Highcharts
+        $formattedDataMap = $dataCollection->map(function($item) {
+            return [strtolower($item['country_name']), $item['fan_count']];
+        });
+    
+        return response()->json($formattedDataMap);
+    }
+    
 
     public function updatereactions(Request $request){
         $fecha_inicio = $request->start_date;
