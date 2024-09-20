@@ -99,7 +99,7 @@ class HomeController extends Controller
         //service age and gender
         $url_impressions = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistage';
         $response_impressions = Http::get($url_impressions);
-        $data_impressions = $response_impressions->json();
+        $data_impressions = $response_impressions->json(); 
         $dataImpressions = $data_impressions['data'];
         $groupedData = ['Male' => [],'Female' => []];
         foreach ($dataImpressions as $entry) {
@@ -112,6 +112,7 @@ class HomeController extends Controller
         
             $groupedData[$gender][$ageRange] += $entry['impressions_count'];
         }
+        $ultimafechaage = \Carbon\Carbon::parse($data_impressions['end_time_min'])->format('Y-m-d');
         //end service age and gender
 
         //service most active times
@@ -178,7 +179,7 @@ class HomeController extends Controller
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
-        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable'));           
+        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable','ultimafechaage'));           
     }
 
     public function filtrarDatosMapa(Request $request) {
@@ -198,6 +199,34 @@ class HomeController extends Controller
         });
     
         return response()->json($formattedDataMap);
+    }
+    
+    public function filtrarDatosAge(Request $request){
+        $endDate = $request->input('endDate');
+        $url_impressions = "https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistage?date={$endDate}";
+        $response_impressions = Http::get($url_impressions);
+        $data_impressions = $response_impressions->json(); 
+        $dataImpressions = $data_impressions['data'];
+        // Agrupar por género y rango de edad
+        $groupedData = [];
+        foreach ($dataImpressions as $entry) {
+            $ageGenderGroup = $entry['age_gender_group'];
+            $impressionsCount = $entry['impressions_count'];
+            if (!isset($groupedData[$ageGenderGroup])) {
+                $groupedData[$ageGenderGroup] = 0;
+            }
+            // Sumar impresiones
+            $groupedData[$ageGenderGroup] += $impressionsCount;
+        }
+        // Formatear para que Highcharts lo entienda como un array de objetos [{age_gender_group: 'M_18-24', impressions_count: 100}, ...]
+        $formattedData = [];
+        foreach ($groupedData as $ageGenderGroup => $impressionsCount) {
+            $formattedData[] = [
+                'age_gender_group' => $ageGenderGroup,
+                'impressions_count' => $impressionsCount
+            ];
+        }
+        return response()->json($formattedData);
     }
     
 
