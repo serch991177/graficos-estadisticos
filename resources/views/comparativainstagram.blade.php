@@ -3,7 +3,7 @@
 @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 
 <div class="container">
-    <h1 class="text-center">Comparativa de paginas en instagram</h1>
+    <h1 class="text-center">Analisis de paginas en instagram</h1>
     <div class="row">
         <div class="col-md-4">
             <label>Ingrese el nombre de la primera pagina</label>
@@ -15,27 +15,27 @@
         </div>
         <div class="col-md-4">
             <br>
-            <button class="btn btn-success" type="button" onclick="comparar()">Comparar Paginas</button>
+            <button class="btn btn-success" type="button" onclick="comparar()">Analizar Paginas</button>
         </div>
     </div>
 </div>
 <br><br>
 <div class="container">
-    <h1 class="text-center">Comparativa de Likes</h1>
+    <h1 class="text-center">Analisis de Likes</h1>
     <div class="row">
         <div id="graficacomparativalikes" style="width:100%; height:400px;"></div>
     </div>
 </div>
 <br><br>
 <div class="container">
-    <h1 class="text-center">Comparativa de Comentarios</h1>
+    <h1 class="text-center">Analisis de Comentarios</h1>
     <div class="row">
         <div id="graficacomparativacomentarios" style="width:100%; height:400px;"></div>
     </div>
 </div>
 <br><br>
 <div class="container">
-    <h1 class="text-center">Comparativa de Seguidores y Medias</h1>
+    <h1 class="text-center">Analisis de Seguidores y Medias</h1>
     <div class="row">
         <div id="graficacomparativafollows" style="width:100%; height:400px;"></div>
     </div>
@@ -54,7 +54,7 @@
         } else {
             let timerInterval;
             Swal.fire({
-                title: "Comparando...",
+                title: "Analizando...",
                 html: "Esto tomará unos segundos.",
                 timerProgressBar: true,
                 didOpen: () => {
@@ -86,7 +86,7 @@
                                 type: 'column'
                             },
                             title: {
-                                text: 'Comparación de Likes'
+                                text: 'Analisis de Likes'
                             },
                             xAxis: {
                                 categories: ['P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18','P19','P20','P21','P22','P23','P24','P25']
@@ -110,7 +110,7 @@
                                 type: 'column'
                             },
                             title: {
-                                text: 'Comparación de Comentarios'
+                                text: 'Analisis de Comentarios'
                             },
                             xAxis: {
                                 categories: ['P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14','P15','P16','P17','P18','P19','P20','P21','P22','P23','P24','P25']
@@ -134,7 +134,7 @@
                                 type: 'column'
                             },
                             title: {
-                                text: 'Comparación de seguidores y medias'
+                                text: 'Analisis de seguidores y medias'
                             },
                             xAxis: {
                                 categories: ['Seguidores','Medias']
@@ -159,13 +159,12 @@
                                 data: [null,data.array_medias[1]]
                             }]
                         });
-                        
                         Swal.close();
                     }
                 },
                 error: function(data) {
                     // Manejo del error
-                    Swal.fire('Error', 'Hubo un problema al comparar los datos.', 'error');
+                    Swal.fire('Error', 'Hubo un problema al analizar los datos.', 'error');
                 }
             });
 

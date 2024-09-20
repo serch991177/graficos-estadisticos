@@ -54,7 +54,7 @@
                         <li @if($pageSlug == 'comparativa_instagram') class="active" @endif>
                             <a href="{{route('comparativa_instagram')}}">
                                 <i class="fas fa-balance-scale"></i>
-                                <p>{{_('Comparativa')}}</p>
+                                <p>{{_('Analisis')}}</p>
                             </a>
                         </li>
                     </ul>
