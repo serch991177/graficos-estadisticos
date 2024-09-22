@@ -246,6 +246,23 @@
             <div class="card-header">
                 <h4 class="card-title"> Publicaciones de Facebook</h4>
             </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="">Fecha Inicio</label>
+                        <input type="date" class="form-control" name="start_tabla" id="start_tabla" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="">Fecha Fin</label>
+                        <input type="date" class="form-control" name="end_tabla" id="end_tabla">
+                    </div>
+                    <div class="col-md-4">
+                        <label for=""></label><br> 
+                        <button id="filterTabla" class="btn btn-primary">Actualizar Tabla</button>
+                        <button id="showAll" class="btn btn-secondary">Mostrar Todas las Publicaciones</button>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <style>
@@ -281,10 +298,8 @@
         </div>
     </div>
 </div>
+
 <!--fin cambios-->
-
-<!--Tabla de publicaciones de Facebook-->
-
 <br>
 <style>
     #myPieModal {
@@ -292,7 +307,6 @@
         height: 400px;
     }
 </style>
-
 <!--Mapa con paises-->
 <div class="container">
     <div class="row">
@@ -851,33 +865,6 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
         <div id="charttendenciasall" style="width: 100%; height: 600px;"></div>
     </div>
 </div>
-<!--Grafico Mapa de Bolivia-->
-<!--<div class="container">
-    <h1 class="text-center">Mapa de Bolivia</h1>
-    <div class="row">
-        <div id="mapaBolivia" style="width: 100%; height: 600px;"></div>
-    </div>
-</div>-->
-<!--Reporte PDF del post con mas interaccion-->
-{{--<div class="container">
-    <h1 class="text-center">Informe de Escucha Activa</h1>
-    <div class="text-center">
-        <form action="{{route('informe_escucha')}}" method="post" target="_blank">
-            @csrf
-            <button class="btn btn-primary" title="Generar Informe">Generar Informe</button>
-        </form>
-    </div>
-</div>--}}
-<!--Nuevo Reporte-->
-{{--<div class="container">
-    <h1 class="text-center">Informe Actualizado</h1>
-    <div class="text-center">
-        <form action="{{route('informe_actualizado')}}" method="post" target="_blank">
-            @csrf
-            <button class="btn btn-primary" title="Generar Informe">Generar Informe</button>
-        </form>
-    </div>
-</div>--}}
 <!-- Modal Graficas-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -919,12 +906,17 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <!-- inicializacion de data table-->
 <script>
-    $('#example123').DataTable({
+    var table = $('#example123').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
             "url": "{{ route('tablepost') }}",
-            "type": "GET"
+            "type": "GET",
+            "data": function(d) {
+                // Agregar las fechas a los parámetros de la solicitud
+                d.start_date = $('#start_tabla').val();
+                d.end_date = $('#end_tabla').val();
+            }
         },
         "order": [[ 4, "desc" ]],
         "columns": [
@@ -982,14 +974,74 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
             }
         ],
         "paging": true,
-        "lengthChange": true,
+        "lengthChange": false,
         "searching": false,
         "ordering": true,
         "info": true,
         "autoWidth": false,
         "responsive": true,
-        "pageLength": 10 // Asegúrate de que esté configurado según tus necesidades
+        "pageLength": 10 
     });
+    // Evento para el botón de filtro
+    $('#filterTabla').on('click', function() {
+        // Mostrar el mensaje de actualización
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Recargar la tabla
+        table.ajax.reload(function() {
+            // Cerrar el mensaje de actualización después de que se complete la recarga
+            Swal.close();
+        });
+    });
+    $('#showAll').on('click', function() {
+        // Limpiar los campos de fecha
+        $('#start_tabla').val('');
+        $('#end_tabla').val('');
+        // Mostrar el mensaje de actualización
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Recargar la tabla
+        table.ajax.reload(function() {
+            // Cerrar el mensaje de actualización después de que se complete la recarga
+            Swal.close();
+        });
+    });
+
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -2243,65 +2295,6 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
             }]      
         });
     }
-</script>
-<!--Mapa de Bolivia -->
-<script>
-    //mapaBolivia
-    document.addEventListener('DOMContentLoaded', function () {
-        const data = [
-            { "name": "La Paz", "y": 12345 },
-            { "name": "El Alto", "y": 11000 },
-            { "name": "Santa Cruz", "y": 23456 },
-            { "name": "Montero", "y": 15000 },
-            { "name": "Cochabamba", "y": 34567 },
-            { "name": "Sacaba", "y": 12000 },
-            { "name": "Sucre", "y": 4567 },
-            { "name": "Potosí", "y": 5678 },
-            { "name": "Oruro", "y": 6789 },
-            { "name": "Tarija", "y": 7890 },
-            { "name": "Cobija", "y": 890 },
-            { "name": "Trinidad", "y": 901 }
-        ];
-
-        Highcharts.mapChart('mapaBolivia', {
-            chart: {
-                map: 'countries/bo/bo-all'
-            },
-
-            title: {
-                text: 'Ciudades de Bolivia con datos de fans'
-            },
-
-            subtitle: {
-                text: 'Datos estáticos'
-            },
-
-            mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
-
-            colorAxis: {
-                min: 0
-            },
-
-            series: [{
-                data: data,
-                name: 'Fans count',
-                states: {
-                    hover: {
-                        color: '#BADA55'
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}'
-                }
-            }]
-        });
-    });
 </script>
 <!--Actualizar trend-->
 <script>

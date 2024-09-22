@@ -335,6 +335,10 @@ class HomeController extends Controller
         if ($request->ajax()) {
             $page = $request->input('start') / $request->input('length') + 1;
     
+            // Obtener las fechas del request
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+
             // Definir parámetros de ordenamiento por defecto
             $sortBy = $request->input('columns')[$request->input('order')[0]['column']]['data'] ?? 'created_time';
             $sortDirection = $request->input('order')[0]['dir'] ?? 'desc';
@@ -342,6 +346,11 @@ class HomeController extends Controller
             // Construir la URL con los parámetros de ordenamiento
             $url = "https://reportapi.infocenterlatam.com/api/fstadistic/listPost?page=" . $page . "&per_page=" . $request->input('length') . "&sort_by=" . $sortBy . "&sort_direction=" . $sortDirection;
     
+            // Agregar las fechas si están presentes
+            if ($startDate && $endDate) {
+                $url .= "&start_date=" . $startDate . "&end_date=" . $endDate;
+            }
+
             $response = Http::get($url);
             $datas = $response->json();
             $items = $datas['data'];
