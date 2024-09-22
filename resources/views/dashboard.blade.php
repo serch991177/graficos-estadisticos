@@ -561,6 +561,22 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
                         </div>
                     </div>
                     <div class="row">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="">Fecha Inicio</label>
+                                    <input type="date" class="form-control" name="start_time" id="start_time" value="{{$ultimafechaTime}}" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Fecha Fin</label>
+                                    <input type="date" class="form-control" name="end_time" id="end_time">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for=""></label><br> 
+                                    <button id="filterTime" class="btn btn-primary">Actualizar Grafica</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div id="mosttimeactives" style="width:100%; height:400px;"></div>   
                         </div>
@@ -2373,7 +2389,7 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
 <!--Grafica de horas-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const chart = Highcharts.chart('mosttimeactives', {
+        const chartTime = Highcharts.chart('mosttimeactives', {
             chart: {
                 type: 'column'
             },
@@ -2410,6 +2426,44 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
                 ]
             }]
         });
+
+        document.getElementById('filterTime').addEventListener('click', function () {
+            const startDate = document.getElementById('start_time').value;
+            const endDate = document.getElementById('end_time').value;
+            let timerInterval;
+            Swal.fire({
+                title: "Actualizando...",
+                html: "Esto tomará unos segundos.",
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        if (timer) {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            });
+            if (startDate && endDate) {
+                // Hacer la llamada AJAX
+                fetch(`/api/filtrar-datos-time?startDate=${startDate}&endDate=${endDate}`)
+                    .then(response => response.json())
+                    .then(newData => {
+                        // Actualizar el grafico con los nuevos datos
+                        Swal.close();
+                        chartTime.series[0].setData(newData.map(data => data.total_followers));
+                    })
+                    .catch(error => {Swal.fire({icon: 'error',title: 'Error',text:  'No se encontraron datos para la fecha especificada.'});
+                });        } else {
+                Swal.fire('error','Por favor selecciona un rango de fechas.','error');
+            }
+        });
+
+
     });
 </script>
 <!--Datos Demograficos-->

@@ -145,7 +145,7 @@ class HomeController extends Controller
                 'total_followers' => $totalFollowers,
             ];
         }
-        
+        $ultimafechaTime = \Carbon\Carbon::parse($data_times['end_time_min'])->format('Y-m-d');
         //end service most active times
 
         //service followers
@@ -179,7 +179,7 @@ class HomeController extends Controller
         
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
-        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable','ultimafechaage'));           
+        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable','ultimafechaage','ultimafechaTime'));           
     }
 
     public function filtrarDatosMapa(Request $request) {
@@ -229,6 +229,40 @@ class HomeController extends Controller
         return response()->json($formattedData);
     }
     
+    public function filtrarDatosTime(Request $request){
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $url_times = "https://reportapi.infocenterlatam.com/api/fstadistic/getUsertimeOnline?start_date={$startDate}&end_date={$endDate}";
+        $response_times = Http::get($url_times);
+        $data_times = $response_times->json();
+        $dataTimes = $data_times['data'];        
+        $intervals = [
+            '0:00 to 3:00'  => ['0:00', '1:00', '2:00'],
+            '3:00 to 6:00'  => ['3:00', '4:00', '5:00'],
+            '6:00 to 9:00'  => ['6:00', '7:00', '8:00'],
+            '9:00 to 12:00' => ['9:00', '10:00', '11:00'],
+            '12:00 to 15:00' => ['12:00', '13:00', '14:00'],
+            '15:00 to 18:00' => ['15:00', '16:00', '17:00'],
+            '18:00 to 21:00' => ['18:00', '19:00', '20:00'],
+            '21:00 to 0:00' => ['21:00', '22:00', '23:00'],
+        ];
+        $groupedTime = [];
+        foreach ($intervals as $interval => $times) {
+            $totalFollowers = 0;
+        
+            foreach ($dataTimes as $entry) {
+                if (in_array($entry['time'], $times)) {
+                    $totalFollowers += $entry['count_followers'];
+                }
+            }
+        
+            $groupedTime[] = [
+                'interval' => $interval,
+                'total_followers' => $totalFollowers,
+            ];
+        }
+        return response()->json($groupedTime);
+    }
 
     public function updatereactions(Request $request){
         $fecha_inicio = $request->start_date;

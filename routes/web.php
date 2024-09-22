@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/facebook-update',[HomeController::class,'updatereactions']);
     Route::get('/api/filtrar-datos-mapa', [HomeController::class, 'filtrarDatosMapa']);
     Route::get('/api/filtrar-datos-age', [HomeController::class, 'filtrarDatosAge']);
+    Route::get('/api/filtrar-datos-time', [HomeController::class, 'filtrarDatosTime']);
     
 
     //rutas relacionada con informes y graficos de Instagram
