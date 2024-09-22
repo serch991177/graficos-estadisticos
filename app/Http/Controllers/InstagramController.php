@@ -687,8 +687,12 @@ class InstagramController extends Controller
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
             
+            $grafico_escucha = public_path() . '/img/escucha_4.jpg';
+            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+           
 
-            $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+            $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
