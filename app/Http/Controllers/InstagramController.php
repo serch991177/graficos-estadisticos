@@ -337,10 +337,10 @@ class InstagramController extends Controller
             if(isset($datos['TopPost'][1])) {
                 $sumatotalinteraccionespost2 = $datos['TopPost'][1]['comments_count'] + $datos['TopPost'][1]['shares_count'] + $datos['TopPost'][1]['saved_count'] + $datos['TopPost'][1]['likes_count'];      
             }else {$sumatotalinteraccionespost2 = 0; }
-            $sumatotalinteraccionesCompartido = $datos['getMostSharedPost']['comments_count'] + $datos['getMostSharedPost']['shares_count'] + $datos['getMostSharedPost']['saved_count'] + $datos['getMostSharedPost']['likes_count'];
-            $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost']['comments_count'] + $datos['getMostCommentsPost']['shares_count'] + $datos['getMostCommentsPost']['saved_count'] + $datos['getMostCommentsPost']['likes_count'];
+            $sumatotalinteraccionesCompartido = $datos['getMostSharedPost'][0]['comments_count'] + $datos['getMostSharedPost'][0]['shares_count'] + $datos['getMostSharedPost'][0]['saved_count'] + $datos['getMostSharedPost'][0]['likes_count'];
+            $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost'][0]['comments_count'] + $datos['getMostCommentsPost'][0]['shares_count'] + $datos['getMostCommentsPost'][0]['saved_count'] + $datos['getMostCommentsPost'][0]['likes_count'];
             
-            $imageUrlCompartido = $datos['getMostSharedPost']['media_url'];
+            $imageUrlCompartido = $datos['getMostSharedPost'][0]['media_url'];
             if (empty($imageUrlCompartido)) {
                 $imageUrlCompartido = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
                 $responseCompartido = Http::get($imageUrlCompartido);
@@ -354,7 +354,7 @@ class InstagramController extends Controller
                 $imageSrcCompartido = $imageUrlCompartido;
             }
             
-            $imageUrlComentario = $datos['getMostCommentsPost']['media_url'];
+            $imageUrlComentario = $datos['getMostCommentsPost'][0]['media_url'];
             if (empty($imageUrlComentario)) {
                 $imageUrlComentario = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
                 $responseComentario = Http::get($imageUrlComentario);
