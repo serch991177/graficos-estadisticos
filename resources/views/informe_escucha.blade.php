@@ -28,6 +28,14 @@
             background-size: cover;
             height: 100vh;
         }
+
+        .page-4 {
+            background-image: url('{{ $src_escucha_grafica }}');
+            background-size: cover;
+            height: 100vh;
+        }
+
+        
     </style>
 </head>
 <body>
@@ -80,6 +88,28 @@
         @endif
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
+
+
+
+
+    <!--graficas-->    
+    @if(isset($imageChartBase64) || isset($imageChartBarBase64))
+        @if(isset($imageChartBase64))
+            <div class="page-4">
+                <div style="position:absolute; top:400px; left:480px;"> <img src="data:image/jpeg;base64,{{ $imageChartBase64 }}" alt="Gráfico de Tortas" width="700px"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+        @endif
+        @if(isset($imageChartBarBase64))
+            <div class="page-4">
+                <div style="position:absolute; top:400px; left:480px;"><img src="data:image/jpeg;base64,{{ $imageChartBarBase64 }}" alt="Gráfico de Barras" width="700px"></div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+        @endif
+    @else
+    
+    @endif
+    
 
     <!--Gracias -->
     <div class="page-3">
@@ -139,28 +169,6 @@
     @endif
     
     
-    @if(isset($imageChartBase64) || isset($imageChartBarBase64))
-        <h1 class="text-center">Resultado de La Escucha Activa</h1><br>
-        @if(isset($imageChartBase64))
-            <table class="image-center">
-                <tr>
-                    <td>
-                        <img src="data:image/jpeg;base64,{{ $imageChartBase64 }}" alt="Gráfico de Tortas" width="300" height="300">
-                    </td>
-                </tr>
-            </table><br><br>
-        @endif
-        @if(isset($imageChartBarBase64))
-            <table class="image-center">
-                <tr>
-                    <td>
-                        <img src="data:image/jpeg;base64,{{ $imageChartBarBase64 }}" alt="Gráfico de Barras" width="300" height="300">
-                    </td>
-                </tr>
-            </table>
-        @endif
-    @else
-    
-    @endif--}}
+    --}}
 </body>
 </html>

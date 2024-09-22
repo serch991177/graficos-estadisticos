@@ -441,9 +441,14 @@ class HomeController extends Controller
             $overview = public_path() . '/img/escucha_3.jpg';
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+            
+            $grafico_escucha = public_path() . '/img/escucha_4.jpg';
+            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
            
 
-            $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+            $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -484,10 +489,10 @@ class HomeController extends Controller
             $unfollows = $datos['follwers']['total_seguidores_perdidos'];
             $sumatotalinteraccionespost1 = $datos['TopPost'][0]['comments_count'] + $datos['TopPost'][0]['share_count'] + $datos['TopPost'][0]['like_count'] + $datos['TopPost'][0]['love_count'] + $datos['TopPost'][0]['haha_count']+ $datos['TopPost'][0]['wow_count']+ $datos['TopPost'][0]['sad_count']+ $datos['TopPost'][0]['angry_count'];
             $sumatotalinteraccionespost2 = $datos['TopPost'][1]['comments_count'] + $datos['TopPost'][1]['share_count'] + $datos['TopPost'][1]['like_count'] + $datos['TopPost'][1]['love_count'] + $datos['TopPost'][1]['haha_count']+ $datos['TopPost'][1]['wow_count']+ $datos['TopPost'][1]['sad_count']+ $datos['TopPost'][1]['angry_count'];      
-            $sumatotalinteraccionesCompartido = $datos['getMostSharedPost']['comments_count'] + $datos['getMostSharedPost']['share_count'] + $datos['getMostSharedPost']['like_count'] + $datos['getMostSharedPost']['love_count'] + $datos['getMostSharedPost']['haha_count']+ $datos['getMostSharedPost']['wow_count']+ $datos['getMostSharedPost']['sad_count']+ $datos['getMostSharedPost']['angry_count'];
-            $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost']['comments_count'] + $datos['getMostCommentsPost']['share_count'] + $datos['getMostCommentsPost']['like_count'] + $datos['getMostCommentsPost']['love_count'] + $datos['getMostCommentsPost']['haha_count']+ $datos['getMostCommentsPost']['wow_count']+ $datos['getMostCommentsPost']['sad_count']+ $datos['getMostCommentsPost']['angry_count'];
+            $sumatotalinteraccionesCompartido = $datos['getMostSharedPost'][0]['comments_count'] + $datos['getMostSharedPost'][0]['share_count'] + $datos['getMostSharedPost'][0]['like_count'] + $datos['getMostSharedPost'][0]['love_count'] + $datos['getMostSharedPost'][0]['haha_count']+ $datos['getMostSharedPost'][0]['wow_count']+ $datos['getMostSharedPost'][0]['sad_count']+ $datos['getMostSharedPost'][0]['angry_count'];
+            $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost'][0]['comments_count'] + $datos['getMostCommentsPost'][0]['share_count'] + $datos['getMostCommentsPost'][0]['like_count'] + $datos['getMostCommentsPost'][0]['love_count'] + $datos['getMostCommentsPost'][0]['haha_count']+ $datos['getMostCommentsPost'][0]['wow_count']+ $datos['getMostCommentsPost'][0]['sad_count']+ $datos['getMostCommentsPost'][0]['angry_count'];
             
-            $imageUrlCompartido = $datos['getMostSharedPost']['full_picture'];
+            $imageUrlCompartido = $datos['getMostSharedPost'][0]['full_picture'];
             if (empty($imageUrlCompartido)) {
                 $imageUrlCompartido = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
                 $responseCompartido = Http::get($imageUrlCompartido);
@@ -501,7 +506,7 @@ class HomeController extends Controller
                 $imageSrcCompartido = $imageUrlCompartido;
             }
             
-            $imageUrlComentario = $datos['getMostCommentsPost']['full_picture'];
+            $imageUrlComentario = $datos['getMostCommentsPost'][0]['full_picture'];
             if (empty($imageUrlComentario)) {
                 $imageUrlComentario = 'https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43';
                 $responseComentario = Http::get($imageUrlComentario);
