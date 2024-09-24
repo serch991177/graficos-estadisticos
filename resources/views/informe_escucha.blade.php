@@ -29,12 +29,13 @@
             height: 100vh;
         }
 
-        .page-4 {
-            background-image: url('{{ $src_escucha_grafica }}');
-            background-size: cover;
-            height: 100vh;
-        }
-
+        @if(isset($src_escucha_grafica))
+            .page-4 {
+                background-image: url('{{ $src_escucha_grafica }}');
+                background-size: cover;
+                height: 100vh;
+            }
+        @endif
         
     </style>
 </head>
