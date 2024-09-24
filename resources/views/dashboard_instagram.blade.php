@@ -96,6 +96,25 @@
             <div class="card-header">
                 <h4 class="card-title"> Publicaciones de Instagram</h4>
             </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="">Fecha Inicio</label>
+                        <input type="date" class="form-control" name="start_tabla" id="start_tabla" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="">Fecha Fin</label>
+                        <input type="date" class="form-control" name="end_tabla" id="end_tabla">
+                    </div>
+                    <div class="col-md-4">
+                        <label for=""></label><br> 
+                        <button id="filterTabla" class="btn btn-primary">Actualizar Tabla</button>
+                        <button id="showAll" class="btn btn-secondary">Mostrar Todas las Publicaciones</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <style>
@@ -491,7 +510,7 @@
 </script>
 <!-- inicializacion de data table-->
 <script>
-    $('#example123').DataTable({
+    var table = $('#example123').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -554,7 +573,7 @@
             }
         ],
         "paging": true,
-        "lengthChange": true,
+        "lengthChange": false,
         "searching": false,
         "ordering": true,
         "info": true,
@@ -562,6 +581,65 @@
         "responsive": true,
         "pageLength": 10 // Asegúrate de que esté configurado según tus necesidades
     });
+    // Evento para el botón de filtro
+    $('#filterTabla').on('click', function() {
+        // Mostrar el mensaje de actualización
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Recargar la tabla
+        table.ajax.reload(function() {
+            // Cerrar el mensaje de actualización después de que se complete la recarga
+            Swal.close();
+        });
+    });
+    $('#showAll').on('click', function() {
+        // Limpiar los campos de fecha
+        $('#start_tabla').val('');
+        $('#end_tabla').val('');
+        // Mostrar el mensaje de actualización
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Recargar la tabla
+        table.ajax.reload(function() {
+            // Cerrar el mensaje de actualización después de que se complete la recarga
+            Swal.close();
+        });
+    });
+
 </script>
 <!--Funcion para recupera id de las graficas-->
 <script>
