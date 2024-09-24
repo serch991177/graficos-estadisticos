@@ -152,6 +152,23 @@
 </div>
 <!--Mapa con paises-->
 <div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="">Fecha Inicio</label>
+            <input type="date" class="form-control" name="start_maps" id="start_maps" value="{{$ultimafechamaps}}" readonly>
+        </div>
+        <div class="col-md-4">
+            <label for="">Fecha Fin</label>
+            <input type="date" class="form-control" name="end_maps" id="end_maps">
+        </div>
+        <div class="col-md-4">
+            <label for=""></label><br> 
+            <button id="filterButton" class="btn btn-primary">Actualizar Mapa</button>
+            <!--<button class="btn btn-success" type="button" onclick="updatemaps()" >Actualizar Mapa</button>-->
+        </div>
+    </div>
+</div>
+<div class="container">
     <h1 class="text-center">Mapa Estadistico</h1>
     <div class="row">
         <div class="col-md-12 canvas-container" style="display:flex;justify-content:center;">
@@ -515,7 +532,12 @@
         "serverSide": true,
         "ajax": {
             "url": "{{ route('tablepostinstagram') }}",
-            "type": "GET"
+            "type": "GET",
+            "data": function(d) {
+                // Agregar las fechas a los parámetros de la solicitud
+                d.start_date = $('#start_tabla').val();
+                d.end_date = $('#end_tabla').val();
+            }
         },
         "order": [[ 4, "desc" ]],
         "columns": [
@@ -714,8 +736,7 @@
         // obtener los datos del backend
         const dataMap = {!! $jsonDataMap !!};
         //console.log(dataMap);
-
-        Highcharts.mapChart('myMap', {
+        const chart = Highcharts.mapChart('myMap', {
             chart: {
                 map: 'custom/world'
             },
@@ -753,6 +774,42 @@
                     format: '{point.name}'
                 }
             }]
+        });
+        // Filtro de fecha
+        document.getElementById('filterButton').addEventListener('click', function () {
+            const startDate = document.getElementById('start_maps').value;
+            const endDate = document.getElementById('end_maps').value;
+            let timerInterval;
+            Swal.fire({
+                title: "Actualizando...",
+                html: "Esto tomará unos segundos.",
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        if (timer) {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            });
+            if (startDate && endDate) {
+                // Hacer la llamada AJAX
+                fetch(`/api/filtrar-datos-mapa-instagram?startDate=${startDate}&endDate=${endDate}`)
+                    .then(response => response.json())
+                    .then(newData => {
+                        // Actualizar el mapa con los nuevos datos
+                        Swal.close();
+                        chart.series[0].setData(newData);
+                    })
+                    .catch(error => {Swal.fire({icon: 'error',title: 'Error',text:  'No se encontraron datos para la fecha especificada.'});
+                });        } else {
+                Swal.fire('error','Por favor selecciona un rango de fechas.','error');
+            }
         });
     });
 </script>

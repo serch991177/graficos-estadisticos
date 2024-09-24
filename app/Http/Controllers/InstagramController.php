@@ -44,6 +44,7 @@ class InstagramController extends Controller
         $url_mapa_country = 'https://reportapi.infocenterlatam.com/api/istadistic/listfrom';
         $response_mapa_country = Http::get($url_mapa_country);
         $dataMapCountry = $response_mapa_country->json();
+        $ultimafechamaps = \Carbon\Carbon::parse($dataMapCountry['end_time_min'])->format('Y-m-d');
         $dataCollection = collect($dataMapCountry['data']);
         // Formatea los datos para Highcharts
         $formattedDataMap = $dataCollection->map(function($item) {return [strtolower($item['country_name']), $item['fan_count']];});
@@ -103,7 +104,7 @@ class InstagramController extends Controller
         }
         //end service age and gender
         return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities',
-        'groupedData','dataImpressions','percentageDataCities','percentageData'));
+        'groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps'));
     }
 
     public function updatereactions(Request $request){
@@ -149,7 +150,6 @@ class InstagramController extends Controller
             $total = $datas['total'];
             
             
-            //dd($total);
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,
@@ -910,5 +910,23 @@ class InstagramController extends Controller
         return view('tablamanfred');
     }
     
+    public function filtrarDatosMapa(Request $request){
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+    
+        // Llamada al servicio con la fecha como parámetro
+        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/istadistic/listfrom?date={$endDate}"; // Usa startDate para filtrar
+        $response_mapa_country = Http::get($url_mapa_country);
+        $dataMapCountry = $response_mapa_country->json();
+        dd($dataMapCountry);
+        $dataCollection = collect($dataMapCountry['data']);
+        
+        // Formatea los datos para Highcharts
+        $formattedDataMap = $dataCollection->map(function($item) {
+            return [strtolower($item['country_name']), $item['fan_count']];
+        });
+        dd($formattedDataMap);
+        return response()->json($formattedDataMap);
+    }
     
 }

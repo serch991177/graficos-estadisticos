@@ -104,6 +104,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/api/instagram-share', [InstagramController::class, 'getTopShare']);
     Route::get('/comparativa-instagram', [InstagramController::class, 'comparativainstagram'])->name('comparativa_instagram');
     Route::get('/services-instagram',[InstagramController::class, 'servicesinstagram'])->name('services_instagram');
+    Route::get('/api/filtrar-datos-mapa-instagram', [InstagramController::class, 'filtrarDatosMapa']);
+
+
 
     Route::get('/maquetacion',[InstagramController::class,'tablamanfred'])->name('maquetacion_manfred');
     //rutas python
