@@ -178,6 +178,23 @@
 </div>
 <br>
 <!--Tabla de paises con mas fans-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="">Fecha Inicio</label>
+            <input type="date" class="form-control" name="start_table" id="start_table" value="{{$ultimafechatable}}" readonly>
+        </div>
+        <div class="col-md-4">
+            <label for="">Fecha Fin</label>
+            <input type="date" class="form-control" name="end_table" id="end_table">
+        </div>
+        <div class="col-md-4">
+            <label for=""></label><br> 
+            <button id="filterButtonTabla" class="btn btn-primary">Actualizar Tabla</button>
+            <!--<button class="btn btn-success" type="button" onclick="updatemaps()" >Actualizar Mapa</button>-->
+        </div>
+    </div>
+</div><br>
 <div class="container"> 
     <div class="row">
         <div class="col-md-12">
@@ -187,7 +204,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="example" class="display  table tablesorter" style="width:100%">
+                        <table id="topCountriesTable" class="display  table tablesorter" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Numero</th>
@@ -215,6 +232,81 @@
     </div>
 </div>
 <br>
+<script>
+    document.getElementById('filterButtonTabla').addEventListener('click', function() {
+        // Obtener el valor de la fecha de fin
+        var startDate = document.getElementById('start_table').value; 
+        var endDate = document.getElementById('end_table').value;
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+        // Comprobar si la fecha de fin no está vacía
+        if (endDate) {
+            // Construir la URL con la fecha
+            var url = `https://reportapi.infocenterlatam.com/api/istadistic/getCitiesGroupedByCountry?start_date=${startDate}&end_date=${endDate}`;
+            // Hacer la solicitud AJAX
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    Swal.close();
+                    var tableBody = document.querySelector('#topCountriesTable tbody');
+                    tableBody.innerHTML = ''; // Limpiar la tabla
+
+                    var countriesMap = {};
+
+                    // Agrupar por país y sumar el número de fans
+                    data.data.forEach(country => {
+                        if (!countriesMap[country.pais]) {
+                            countriesMap[country.pais] = 0;
+                        }
+                        countriesMap[country.pais] += country.fan_count;
+                    });
+
+                    // Ordenar países por número de fans en orden descendente
+                    var sortedCountries = Object.keys(countriesMap).sort((a, b) => countriesMap[b] - countriesMap[a]);
+
+                    // Crear filas para la tabla
+                    sortedCountries.slice(0, 10).forEach((countryName, index) => {
+                        var row = document.createElement('tr');
+
+                        var numberCell = document.createElement('td');
+                        numberCell.textContent = index + 1; // Número de 1 a 10
+                        row.appendChild(numberCell);
+
+                        var countryCell = document.createElement('td');
+                        countryCell.textContent = countryName;
+                        row.appendChild(countryCell);
+
+                        var fanCountCell = document.createElement('td');
+                        fanCountCell.textContent = countriesMap[countryName];
+                        row.appendChild(fanCountCell);
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            Swal.fire('error','Por favor, selecciona una fecha de fin.','error');
+        }
+    });
+</script>
 <!--grafico de todas las ciudades-->
 <div class="container">
     <h1 class="text-center">Numero de fans en todas las ciudades</h1>

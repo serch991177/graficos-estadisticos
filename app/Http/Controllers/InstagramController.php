@@ -57,6 +57,7 @@ class InstagramController extends Controller
         $response_top_ten = Http::get($url_top_ten);
         $data_top_ten = $response_top_ten->json();
         $top_countries = $data_top_ten['data'];
+        $ultimafechatable = \Carbon\Carbon::parse($data_top_ten['end_tiem_min'])->format('Y-m-d');
         $order_countries = collect($top_countries);
         // Ordenar por fan_count en orden descendente
         $sortedCountries = $order_countries->sortByDesc('fan_count');
@@ -104,7 +105,7 @@ class InstagramController extends Controller
         }
         //end service age and gender
         return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities',
-        'groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps'));
+        'groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps','ultimafechatable'));
     }
 
     public function updatereactions(Request $request){
