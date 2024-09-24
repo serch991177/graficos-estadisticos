@@ -105,6 +105,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/comparativa-instagram', [InstagramController::class, 'comparativainstagram'])->name('comparativa_instagram');
     Route::get('/services-instagram',[InstagramController::class, 'servicesinstagram'])->name('services_instagram');
     Route::get('/api/filtrar-datos-mapa-instagram', [InstagramController::class, 'filtrarDatosMapa']);
+    Route::get('/api/filtrar-datos-age-instagram', [InstagramController::class, 'filtrarDatosAge']);
 
 
 

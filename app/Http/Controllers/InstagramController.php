@@ -103,9 +103,10 @@ class InstagramController extends Controller
         
             $groupedData[$gender][$ageRange] += $entry['impressions_count'];
         }
+        $ultimafechaage = \Carbon\Carbon::parse(time: $data_impressions['end_time_min'])->format('Y-m-d');
         //end service age and gender
         return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities',
-        'groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps','ultimafechatable'));
+        'groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps','ultimafechatable','ultimafechaage'));
     }
 
     public function updatereactions(Request $request){
@@ -930,4 +931,31 @@ class InstagramController extends Controller
         return response()->json($formattedDataMap);
     }
     
+    public function filtrarDatosAge(Request $request){
+        $endDate = $request->input('endDate');
+        $url_impressions = "https://reportapi.infocenterlatam.com/api/istadistic/listage?date={$endDate}";
+        $response_impressions = Http::get($url_impressions);
+        $data_impressions = $response_impressions->json(); 
+        $dataImpressions = $data_impressions['data'];
+        // Agrupar por género y rango de edad
+        $groupedData = [];
+        foreach ($dataImpressions as $entry) {
+            $ageGenderGroup = $entry['age_gender_group'];
+            $impressionsCount = $entry['impressions_count'];
+            if (!isset($groupedData[$ageGenderGroup])) {
+                $groupedData[$ageGenderGroup] = 0;
+            }
+            // Sumar impresiones
+            $groupedData[$ageGenderGroup] += $impressionsCount;
+        }
+        // Formatear para que Highcharts lo entienda como un array de objetos [{age_gender_group: 'M_18-24', impressions_count: 100}, ...]
+        $formattedData = [];
+        foreach ($groupedData as $ageGenderGroup => $impressionsCount) {
+            $formattedData[] = [
+                'age_gender_group' => $ageGenderGroup,
+                'impressions_count' => $impressionsCount
+            ];
+        }
+        return response()->json($formattedData);
+    }
 }

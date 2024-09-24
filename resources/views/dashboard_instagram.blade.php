@@ -342,6 +342,23 @@
 <div class="container">
     <h1 class="text-center">Impresiones de Pagina por Grupo de Edad y Sexo</h1>
     <div class="row">
+        <div class="col-md-4">
+            <label for="">Fecha Inicio</label>
+            <input type="date" class="form-control" name="start_age" id="start_age" value="{{$ultimafechaage}}" readonly>
+        </div>
+        <div class="col-md-4">
+            <label for="">Fecha Fin</label>
+            <input type="date" class="form-control" name="end_age" id="end_age">
+        </div>
+        <div class="col-md-4">
+            <label for=""></label><br> 
+            <button id="filterAge" class="btn btn-primary">Actualizar Grafica</button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h1 class="text-center">Impresiones de Pagina por Grupo de Edad y Sexo</h1>
+    <div class="row">
         <div id="chartImpressions" style="width: 100%; height: 400px;"></div>
     </div>
 </div>
@@ -1018,7 +1035,7 @@
         var impressions = dataImpressions.map(function (item) {
             return parseInt(item.impressions_count);
         });
-        Highcharts.chart('chartImpressions', {
+        const AgeChart = Highcharts.chart('chartImpressions', {
             chart: {
                 type: 'area',
                 options3d: {
@@ -1062,6 +1079,47 @@
                 color: '#D4B3E6' // Color púrpura para las áreas
             }]
         });
+        // Filtro de fecha
+        document.getElementById('filterAge').addEventListener('click', function () {
+            const startDate = document.getElementById('start_age').value;
+            const endDate = document.getElementById('end_age').value;
+            let timerInterval;
+            Swal.fire({
+                title: "Actualizando...",
+                html: "Esto tomará unos segundos.",
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                    const timer = Swal.getPopup().querySelector("b");
+                    timerInterval = setInterval(() => {
+                        if (timer) {
+                            timer.textContent = `${Swal.getTimerLeft()}`;
+                        }
+                    }, 100);
+                },
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            });
+            if (startDate && endDate) {
+                // Hacer la llamada AJAX
+                fetch(`/api/filtrar-datos-age-instagram?startDate=${startDate}&endDate=${endDate}`)
+                    .then(response => response.json())
+                    .then(newData => {
+                        // Actualizar el grafico con los nuevos datos
+                        Swal.close();
+                        const categories = newData.map(item => item.age_gender_group);
+                        const impressions = newData.map(item => item.impressions_count);
+                        
+                        AgeChart.xAxis[0].setCategories(categories); // Actualizamos las categorías del eje X
+                        AgeChart.series[0].setData(impressions); // Actualizamos los datos
+                    })
+                    .catch(error => {Swal.fire({icon: 'error',title: 'Error',text:  'No se encontraron datos para la fecha especificada.'});
+                });        } else {
+                Swal.fire('error','Por favor selecciona un rango de fechas.','error');
+            }
+        });
+        //end filtracion fechas
     });
 </script>
 <!--Grafico de Tendencias-->
