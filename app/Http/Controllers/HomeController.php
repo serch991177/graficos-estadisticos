@@ -174,9 +174,13 @@ class HomeController extends Controller
             '<i class="fas fa-sad-tear" style="color: #9C27B0;"></i>',
             '<i class="fas fa-angry" style="color: #F44336;"></i>',
             '<i class="fas fa-share" style="color: #03A9F4;"></i>',
+            '<i class="fas fa-bullseye" style="color: #4CAF50;"></i>',
+            '<i class="fas fa-handshake" style="color: #FFC107;"></i>',
+            '<i class="fas fa-hand-pointer" style="color: #FF5722;"></i>',
             '<i class="fas fa-cog"></i>'
         ];
-        
+        //<i class="fas fa-bullseye" style="color: #4CAF50;"></i> <!-- Alcance (Target) -->
+        //<i class="fas fa-handshake" style="color: #FFC107;"></i> <!-- Interacción -->
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
         ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable','ultimafechaage','ultimafechaTime'));           
@@ -355,7 +359,7 @@ class HomeController extends Controller
             $datas = $response->json();
             $items = $datas['data'];
             $total = $datas['total'];
-    
+            
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,

@@ -987,6 +987,9 @@ document.getElementById('filterButtonTabla').addEventListener('click', function(
             { "data": "sad_count" },
             { "data": "angry_count" },
             { "data": "share_count" },
+            {"data":"post_impressions"},
+            {"data":"total_reactions"},
+            {"data":"post_click"},
             { 
                 "data": null,
                 "render": function(data, type, row) {
