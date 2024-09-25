@@ -155,11 +155,11 @@
     <div class="row">
         <div class="col-md-4">
             <label for="">Fecha Inicio</label>
-            <input type="date" class="form-control" name="start_maps" id="start_maps" value="{{$ultimafechamaps}}" readonly>
+            <input type="date" class="form-control" name="start_maps" id="start_maps" value="{{$ultimafechamaps}}" min="{{$ultimafechamaps}}" max="" >
         </div>
         <div class="col-md-4">
             <label for="">Fecha Fin</label>
-            <input type="date" class="form-control" name="end_maps" id="end_maps">
+            <input type="date" class="form-control" name="end_maps" id="end_maps" max="" min="{{$ultimafechamaps}}">
         </div>
         <div class="col-md-4">
             <label for=""></label><br> 
@@ -168,6 +168,34 @@
         </div>
     </div>
 </div>
+<script>
+    window.onload = function(){
+        //
+        let endMaps = document.getElementById("end_maps");
+        let endstarmaps = document.getElementById("start_maps");  
+        let today = new Date();
+        today.setDate(today.getDate() - 1);
+        let yyyy = today.getFullYear();
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let dd = String(today.getDate()).padStart(2, '0');
+        let maxDate = `${yyyy}-${mm}-${dd}`;
+        endMaps.max = maxDate;
+        endMaps.value = maxDate;
+        endstarmaps.max = maxDate;
+        //
+        let endTables = document.getElementById("end_table");
+        let endstartables = document.getElementById("start_table");  
+        endTables.max = maxDate;
+        endTables.value = maxDate;
+        endstartables.max = maxDate;
+        //
+        let endages = document.getElementById("end_age");
+        let endstartages = document.getElementById("start_age");  
+        endages.max = maxDate;
+        endages.value = maxDate;
+        endstartages.max = maxDate;
+    }    
+</script>
 <div class="container">
     <h1 class="text-center">Mapa Estadistico</h1>
     <div class="row">
@@ -182,11 +210,11 @@
     <div class="row">
         <div class="col-md-4">
             <label for="">Fecha Inicio</label>
-            <input type="date" class="form-control" name="start_table" id="start_table" value="{{$ultimafechatable}}" readonly>
+            <input type="date" class="form-control" name="start_table" id="start_table" value="{{$ultimafechatable}}" min="{{$ultimafechatable}}" max="">
         </div>
         <div class="col-md-4">
             <label for="">Fecha Fin</label>
-            <input type="date" class="form-control" name="end_table" id="end_table">
+            <input type="date" class="form-control" name="end_table" id="end_table" max="" min="{{$ultimafechatable}}">
         </div>
         <div class="col-md-4">
             <label for=""></label><br> 
@@ -344,11 +372,11 @@
     <div class="row">
         <div class="col-md-4">
             <label for="">Fecha Inicio</label>
-            <input type="date" class="form-control" name="start_age" id="start_age" value="{{$ultimafechaage}}" readonly>
+            <input type="date" class="form-control" name="start_age" id="start_age" value="{{$ultimafechaage}}" min="{{$ultimafechaage}}" max="">
         </div>
         <div class="col-md-4">
             <label for="">Fecha Fin</label>
-            <input type="date" class="form-control" name="end_age" id="end_age">
+            <input type="date" class="form-control" name="end_age" id="end_age" max="" min="{{$ultimafechaage}}">
         </div>
         <div class="col-md-4">
             <label for=""></label><br> 
