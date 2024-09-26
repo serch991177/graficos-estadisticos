@@ -71,13 +71,15 @@
     <!-- Contenido de informe escucha -->
     <div class="page-2">
         <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{$postData['created_time']}}</h1></div>
-        <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 30px;">{{$postData['story']}}</h1></div>
-        <div style="position:absolute; top:490px; left:290px;"><h1 style="color:black;font-size: 30px;">Instagram</h1></div>
-        <div style="position:absolute; top:610px; left:420px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
-        <div style="position:absolute; top:750px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
-        <div style="position:absolute; top:890px; left:420px;"><h1 style="color:black;font-size: 30px;">{!! $reactionstop !!}</h1></div>
-        <div style="position:absolute; top:1000px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$postData['shares_count']}}</h1></div>
-        <div style="position:absolute; top:1100px; left:420px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count']}}</h1></div>
+        <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 30px;">{!! preg_replace('/[\x{1F000}-\x{1FFFF}]|[\x{200D}]|[\x{2600}-\x{27BF}]/u', '', $postData['story']) !!}</h1></div>
+        <div style="position:absolute; top:440px; left:290px;"><h1 style="color:black;font-size: 30px;">Instagram</h1></div>
+        <div style="position:absolute; top:550px; left:400px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
+        <div style="position:absolute; top:660px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
+        <div style="position:absolute; top:810px; left:400px;"><h1 style="color:black;font-size: 30px;">{!! $reactionstop !!}</h1></div>
+        <div style="position:absolute; top:900px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['shares_count']}}</h1></div>
+        <div style="position:absolute; top:1000px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count']}}</h1></div>
+        <div style="position:absolute; top:1100px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count'] + $postData['likes_count'] + $postData['saved_count']  + $postData['shares_count']}}</h1></div>
+        <div style="position:absolute; top:1200px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['post_impressions']}}</h1></div>
         <div style="position:absolute; top:660px; left:950px;width:450px; height:470px; overflow:hidden;"><img src="{{$imageSrc}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
         @if(isset($postData['comment_pop']['message']))
             <div style="position:absolute; top:200px; left:870px;width:790px;"><h1 style="color:black;font-size: 15px;">{{$postData['comment_pop']['message']}}</h1></div>
