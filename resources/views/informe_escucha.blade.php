@@ -74,7 +74,7 @@
     
     <!-- Contenido de informe escucha -->
     <div class="page-2">
-        <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{$postData['created_time']}}</h1></div>
+        <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{ \Carbon\Carbon::parse($postData['created_time'])->format('d/m/Y') }}</h1></div>
         <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 30px;font-family: 'Noto Sans', sans-serif;">{!! preg_replace('/[\x{1F000}-\x{1FFFF}]|[\x{200D}]|[\x{2600}-\x{27BF}]/u', '', $postData['story']) !!}</h1></div>
         <div style="position:absolute; top:440px; left:290px;"><h1 style="color:black;font-size: 30px;">Facebook</h1></div>
         <div style="position:absolute; top:550px; left:400px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
