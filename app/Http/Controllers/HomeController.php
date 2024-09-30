@@ -29,6 +29,10 @@ class HomeController extends Controller
      * @return \Illuminate\View\View
      */
     public function index(){
+        //recuperacion de cuentas
+        $url_cuentas = 'https://reportapi.infocenterlatam.com/api/me/getListFacebook';
+        $responsecuentas = Http::get($url_cuentas);
+        $datacuentas = $responsecuentas['data'];
         //counts reactions
         $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/getStadisticCount';
         $response = Http::get($url_total);
@@ -93,8 +97,41 @@ class HomeController extends Controller
             $item['percentage'] = round(($item['fan_count'] / $totalFans) * 100, 2);
             return $item;
         });
-        
         //end service all contries
+
+
+        //servicio all citiesmanfred
+        $url_data_citiesmanfred = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcity?id_page=102674511293040';
+        $response_data_citiesmanfred = Http::get($url_data_citiesmanfred);
+        $data_citiesmanfred = $response_data_citiesmanfred->json();
+        $dataCollectionCitiesmanfred = collect($data_citiesmanfred['data']);
+        $sortedDataCollectionmanfred = $dataCollectionCitiesmanfred->sortByDesc('fan_count');
+        $dataCities2manfred=$sortedDataCollectionmanfred->values()->all();
+        $top5citiesmanfred = $sortedDataCollectionmanfred->sortByDesc('fan_count')->take(5);
+        $totalFansCitiesmanfred = $top5citiesmanfred->sum('fan_count');
+        $percentageDataCitiesmanfred = $top5citiesmanfred->map(function ($item) use ($totalFansCitiesmanfred) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFansCitiesmanfred) * 100, 2);
+            return $item;
+        });
+        //end service all cities
+
+        //servicio countriesmanfred
+        $url_top_ten_manfred = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getCitiesGroupedByCountry?id_page=102674511293040';
+        $response_top_ten_manfred = Http::get($url_top_ten_manfred);
+        $data_top_ten_manfred = $response_top_ten_manfred->json();
+        $top_countries_manfred = $data_top_ten_manfred['data'];
+        $order_countries_manfred = collect($top_countries_manfred);
+        // Ordenar por fan_count en orden descendente
+        $sortedCountries_manfred = $order_countries_manfred->sortByDesc('fan_count');
+        // Si quieres que los índices sean secuenciales después de ordenar
+        $topcountries_manfred = $sortedCountries_manfred->values();
+        $top5countries_manfred = $order_countries_manfred->sortByDesc('fan_count')->take(5);
+        $totalFans_manfred = $top5countries_manfred->sum('fan_count');
+        $percentageDataManfred = $top5countries_manfred->map(function ($item) use ($totalFans_manfred) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFans_manfred) * 100, 2);
+            return $item;
+        });
+        //end servicio countriesmanfred
 
         //service age and gender
         $url_impressions = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistage';
@@ -183,15 +220,14 @@ class HomeController extends Controller
         //<i class="fas fa-handshake" style="color: #FFC107;"></i> <!-- Interacción -->
         // Pasa los datos a la vista
         return view('dashboard', compact('totalLikes', 'totalLoves','totalclicks', 'totalHahas', 'totalWows', 'totalSads', 'totalAngries', 'totalShares', 'totalComments','data','jsonDataMap','topcountries','dataCities2','dataImpressions','heads','dataFollowers','newFollowersNumber','lostFollowersNumber'
-        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable','ultimafechaage','ultimafechaTime'));           
+        ,'groupedData','percentageData','percentageDataCities','groupedTime','ultimafechamaps','ultimafechatable','ultimafechaage','ultimafechaTime','datacuentas','dataCities2manfred','percentageDataCitiesmanfred','percentageDataManfred'));           
     }
 
     public function filtrarDatosMapa(Request $request) {
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
-    
         // Llamada al servicio con la fecha como parámetro
-        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcountry?date={$endDate}"; // Usa startDate para filtrar
+        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcountry?date={$endDate}&id_page={$request->id_page}"; // Usa startDate para filtrar
         $response_mapa_country = Http::get($url_mapa_country);
         $dataMapCountry = $response_mapa_country->json();
         
@@ -201,7 +237,6 @@ class HomeController extends Controller
         $formattedDataMap = $dataCollection->map(function($item) {
             return [strtolower($item['country_name']), $item['fan_count']];
         });
-    
         return response()->json($formattedDataMap);
     }
     
@@ -275,7 +310,8 @@ class HomeController extends Controller
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->idpage.'
         }';        
         $client = new Client();
         $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
@@ -289,7 +325,8 @@ class HomeController extends Controller
         $headers_follow = ['Content-Type' => 'application/json'];
         $body_followers = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->idpage.'
         }'; 
         $client_follow = new Client();
         $response_follow = $client_follow->get($url_followers, ['headers' => $headers_follow,'body' => $body_followers,]);
@@ -311,34 +348,12 @@ class HomeController extends Controller
        
         
     }
-    /*public function tablepost(Request $request){
-        if($request->ajax()){
-            $page = $request->input('start') / $request->input('length') + 1;
-            $url = "https://reportapi.infocenterlatam.com/api/fstadistic/listPost?page=" . $page;
-            $response = Http::get($url);
-            $datas = $response->json();
-            $items = $datas['data'];
-            $total = $datas['total'];
-            
-            // Ordenar los datos por created_time de manera descendente
-            usort($items, function($a, $b) {
-                return strtotime($b['created_time']) - strtotime($a['created_time']);
-            });
-
-            //dd($total);
-            return response()->json([
-                'draw' => $request->input('draw'),
-                'recordsTotal' => $total,
-                'recordsFiltered' => $total,
-                'data' => $items,
-            ]);
-        }
-    }*/
+    
 
     public function tablepost(Request $request) {
         if ($request->ajax()) {
+            //dd($request);
             $page = $request->input('start') / $request->input('length') + 1;
-    
             // Obtener las fechas del request
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
@@ -359,7 +374,7 @@ class HomeController extends Controller
             $datas = $response->json();
             $items = $datas['data'];
             $total = $datas['total'];
-            
+            //dd($items);
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,
@@ -370,11 +385,14 @@ class HomeController extends Controller
     }
     
 
-    public function informeescucha(){
+    public function informeescucha(Request $request){
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
-        
+        //dd($request->input('reaction_id'));
+        $body = [
+            'id_page' => $request->input('reaction_id')
+        ];
         $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPost';
-        $response_informe = Http::get($url_informe);
+        $response_informe = Http::get($url_informe,$body);
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
@@ -452,12 +470,14 @@ class HomeController extends Controller
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->input('date_listen_id').'
         }';        
         $client = new Client();
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
         $datos = $responseBody['data'] ?? null;
+        //dd($datos);
         if(empty($datos)){
             Alert::error('No se encontraron Publicaciones en la fecha');
             return redirect('/reportes-facebook');
@@ -520,7 +540,8 @@ class HomeController extends Controller
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->input('button_facebook').'
         }';        
         $client = new Client();
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
@@ -829,9 +850,14 @@ class HomeController extends Controller
 
     public function getChartData(Request $request){    
         $url_tendecia = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsReactions';
-        $response = Http::get($url_tendecia);
-        $data = $response->json();
-        $datostendencia = $data['data'];
+        $headers_total = ['Content-Type' => 'application/json'];
+        $body = '{
+            "id_page" : '.$request->idpage.'
+        }'; 
+        $client = new Client();
+        $response = $client->get($url_tendecia, ['headers' => $headers_total,'body' => $body,]);
+        $responseBody_total = json_decode($response->getBody()->getContents(),true);
+        $datostendencia = $responseBody_total['data'];
         //dd($datostendencia);
         $trendData = [
             'dates' => [],
@@ -963,10 +989,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1008,10 +1036,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
     
         if (!isset($data['data'])) {
@@ -1051,10 +1081,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
     
         if (!isset($data['data'])) {
@@ -1093,9 +1125,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1131,9 +1166,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1169,9 +1207,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1207,9 +1248,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1245,9 +1289,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1284,9 +1331,12 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin, si se proporcionan
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $body = [
+            'id_page' => $request->idpage
+        ];
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/fstadistic/getPostsList';
-        $response = Http::get($url_top);
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -1327,7 +1377,11 @@ class HomeController extends Controller
         return response()->json($posts);
     }
     public function cargarfacebookinforme(Request $request){
-        return view('reportesfacebook');
+        $url_cuentas = 'https://reportapi.infocenterlatam.com/api/me/getListFacebook';
+        $responsecuentas = Http::get($url_cuentas);
+        $datacuentas = $responsecuentas['data'];
+        return view('reportesfacebook', compact('datacuentas'));           
+   
     }
 
     public function runAnalysis(Request $request){

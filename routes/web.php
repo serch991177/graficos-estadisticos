@@ -106,6 +106,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/services-instagram',[InstagramController::class, 'servicesinstagram'])->name('services_instagram');
     Route::get('/api/filtrar-datos-mapa-instagram', [InstagramController::class, 'filtrarDatosMapa']);
     Route::get('/api/filtrar-datos-age-instagram', [InstagramController::class, 'filtrarDatosAge']);
+    //Rutas cuenta manfred
+    Route::post('/manfred', [FacebookController::class, 'index'])->name('home_manfred');
+    Route::get('/tabla-post-manfred', [FacebookController::class, 'tablepostmanfred'])->name('tablepostmanfred');
+    Route::get('/get-chart-follows-manfred',[FacebookController::class,'getChartFollows']);
 
 
 
