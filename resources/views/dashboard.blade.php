@@ -837,7 +837,7 @@
                 <h3 class="text-center">Demografico</h3>
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="display:none">
                             <h1>Total Seguidores</h1>
                             <h3>porajax se recuperara</h3>
                         </div>
