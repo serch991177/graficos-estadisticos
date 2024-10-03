@@ -337,7 +337,19 @@
             animation-duration: .4s
         }
     </style>
-
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <select name="cuentaSelect" id="cuentaSelect" class="form-control">
+                    <option value="">Elija Una Cuenta</option>
+                    @foreach ( $datacuentas as $datacuenta)
+                        <option value="{{$datacuenta['account_id'] }}">{{$datacuenta['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="mobile-wrap">
         <div class="mobile clearfix">
             <div class="content">
@@ -368,7 +380,8 @@
                                 @enderror
                             </div>
                             <div class="action flipInY animated">
-                                <button class="btn">Generar Informe</button>
+                                <button class="btn" title="Generar Informe" value="17841444478446953" name="button_facebook" id="facebook_sumate">Generar Informe</button>
+                                <button class="btn" title="Generar Informe" value="17841429099311322" name="button_facebook" id="facebook_manfred" style="display:none">Generar Informe</button>
                             </div>
                         </form>   
                     </div>
@@ -380,7 +393,8 @@
                         <div class="action flipInY animated">
                             <form action="{{route('informe_escucha_instagram')}}" method="post" target="_blank">
                                 @csrf
-                                <button class="btn" title="Generar Informe">Generar Informe</button>
+                                <button class="btn" title="Generar Informe" value="17841444478446953" name="reaction_id" id="escucha_reaction_sumate">Generar Informe</button>
+                                <button class="btn" title="Generar Informe" value="17841429099311322" name="reaction_id" id="escucha_reaction_manfred" style="display:none">Generar Informe</button>
                             </form>
                         </div>
                     </div>
@@ -419,7 +433,8 @@
                                 <input class="pull-right" id="grafico_bar" name="grafico_bar" type="file" accept="image/*">
                             </div>
                             <div class="action flipInY animated">
-                                <button class="btn">Generar Informe</button>
+                                <button class="btn" title="Generar Informe" value="17841444478446953" name="date_listen_id" id="escucha_date_sumate">Generar Informe</button>
+                                <button class="btn" title="Generar Informe" value="17841429099311322" name="date_listen_id" id="escucha_date_manfred" style="display:none">Generar Informe</button>                            
                             </div>
                         </form>    
                     </div>
@@ -579,6 +594,36 @@
             }
         });
     </script>
+
+<script>
+    document.getElementById('cuentaSelect').addEventListener('change', function () {
+        // Obtener el valor seleccionado
+        const selectedAccountId = this.value;        
+        // Verificar cuál es el account_id seleccionado no sea vacio
+        if(selectedAccountId === ''){
+            console.log("vacio")
+        }else{
+            if (selectedAccountId === "17841444478446953"){
+                document.getElementById("escucha_reaction_sumate").style.display='';
+                document.getElementById("escucha_reaction_manfred").style.display='none';   
+                document.getElementById("facebook_sumate").style.display='';
+                document.getElementById("facebook_manfred").style.display='none';   
+                document.getElementById("escucha_date_sumate").style.display='';
+                document.getElementById("escucha_date_manfred").style.display='none';   
+            }
+            if(selectedAccountId === "17841429099311322"){
+                document.getElementById("escucha_reaction_sumate").style.display='none';
+                document.getElementById("escucha_reaction_manfred").style.display='';
+                document.getElementById("facebook_sumate").style.display='none';
+                document.getElementById("facebook_manfred").style.display='';   
+                document.getElementById("escucha_date_sumate").style.display='none';
+                document.getElementById("escucha_date_manfred").style.display='';   
+            }   
+            
+        }
+    });
+</script>
+
 
 @if(session('error'))
     <div class="alert alert-danger">

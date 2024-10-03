@@ -111,6 +111,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/tabla-post-manfred', [FacebookController::class, 'tablepostmanfred'])->name('tablepostmanfred');
     Route::get('/get-chart-follows-manfred',[FacebookController::class,'getChartFollows']);
 
+    Route::post('/manfred-instagram', [InstagramController::class, 'cambiocuenta'])->name('home_manfred_instagram');
+    Route::get('/tabla-post-manfred-instagram', [InstagramController::class, 'tablepostmanfredinstagram'])->name('tablepostmanfredinstagram');
+
 
 
     Route::get('/maquetacion',[InstagramController::class,'tablamanfred'])->name('maquetacion_manfred');

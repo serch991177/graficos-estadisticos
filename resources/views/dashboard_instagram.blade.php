@@ -2,6 +2,171 @@
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <select name="cuentaSelect" id="cuentaSelect" class="form-control">
+                <option value="">Elija Una Cuenta</option>
+                @foreach ( $datacuentas as $datacuenta)
+                    <option value="{{$datacuenta['account_id'] }}">{{$datacuenta['name'] }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+</div>
+<!--cambios-->
+<script>
+    document.getElementById('cuentaSelect').addEventListener('change', function () {
+        // Obtener el valor seleccionado
+        const selectedAccountId = this.value;        
+        // Verificar cuál es el account_id seleccionado no sea vacio
+        if(selectedAccountId === ''){
+            console.log("vacio")
+        }else{
+            if (selectedAccountId === "17841444478446953"){
+                document.getElementById("div_tabla_sumate").style.display='';
+                document.getElementById("div_tabla_manfred").style.display='none';
+                document.getElementById("div_grafico_ciudades_sumate").style.display='';
+                document.getElementById("div_grafico_ciudades_manfred").style.display='none';
+                document.getElementById("div_audiencia_sumate").style.display='';
+                document.getElementById("div_audiencia_manfred").style.display='none';
+                document.getElementById("div_audiencia_sumate1").style.display='';
+                document.getElementById("div_audiencia_manfred1").style.display='none';
+                document.getElementById("boton_trend_sumate").style.display='';
+                document.getElementById("boton_trend_manfred").style.display='none';
+                document.getElementById("boton_comment_sumate").style.display='';
+                document.getElementById("boton_comment_manfred").style.display='none';
+                document.getElementById("boton_likes_sumate").style.display='';
+                document.getElementById("boton_likes_manfred").style.display='none';
+                document.getElementById("boton_saved_sumate").style.display='';
+                document.getElementById("boton_saved_manfred").style.display='none';
+                document.getElementById("boton_share_sumate").style.display='';
+                document.getElementById("boton_share_manfred").style.display='none';
+                document.getElementById("boton_reactions_sumate").style.display='';
+                document.getElementById("boton_reactions_manfred").style.display='none';
+                document.getElementById("boton_mapa_sumate").style.display='';
+                document.getElementById("boton_mapa_manfred").style.display='none';
+                document.getElementById("boton_table_sumate").style.display='';
+                document.getElementById("boton_table_manfred").style.display='none';
+            }
+            if(selectedAccountId === "17841429099311322"){
+                document.getElementById("div_tabla_sumate").style.display='none';
+                document.getElementById("div_tabla_manfred").style.display='';
+                document.getElementById("div_grafico_ciudades_sumate").style.display='none';
+                document.getElementById("div_grafico_ciudades_manfred").style.display='';
+                document.getElementById("div_audiencia_sumate").style.display='none';
+                document.getElementById("div_audiencia_manfred").style.display='';
+                document.getElementById("div_audiencia_sumate1").style.display='none';
+                document.getElementById("div_audiencia_manfred1").style.display='';
+                document.getElementById("boton_trend_sumate").style.display='none';
+                document.getElementById("boton_trend_manfred").style.display='';
+                document.getElementById("boton_comment_sumate").style.display='none';
+                document.getElementById("boton_comment_manfred").style.display='';
+                document.getElementById("boton_likes_sumate").style.display='none';
+                document.getElementById("boton_likes_manfred").style.display='';
+                document.getElementById("boton_saved_sumate").style.display='none';
+                document.getElementById("boton_saved_manfred").style.display='';
+                document.getElementById("boton_share_sumate").style.display='none';
+                document.getElementById("boton_share_manfred").style.display='';
+                document.getElementById("boton_reactions_sumate").style.display='none';
+                document.getElementById("boton_reactions_manfred").style.display='';
+                document.getElementById("boton_mapa_sumate").style.display='none';
+                document.getElementById("boton_mapa_manfred").style.display='';
+                document.getElementById("boton_table_sumate").style.display='none';
+                document.getElementById("boton_table_manfred").style.display='';
+            }   
+            // Obtener valores adicionales (start_date, end_date, paginación)
+            const startDate = document.getElementById('start_date').value;  // Supón que tienes un input con este ID
+            const endDate = document.getElementById('end_date').value;      // Otro input para la fecha final
+            const pageLength = 10;  // Definir cuántos resultados por página quieres
+            // Definir el objeto con todos los datos necesarios
+            const requestData = {
+                id_page: selectedAccountId,
+                start_date: startDate,
+                end_date: endDate,
+                length: pageLength,
+                start: 0,  // O puedes calcularlo según la paginación
+                columns: [{
+                    data: 'created_time'  // Columna por la cual ordenar
+                }],
+                order: [{
+                    column: 0,  // Ordenar por la primera columna (created_time)
+                    dir: 'desc'  // Ordenar de forma descendente
+                }]
+            };
+            $.ajax({
+                url: "{{ route('home_manfred_instagram') }}",
+                headers:{'Content-Type':'aplication/json','X-CSRF-TOKEN':'{{ csrf_token() }}'},
+                async:false,
+                method: 'POST',
+                data:JSON.stringify(requestData),
+                success: function (data) {
+                    //llenado de datos      
+                    document.getElementById("totallikes").innerText = data.datos_reactions[0]['total_likes'];
+                    document.getElementById("totalsaved").innerText = data.datos_reactions[0]['total_saved'];
+                    document.getElementById("totalscope").innerText = data.datos_reactions[0]['total_scope'];
+                    document.getElementById("totalshares").innerText = data.datos_reactions[0]['total_shares'];
+                    // Actualización de la gráfica de torta con los nuevos datos
+                    myPieChartUpdate.data.labels = data.data_pie.labels;
+                    myPieChartUpdate.data.datasets[0].data = data.data_pie.values;
+                    myPieChartUpdate.update();
+                    //Actualizacion Mapa
+                    chart.series[0].setData(data.formattedDataMap);
+                    //actualizacion tabla top 10
+                    // Construir la URL con la fecha
+                    var url = `https://reportapi.infocenterlatam.com/api/istadistic/getCitiesGroupedByCountry?id_page=${selectedAccountId}`;
+                    // Hacer la solicitud AJAX
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            Swal.close();
+                            var tableBody = document.querySelector('#topCountriesTable tbody');
+                            tableBody.innerHTML = ''; // Limpiar la tabla
+
+                            var countriesMap = {};
+
+                            // Agrupar por país y sumar el número de fans
+                            data.data.forEach(country => {
+                                if (!countriesMap[country.pais]) {
+                                    countriesMap[country.pais] = 0;
+                                }
+                                countriesMap[country.pais] += country.fan_count;
+                            });
+
+                            // Ordenar países por número de fans en orden descendente
+                            var sortedCountries = Object.keys(countriesMap).sort((a, b) => countriesMap[b] - countriesMap[a]);
+
+                            // Crear filas para la tabla
+                            sortedCountries.slice(0, 10).forEach((countryName, index) => {
+                                var row = document.createElement('tr');
+
+                                var numberCell = document.createElement('td');
+                                numberCell.textContent = index + 1; // Número de 1 a 10
+                                row.appendChild(numberCell);
+
+                                var countryCell = document.createElement('td');
+                                countryCell.textContent = countryName;
+                                row.appendChild(countryCell);
+
+                                var fanCountCell = document.createElement('td');
+                                fanCountCell.textContent = countriesMap[countryName];
+                                row.appendChild(fanCountCell);
+
+                                tableBody.appendChild(row);
+                            });
+                        })
+                        .catch(error => {console.error('Error:', error);});
+                    //numero fans ciudades
+                    
+                },
+                error: function(data) {
+                    Swal.fire('Error', 'Hubo un problema al analizar los datos.', 'error');
+                }
+            });
+        }
+    });
+</script>
+<br>
 <!--Cards del total de las Reacciones-->
 <div class="container">
     <div class="row">
@@ -15,7 +180,8 @@
         </div>
         <div class="col-md-4">
             <label for=""></label><br>
-            <button class="btn btn-success" type="button" onclick="updateReactions()">Actualizar Reacciones</button>
+            <button class="btn btn-success" type="button" onclick="updateReactions('17841444478446953')" id="boton_reactions_sumate">Actualizar Reacciones</button>
+            <button class="btn btn-success" type="button" onclick="updateReactions('17841429099311322')" id="boton_reactions_manfred" style="display: none;">Actualizar Reacciones</button>
         </div>
     </div>
 </div>
@@ -88,8 +254,8 @@
     </div>
 </div>
 <br>
-<!--Tabla de publicaciones de Instagram-->
-<div class="container">
+<!--Tabla de publicaciones de Instagram sumate-->
+<div class="container" id="div_tabla_sumate">
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
@@ -150,6 +316,67 @@
         </div>
     </div>
 </div>
+<!--tabla manfred-->
+<div class="container" id="div_tabla_manfred" style="display:none">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+            <div class="card-header">
+                <h4 class="card-title"> Publicaciones de Facebook</h4>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="">Fecha Inicio</label>
+                        <input type="date" class="form-control" name="start_tabla_manfred" id="start_tabla_manfred" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="">Fecha Fin</label>
+                        <input type="date" class="form-control" name="end_tabla_manfred" id="end_tabla_manfred">
+                    </div>
+                    <div class="col-md-4">
+                        <label for=""></label><br> 
+                        <button id="filterTablaManfred" class="btn btn-primary">Actualizar Tabla</button>
+                        <button id="showAllManfred" class="btn btn-secondary">Mostrar Todas las Publicaciones</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <style>
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: center;
+                            width: 5.5%; /* Ancho fijo para cada columna en un total de 8 columnas */
+                        }
+                        caption {
+                            caption-side: top;
+                            font-size: 1.5em;
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                    </style>
+                    <table id="tablamanfred" class="display  table tablesorter" style="width:100%">
+                        <thead>
+                            <tr>
+                                @foreach ( $heads as $head)
+                                    <th>{!! $head !!}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Mapa con paises-->
 <div class="container">
     <div class="row">
@@ -163,7 +390,9 @@
         </div>
         <div class="col-md-4">
             <label for=""></label><br> 
-            <button id="filterButton" class="btn btn-primary">Actualizar Mapa</button>
+            <button  class="btn btn-primary" onclick="updateMap('17841444478446953')" id="boton_mapa_sumate">Actualizar Mapa</button>
+            <button  class="btn btn-primary" onclick="updateMap('17841429099311322')" id="boton_mapa_manfred" style="display: none;">Actualizar Mapa</button>
+            <!--<button id="filterButton" class="btn btn-primary">Actualizar Mapa</button>-->
             <!--<button class="btn btn-success" type="button" onclick="updatemaps()" >Actualizar Mapa</button>-->
         </div>
     </div>
@@ -218,7 +447,8 @@
         </div>
         <div class="col-md-4">
             <label for=""></label><br> 
-            <button id="filterButtonTabla" class="btn btn-primary">Actualizar Tabla</button>
+            <button  class="btn btn-primary" onclick="updateTable('17841444478446953')" id="boton_table_sumate">Actualizar Tabla</button>
+            <button  class="btn btn-primary" onclick="updateTable('17841429099311322')" id="boton_table_manfred" style="display: none;">Actualizar Tabla</button>
             <!--<button class="btn btn-success" type="button" onclick="updatemaps()" >Actualizar Mapa</button>-->
         </div>
     </div>
@@ -261,11 +491,11 @@
 </div>
 <br>
 <script>
-    document.getElementById('filterButtonTabla').addEventListener('click', function() {
+   function updateTable(id_page) {
         // Obtener el valor de la fecha de fin
-        var startDate = document.getElementById('start_table').value; 
         var endDate = document.getElementById('end_table').value;
         let timerInterval;
+
         Swal.fire({
             title: "Actualizando...",
             html: "Esto tomará unos segundos.",
@@ -283,10 +513,12 @@
                 clearInterval(timerInterval);
             }
         });
+
         // Comprobar si la fecha de fin no está vacía
         if (endDate) {
-            // Construir la URL con la fecha
-            var url = `https://reportapi.infocenterlatam.com/api/istadistic/getCitiesGroupedByCountry?start_date=${startDate}&end_date=${endDate}`;
+            // Construir la URL con la fecha y el parámetro tableType
+            var url = `https://reportapi.infocenterlatam.com/api/istadistic/getCitiesGroupedByCountry?date=${endDate}&id_page=${id_page}`;
+            
             // Hacer la solicitud AJAX
             fetch(url)
                 .then(response => response.json())
@@ -331,12 +563,12 @@
                     console.error('Error:', error);
                 });
         } else {
-            Swal.fire('error','Por favor, selecciona una fecha de fin.','error');
+            Swal.fire('Error', 'Por favor, selecciona una fecha de fin.', 'error');
         }
-    });
+    }
 </script>
 <!--grafico de todas las ciudades-->
-<div class="container">
+<div class="container" id="div_grafico_ciudades_sumate">
     <h1 class="text-center">Numero de fans en todas las ciudades</h1>
     <div class="row">
         <div class="form-inline">
@@ -365,9 +597,39 @@
         <div id="BarFans" style="width: 100%; height: 400px;"></div>
     </div>
 </div>
-<br>
+
+<div class="container" style="display: none;" id="div_grafico_ciudades_manfred">
+    <h1 class="text-center">Numero de fans en todas las ciudades</h1>
+    <div class="row">
+        <div class="form-inline">
+            <!-- Filtro por país -->
+            <label >Seleccione un país :</label>
+            <select id="countryFiltermanfred" class="form-control" onchange="updateChartmanfred()">
+                <option value="">Seleccione un país</option>
+                <!-- Las opciones de países se llenarán dinámicamente en el script -->
+            </select>
+            <label >Seleccione un rango</label>
+            <select id="dataCountmanfred" class="form-control" onchange="updateChartmanfred()">
+                <option value="">Seleccione un rango </option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+
+            <!-- Selección del tipo de gráfico -->
+            <label for="">Seleccione un tipo de gráfico</label>
+            <select id="chartTypemanfred" class="form-control" onchange="updateChartmanfred()">
+                <option value="bar">Barra</option>
+                <option value="column">Columna</option>
+                <option value="line">Línea</option>
+            </select>
+        </div> 
+        <div id="BarFansManfred" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
+<br> 
 <!--Grafico de Impresiones-->
-<div class="container">
+<div class="container" style="display:none;">
     <h1 class="text-center">Impresiones de Pagina por Grupo de Edad y Sexo</h1>
     <div class="row">
         <div class="col-md-4">
@@ -384,7 +646,7 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container" style="display:none;">
     <h1 class="text-center">Impresiones de Pagina por Grupo de Edad y Sexo</h1>
     <div class="row">
         <div id="chartImpressions" style="width: 100%; height: 400px;"></div>
@@ -392,20 +654,39 @@
 </div>
 <br>
 <!--Audiencia-->
-<div class="container">
+<div class="container" id="div_audiencia_sumate">
     <h1 class="text-center">Audiencia</h1>
-    <div class="row">
+    <div class="row" style="display: none;">
         <div id="ageandgender" style="width: 100%; height: 400px;"></div>
     </div>
 </div>
 <!--Porcentajes de las ciudades y paises-->
-<div class="container">
+<div class="container" id="div_audiencia_sumate1">
     <div class="row">
         <div class="col-md-6">
             <div id="porcentajecities"></div>
         </div>
         <div class="col-md-6">
             <div id="porcentajecountry"></div>
+        </div>
+    </div>
+</div>
+
+<!--Audiencia manfred-->
+<div class="container" id="div_audiencia_manfred" style="display: none;">
+    <h1 class="text-center">Audiencia</h1>
+    <div class="row" style="display: none;">
+        <div id="ageandgender" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
+<!--Porcentajes de las ciudades y paises manfred-->
+<div class="container" id="div_audiencia_manfred1" style="display:none;">
+    <div class="row">
+        <div class="col-md-6">
+            <div id="porcentajecitiesmanfred"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="porcentajecountrymanfred"></div>
         </div>
     </div>
 </div>
@@ -422,8 +703,9 @@
             <input type="date" id="end-date" name="end-date" class="form-control">
         </div>
         <div class="col-md-4">
-            <br>
-            <button class="btn btn-success" type="button" onclick="updateChartTrend()" >Actualizar Gráfica</button>
+            <br>   
+            <button class="btn btn-success" type="button" onclick="updateChartTrend('17841444478446953')" id="boton_trend_sumate">Actualizar Gráfica</button>
+            <button class="btn btn-success" type="button" onclick="updateChartTrend('17841429099311322')" id="boton_trend_manfred" style="display: none;">Actualizar Gráfica</button>
         </div>
     </div>
 
@@ -453,8 +735,9 @@
         </div>
         <div class="col-md-3">
             <br>
-            <button type="button" class="btn btn-success" onclick="fetchTopPosts()">Filtrar</button>
-        </div>
+            <button class="btn btn-success" type="button" onclick="fetchTopPosts('17841444478446953')" id="boton_comment_sumate">Actualizar Gráfica</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopPosts('17841429099311322')" id="boton_comment_manfred" style="display: none;">Actualizar Gráfica</button>
+        </div> 
     </div>
     <div class="row">
         <br>
@@ -483,10 +766,11 @@
         </div>
         <div class="col-md-3">
             <br>
-            <button type="button" class="btn btn-success" onclick="fetchTopLikes()">Filtrar</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopLikes('17841444478446953')" id="boton_likes_sumate">Filtrar</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopLikes('17841429099311322')" id="boton_likes_manfred" style="display: none;">Filtrar</button>
         </div>
     </div>
-    <div class="row">
+    <div class="row"> 
         <div id="charttendencialikes" style="width: 100%; height: 600px;"></div>
     </div>
 </div> 
@@ -512,10 +796,11 @@
         </div>
         <div class="col-md-3">
             <br>
-            <button type="button" class="btn btn-success" onclick="fetchTopSaved()">Filtrar</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopSaved('17841444478446953')" id="boton_saved_sumate">Filtrar</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopSaved('17841429099311322')" id="boton_saved_manfred" style="display: none;">Filtrar</button>       
         </div>
     </div>
-    <div class="row">
+    <div class="row"> 
         <div id="charttendenciasaved" style="width: 100%; height: 600px;"></div>
     </div>
 </div> 
@@ -541,7 +826,8 @@
         </div>
         <div class="col-md-3">
             <br>
-            <button type="button" class="btn btn-success" onclick="fetchTopShare()">Filtrar</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopShare('17841444478446953')" id="boton_share_sumate">Filtrar</button>
+            <button class="btn btn-success" type="button" onclick="fetchTopShare('17841429099311322')" id="boton_share_manfred" style="display: none;">Filtrar</button>       
         </div>
     </div>
     <div class="row">
@@ -614,7 +900,7 @@
         });
     });
 
-    function updateReactions(){
+    function updateReactions(idpage){
         const startDate = document.getElementById('start_reaction').value;
         const endDate = document.getElementById('end_reaction').value;
         let timerInterval;
@@ -640,7 +926,8 @@
             method: 'GET',
             data: {
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                idpage:idpage
             },
             success: function (data) {
                 //llenado de datos        
@@ -798,8 +1085,147 @@
             Swal.close();
         });
     });
+</script>
+
+<!--tabla de manfred -->
+<script>
+    var tablemanfred = $('#tablamanfred').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{{ route('tablepostmanfredinstagram') }}",
+            "type": "GET",
+            "data": function(d) {
+                // Agregar las fechas a los parámetros de la solicitud  
+                d.start_date = $('#start_tabla_manfred').val();
+                d.end_date = $('#end_tabla_manfred').val();
+            }
+        },
+        "order": [[ 4, "desc" ]],
+        "columns": [
+            { "data": "id" },
+            {
+                "data": "story",
+                "render": function(data, type, row) {
+                    if (!data || data.trim() === "") {
+                        return "";  // Devuelve un string vacío si es null o vacío
+                    }
+                    if (data.length > 100) {
+                        var truncated = data.substring(0, 100) + '...';
+                        return '<span title="' + data.replace(/"/g, '&quot;') + '">' + truncated + '</span>';
+                    } else {
+                        return data;
+                    }
+                }
+            },
+            { 
+                "data": "media_url" ,
+                "render": function(data, type, row) {
+                    if (!data) {
+                        data = "https://scontent.fcbb3-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9opBn_jPZxkQ7kNvgEqLLRo&_nc_ht=scontent.fcbb3-1.fna&oh=00_AYAwE3tarz9rwsjLCPBRhehKMUJTXvHGNSmps0J68_BdeQ&oe=66E01D43";
+                    }
+                    return '<img src="' + data + '" style="width: 150px !important; height: 150px; object-fit: cover;">';
+                }   
+            },
+            { 
+                "data": "permalink_url",
+                "render":function(data,type,row){
+                    return '<a href="' + data + '" target="_blank">Link Publicacion</a>'
+                } 
+            },
+            { "data": "created_time" },
+            { "data": "comments_count" },
+            {"data": "post_impressions"},
+            {"data":"saved_count"},
+            {"data":"shares_count"},
+            { "data": "likes_count" },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    return `
+                        <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-toggle="modal" data-target="#exampleModal">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                        <br><br>
+                        <form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
+                            @csrf 
+                            <input type="hidden" name="id" value="${row.id}">
+                            <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
+                        </form>
+                    `;
+                }
+            }
+        ],
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "pageLength": 10 
+    });
+    // Evento para el botón de filtro
+    $('#filterTablaManfred').on('click', function() {
+        // Mostrar el mensaje de actualización
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Recargar la tabla
+        tablemanfred.ajax.reload(function() {
+            // Cerrar el mensaje de actualización después de que se complete la recarga
+            Swal.close();
+        });
+    });
+    $('#showAllManfred').on('click', function() {
+        // Limpiar los campos de fecha
+        $('#start_tabla_manfred').val('');
+        $('#end_tabla_manfred').val('');
+        // Mostrar el mensaje de actualización
+        let timerInterval;
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
+            }
+        });
+
+        // Recargar la tabla
+        tablemanfred.ajax.reload(function() {
+            // Cerrar el mensaje de actualización después de que se complete la recarga
+            Swal.close();
+        });
+    });
 
 </script>
+
 <!--Funcion para recupera id de las graficas-->
 <script>
     $(document).ready(function(){
@@ -868,87 +1294,78 @@
 </script>
 <!--grafico mapa -->
 <script>
+
+    let chart;
     document.addEventListener('DOMContentLoaded', function () {
-        //obtener los datos 
-        // obtener los datos del backend
-        const dataMap = {!! $jsonDataMap !!};
-        //console.log(dataMap);
-        const chart = Highcharts.mapChart('myMap', {
-            chart: {
-                map: 'custom/world'
-            },
-            title: {
-                text: 'Mapa Mundial'
-            },
-            subtitle: {
-                text: 'Numero de fans en el mundo'
-            },
-            mapNavigation: {
-                enabled: true,
-                buttonOptions: {
-                    verticalAlign: 'bottom'
-                }
-            },
+        // Inicializa el mapa
+        const dataMap = {!! $jsonDataMap !!}; // Datos iniciales
+        chart = Highcharts.mapChart('myMap', {
+            chart: { map: 'custom/world' },
+            title: { text: 'Mapa Mundial' },
+            subtitle: { text: 'Número de fans en el mundo' },
+            mapNavigation: { enabled: true, buttonOptions: { verticalAlign: 'bottom' } },
             colorAxis: {
-                min:0,
+                min: 0,
                 stops: [
-                    [0, '#D4B3E6'], // Color púrpura pastel en hexadecimal
-                    [0.5, '#A8DDEB'], // Color azul pastel en hexadecimal
-                    [1, '#F7C8D9'] // Color rosa pastel en hexadecimal
+                    [0, '#D4B3E6'],
+                    [0.5, '#A8DDEB'],
+                    [1, '#F7C8D9']
                 ]
             },
             series: [{
-                data:dataMap,
-                name: 'Numero de Fans',
+                data: dataMap,
+                name: 'Número de Fans',
                 color: '#D4B3E6',
-                states: {
-                    hover: {
-                        color: '#A8DDEB'
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}'
-                }
+                states: { hover: { color: '#A8DDEB' } },
+                dataLabels: { enabled: true, format: '{point.name}' }
             }]
         });
-        // Filtro de fecha
-        document.getElementById('filterButton').addEventListener('click', function () {
-            const startDate = document.getElementById('start_maps').value;
-            const endDate = document.getElementById('end_maps').value;
-            let timerInterval;
-            Swal.fire({
-                title: "Actualizando...",
-                html: "Esto tomará unos segundos.",
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading();
-                    const timer = Swal.getPopup().querySelector("b");
-                    timerInterval = setInterval(() => {
-                        if (timer) {
-                            timer.textContent = `${Swal.getTimerLeft()}`;
-                        }
-                    }, 100);
-                },
-                willClose: () => {
-                    clearInterval(timerInterval);
-                }
-            });
-            if (startDate && endDate) {
-                // Hacer la llamada AJAX
-                fetch(`/api/filtrar-datos-mapa-instagram?startDate=${startDate}&endDate=${endDate}`)
-                    .then(response => response.json())
-                    .then(newData => {
-                        // Actualizar el mapa con los nuevos datos
-                        Swal.close();
-                        chart.series[0].setData(newData);
-                    })
-                    .catch(error => {Swal.fire({icon: 'error',title: 'Error',text:  'No se encontraron datos para la fecha especificada.'});
-                });        } else {
-                Swal.fire('error','Por favor selecciona un rango de fechas.','error');
+    });
+
+    // Función para actualizar el mapa según el botón seleccionado
+    function updateMap(mapType) {
+        const startDate = document.getElementById('start_maps').value;
+        const endDate = document.getElementById('end_maps').value;
+        let timerInterval;
+
+        Swal.fire({
+            title: "Actualizando...",
+            html: "Esto tomará unos segundos.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                    if (timer) {
+                        timer.textContent = `${Swal.getTimerLeft()}`;
+                    }
+                }, 100);
+            },
+            willClose: () => {
+                clearInterval(timerInterval);
             }
         });
-    });
+
+        if (startDate && endDate) {
+            // Hacer la llamada AJAX con el mapType para identificar el botón
+            fetch(`/api/filtrar-datos-mapa-instagram?startDate=${startDate}&endDate=${endDate}&id_page=${mapType}`)
+                .then(response => response.json())
+                .then(newData => {
+                    // Actualizar el mapa con los nuevos datos
+                    Swal.close();
+                    chart.series[0].setData(newData);
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se encontraron datos para la fecha especificada.'
+                    });
+                });
+        } else {
+            Swal.fire('Error', 'Por favor selecciona un rango de fechas.', 'error');
+        }
+    }
 </script>
 <!--Grafico de todo el conteo de fans-->
 <script>
@@ -1048,6 +1465,108 @@
                 },
                 series: [{
                     data: filteredFanCounts
+                }]
+            });
+        };
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dataCities2 = @json($dataCities2manfred);
+
+        // Extraer los nombres de las ciudades, países y conteo de fans
+        var cityNames2 = dataCities2.map(function (city) {
+            return city.city_name;
+        });
+
+        var fanCounts2 = dataCities2.map(function (city) {
+            return parseInt(city.fan_count);
+        });
+
+        var countries2 = dataCities2.map(function (city) {
+            return city.city_name.split(', ').pop(); // Extraer el país del nombre de la ciudad
+        });
+
+        // Obtener países únicos
+        var uniqueCountries2 = [...new Set(countries2)];
+         
+        // Llenar el select de países
+        var countrySelect2 = document.getElementById('countryFiltermanfred');
+        uniqueCountries2.forEach(function (country) {
+            var option = document.createElement('option');
+            option.value = country;
+            option.text = country;
+            countrySelect2.appendChild(option);
+        });
+
+        var chartCity2 = Highcharts.chart('BarFansManfred', {
+            chart: {
+                type: 'bar'  // Tipo de gráfico inicial
+            },
+            title: {
+                text: 'Conteo de fanes por Ciudad'
+            },
+            xAxis: {
+                categories: cityNames2,
+                title: {
+                    text: 'City'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Fan Count',
+                    align: 'high'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' fans'
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [{
+                name: 'Fans',
+                data: fanCounts2,
+                color: '#D4B3E6'
+            }]
+        });
+           
+        window.updateChartmanfred = function() {
+            var selectedCountry2 = document.getElementById('countryFiltermanfred').value;
+            var count2 = parseInt(document.getElementById('dataCountmanfred').value);
+            var chartType2 = document.getElementById('chartTypemanfred').value;
+
+            var filteredData2 = dataCities2.filter(function(city) {
+                return selectedCountry2 === '' || city.city_name.includes(selectedCountry2);
+            });
+
+            if (count2 > 0) {
+                filteredData2 = filteredData2.slice(0, count2);
+            }
+
+            var filteredCityNames2 = filteredData2.map(function (city) {
+                return city.city_name;
+            });
+
+            var filteredFanCounts2 = filteredData2.map(function (city) {
+                return parseInt(city.fan_count);
+            });
+
+            // Actualizar el tipo de gráfico
+            chartCity2.update({
+                chart: {
+                    type: chartType2
+                },
+                xAxis: {
+                    categories: filteredCityNames2
+                },
+                series: [{
+                    data: filteredFanCounts2
                 }]
             });
         };
@@ -1170,7 +1689,8 @@
         });
     }
     // Actualizar la gráfica con datos del servidor
-    function updateChartTrend() {
+    function updateChartTrend(idpage) {
+        //console.log("ID recibido: ", idpage);
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
         let timerInterval;
@@ -1196,7 +1716,8 @@
             method: 'GET',
             data: {
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                idpage:idpage,
             },
             success: function (data) {
                 chartTrend.update({
@@ -1222,7 +1743,7 @@
 </script>
 <!--Grafico de tendencias comentario -->
 <script>
-    function fetchTopPosts() {
+    function fetchTopPosts(idpage) {
         const limit = document.getElementById('limit').value;
         const startDate = document.getElementById('start_date').value;
         const endDate = document.getElementById('end_date').value;
@@ -1250,7 +1771,8 @@
             data: {
                 limit: limit,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                idpage:idpage
             },
             success: function(data) {
                 renderChart(data);
@@ -1300,7 +1822,7 @@
 </script>
 <!--Grafico de tendencias likes-->
 <script>
-    function fetchTopLikes() {
+    function fetchTopLikes(idpage) {
         const limit = document.getElementById('limit-selector-likes').value;
         const startDate = document.getElementById('start_date_likes').value;
         const endDate = document.getElementById('end_date_likes').value;
@@ -1328,7 +1850,8 @@
             data: {
                 limit: limit,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                idpage:idpage
             },
             success: function(data) {
                 renderChartLikes(data);
@@ -1379,7 +1902,7 @@
 </script>
 <!--grafico de tendencia saved-->
 <script>
-    function fetchTopSaved() {
+    function fetchTopSaved(idpage) {
         const limit = document.getElementById('limit-selector-saved').value;
         const startDate = document.getElementById('start_date_saved').value;
         const endDate = document.getElementById('end_date_saved').value;
@@ -1407,7 +1930,8 @@
             data: {
                 limit: limit,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                idpage:idpage
             },
             success: function(data) {
                 renderChartSaved(data);
@@ -1458,7 +1982,7 @@
 </script>
 <!--grafico de tendencia share-->
 <script>
-    function fetchTopShare() {
+    function fetchTopShare(idpage) {
         const limit = document.getElementById('limit-selector-share').value;
         const startDate = document.getElementById('start_date_share').value;
         const endDate = document.getElementById('end_date_share').value;
@@ -1486,7 +2010,8 @@
             data: {
                 limit: limit,
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                idpage:idpage
             },
             success: function(data) {
                 renderChartShare(data);
@@ -1622,6 +2147,40 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('porcentajecitiesmanfred', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de fan por Ciudad (porcentajes)'
+            },
+            xAxis: {
+                categories: @json($percentageDataCitiesmanfred->pluck('city_name')),
+                title: {
+                    text: 'Pais'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)',
+                    align: 'high'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'; 
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                data: @json($percentageDataCitiesmanfred->pluck('percentage'))
+            }]
+        });
+    });
+</script>
 <!--Porcentaje top Countries-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -1657,6 +2216,42 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chart = Highcharts.chart('porcentajecountrymanfred', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Conteo de fan por pais (porcentajes)'
+            },
+            xAxis: {
+                categories: @json($percentageDataManfred->pluck('pais')),
+                title: {
+                    text: 'Pais'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)',
+                    align: 'high'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'; 
+                    }
+                }
+            },
+            series: [{
+                name: 'Porcentaje',
+                data: @json($percentageDataManfred->pluck('percentage'))
+            }]
+        });
+    });
+</script>
+
 @if(session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}

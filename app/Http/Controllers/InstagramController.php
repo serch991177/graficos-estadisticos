@@ -13,9 +13,17 @@ use RealRashid\SweetAlert\Facades\Alert;
 class InstagramController extends Controller
 {
     public function cargarinstagraminforme(Request $request){
-        return view('reportesinstagram');
+        $url_cuentas = 'https://reportapi.infocenterlatam.com/api/me/getListInstagram';
+        $responsecuentas = Http::get($url_cuentas);
+        $datacuentas = $responsecuentas['data'];
+        return view('reportesinstagram', compact('datacuentas'));           
     }
     public function index(){
+        set_time_limit(300); // Establece el límite a 300 segundos si es necesario
+        //recuperacion de cuentas
+        $url_cuentas = 'https://reportapi.infocenterlatam.com/api/me/getListInstagram';
+        $responsecuentas = Http::get($url_cuentas);
+        $datacuentas = $responsecuentas['data'];
         //counts reactions
         $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReactionsall';
         $response = Http::get($url_total);
@@ -71,6 +79,25 @@ class InstagramController extends Controller
         });
         //end servcio top 10 contries
 
+        //servicio countriesmanfred
+        $url_top_ten_manfred = 'https://reportapi.infocenterlatam.com/api/istadistic/getCitiesGroupedByCountry?id_page=17841429099311322';
+        $response_top_ten_manfred = Http::get($url_top_ten_manfred);
+        $data_top_ten_manfred = $response_top_ten_manfred->json();
+        $top_countries_manfred = $data_top_ten_manfred['data'];
+        $order_countries_manfred = collect($top_countries_manfred);
+        // Ordenar por fan_count en orden descendente
+        $sortedCountries_manfred = $order_countries_manfred->sortByDesc('fan_count');
+        // Si quieres que los índices sean secuenciales después de ordenar
+        $topcountries_manfred = $sortedCountries_manfred->values();
+        $top5countries_manfred = $order_countries_manfred->sortByDesc('fan_count')->take(5);
+        $totalFans_manfred = $top5countries_manfred->sum('fan_count');
+        $percentageDataManfred = $top5countries_manfred->map(function ($item) use ($totalFans_manfred) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFans_manfred) * 100, 2);
+            return $item;
+        });
+        //end servicio countriesmanfred
+
+
         //servicio all countries
         $url_data_cities = 'https://reportapi.infocenterlatam.com/api/istadistic/listcity';
         $response_data_cities = Http::get($url_data_cities);
@@ -84,7 +111,21 @@ class InstagramController extends Controller
             $item['percentage'] = round(($item['fan_count'] / $totalFansCities) * 100, 2);
             return $item;
         });        
-        
+        //end service all countries
+
+        //servicio all countries manfred
+        $url_data_citiesmanfred = 'https://reportapi.infocenterlatam.com/api/istadistic/listcity?id_page=17841429099311322';
+        $response_data_citiesmanfred = Http::get($url_data_citiesmanfred);
+        $data_citiesmanfred = $response_data_citiesmanfred->json();
+        $dataCollectionCitiesmanfred = collect($data_citiesmanfred['data']);
+        $sortedDataCollectionmanfred = $dataCollectionCitiesmanfred->sortByDesc('fan_count');
+        $dataCities2manfred=$sortedDataCollectionmanfred->values()->all();
+        $top5citiesmanfred = $sortedDataCollectionmanfred->sortByDesc('fan_count')->take(5);
+        $totalFansCitiesmanfred = $top5citiesmanfred->sum('fan_count');
+        $percentageDataCitiesmanfred = $top5citiesmanfred->map(function ($item) use ($totalFansCitiesmanfred) {
+            $item['percentage'] = round(($item['fan_count'] / $totalFansCitiesmanfred) * 100, 2);
+            return $item;
+        });
         //end service all countries
 
         //service age and gender
@@ -105,8 +146,9 @@ class InstagramController extends Controller
         }
         $ultimafechaage = \Carbon\Carbon::parse(time: $data_impressions['end_time_min'])->format('Y-m-d');
         //end service age and gender
-        return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads','jsonDataMap','topcountries','dataCities',
-        'groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps','ultimafechatable','ultimafechaage'));
+        return view("dashboard_instagram",compact('totalLikes','totalSaved','totalScope','totalShares','data','heads',
+        'jsonDataMap','topcountries','dataCities','groupedData','dataImpressions','percentageDataCities','percentageData','ultimafechamaps',
+        'ultimafechatable','ultimafechaage','datacuentas','dataCities2manfred','percentageDataCitiesmanfred','percentageDataManfred'));
     }
 
     public function updatereactions(Request $request){
@@ -116,7 +158,8 @@ class InstagramController extends Controller
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->idpage.'
         }';        
         $client = new Client();
         $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
@@ -179,12 +222,15 @@ class InstagramController extends Controller
         return response()->json(['dibujar_torta'=>$dibujar_torta]);  
     }
 
-    public function getChartData(Request $request){    
+    public function getChartData(Request $request){  
+        //dd($request); 
         $url_tendecia = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsReactions';
-        $response = Http::get($url_tendecia);
+        $body = [
+            'id_page' => $request->idpage
+        ];
+        $response = Http::get($url_tendecia,$body);
         $data = $response->json();
         $datostendencia = $data['data'];
-        //dd($datostendencia);
         $trendData = [
             'dates' => [],
             'likes' => [],
@@ -222,7 +268,10 @@ class InstagramController extends Controller
 
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
-        $response = Http::get($url_top);
+        $body = [
+            'id_page' => $request->idpage
+        ];
+        $response = Http::get($url_top,$body);
         $data = $response->json();
         if (!isset($data['data'])) {
             return response()->json(['error' => 'No data found'], 404);
@@ -244,7 +293,6 @@ class InstagramController extends Controller
         $query = $query->sortByDesc('comments')->take($limit);
 
         $posts = $query->map(function ($item) {
-            
             return (object)[
                 'story' => $item['story'],
                 'date' => $item['date'],
@@ -252,7 +300,7 @@ class InstagramController extends Controller
                 'impressions_count' => $item['scopes']
             ];
         })->values();
-        
+
         return response()->json($posts);
     }
 
@@ -266,7 +314,10 @@ class InstagramController extends Controller
 
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
-        $response = Http::get($url_top);
+        $body = [
+            'id_page' => $request->idpage
+        ];
+        $response = Http::get($url_top,$body);
         $data = $response->json();
     
         if (!isset($data['data'])) {
@@ -327,7 +378,8 @@ class InstagramController extends Controller
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->input('button_facebook').'
         }';        
         $client = new Client();
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
@@ -574,13 +626,18 @@ class InstagramController extends Controller
     }
     
 
-    public function informeescucha(){
+    public function informeescucha(Request $request){
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
-        
+        $body = [
+            'id_page' => $request->input('reaction_id')
+        ];
         $url_informe = 'https://reportapi.infocenterlatam.com/api/istadistic/topPost';
-        $response_informe = retry(3, function () {
+        $response_informe = Http::get($url_informe,$body);
+
+        
+        /*$response_informe = retry(3, function () {
             return Http::timeout(30)->get('https://reportapi.infocenterlatam.com/api/istadistic/topPost');
-        }, 100);        
+        }, 100);  */      
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['comments_count'] + $postData['likes_count'] + $postData['shares_count'] + $postData['saved_count'] ;
@@ -657,7 +714,8 @@ class InstagramController extends Controller
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "date_start" : "'.$fecha_inicio.'",
-            "date_end" : "'.$fecha_fin.'"
+            "date_end" : "'.$fecha_fin.'",
+            "id_page" : '.$request->input('date_listen_id').'
         }';        
         $client = new Client();
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
@@ -775,7 +833,10 @@ class InstagramController extends Controller
 
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
-        $response = Http::get($url_top);
+        $body = [
+            'id_page' => $request->idpage
+        ];
+        $response = Http::get($url_top,$body);
         $data = $response->json();
     
         if (!isset($data['data'])) {
@@ -819,7 +880,10 @@ class InstagramController extends Controller
 
         // Construir la consulta
         $url_top = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsList';
-        $response = Http::get($url_top);
+        $body = [
+            'id_page' => $request->idpage
+        ];
+        $response = Http::get($url_top,$body);
         $data = $response->json();
     
         if (!isset($data['data'])) {
@@ -858,6 +922,7 @@ class InstagramController extends Controller
     }
 
     public function servicesinstagram(Request $request){      
+        //account_id , accesstoen
         $FirstPage = 'https://graph.facebook.com/v20.0/17841444478446953?fields=business_discovery.username('.$request->firstPage.')%7Bfollowers_count%2Cmedia_count%2Cmedia%7Bcomments_count%2Ccreated_time%2Clike_count%2Cmedia_url%7D%7D&access_token=EAAObpSBCZBMwBOzKJQiKstgerFvrSaLe1y684ETkZAsMkC4IfZC76sR2hgrcafAfFUBC5Hai5uYlu3aNPtN8I8pGvXZBZBscZCmra9PKAMpCnFR7qE4SNUazGNL8H4EZBeVuIZAcXVkVMmEFd0fo9OI1vZC0Ymo1zKZAAz2uK6df1tJ9SgZAk3nPX59IZCJsyW6emdA8ZAQOhUR03';
         $responsefirstpage = Http::get($FirstPage);
         $datafirstpage = $responsefirstpage->json();
@@ -917,17 +982,17 @@ class InstagramController extends Controller
         $endDate = $request->input('endDate');
     
         // Llamada al servicio con la fecha como parámetro
-        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/istadistic/listfrom?date={$endDate}"; // Usa startDate para filtrar
+        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/istadistic/listfrom?date={$endDate}&id_page={$request->id_page}"; // Usa startDate para filtrar
         $response_mapa_country = Http::get($url_mapa_country);
         $dataMapCountry = $response_mapa_country->json();
-        dd($dataMapCountry);
+        //dd($dataMapCountry);
         $dataCollection = collect($dataMapCountry['data']);
         
         // Formatea los datos para Highcharts
         $formattedDataMap = $dataCollection->map(function($item) {
             return [strtolower($item['country_name']), $item['fan_count']];
         });
-        dd($formattedDataMap);
+        //dd($formattedDataMap);
         return response()->json($formattedDataMap);
     }
     
@@ -957,5 +1022,73 @@ class InstagramController extends Controller
             ];
         }
         return response()->json($formattedData);
+    }
+
+    public function cambiocuenta(Request $request){
+        set_time_limit(1000);
+        // Obtener el ID de la página
+        $id_page = $request->input('id_page');
+        //services get reaction
+        $url_total = 'https://reportapi.infocenterlatam.com/api/istadistic/getReactionsall';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{"id_page" : "'.$id_page.'"}';        
+        $client = new Client();
+        $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $datos_reactions = $responseBody['data'];
+        $data_pie = ['labels' => ['Likes', 'Guardados', 'Alcance','Compartidas'],'values' => [$datos_reactions[0]['total_likes'],$datos_reactions[0]['total_saved'],$datos_reactions[0]['total_scope'],$datos_reactions[0]['total_shares']]];
+        /**services get reaction*/
+        /**mapa */
+        // Llamada al servicio con la fecha como parámetro
+        $url_mapa_country = "https://reportapi.infocenterlatam.com/api/istadistic/listfrom?id_page=$id_page"; // Usa startDate para filtrar
+        $response_mapa_country = Http::get($url_mapa_country);
+        $dataMapCountry = $response_mapa_country->json();
+        $dataCollection = collect($dataMapCountry['data']);
+        // Formatea los datos para Highcharts
+        $formattedDataMap = $dataCollection->map(function($item) {
+            return [strtolower($item['country_name']), $item['fan_count']];
+        });
+        /**fin mapas */
+
+
+        return response()->json([
+            'datos_reactions' => $datos_reactions,
+            'data_pie' => $data_pie,
+            'formattedDataMap' => $formattedDataMap
+        ]);
+    }
+
+    public function tablepostmanfredinstagram(Request $request){
+        if ($request->ajax()) {
+            //dd($request);
+            $page = $request->input('start') / $request->input('length') + 1;
+            // Obtener las fechas del request
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+
+            // Definir parámetros de ordenamiento por defecto
+            $sortBy = $request->input('columns')[$request->input('order')[0]['column']]['data'] ?? 'created_time';
+            $sortDirection = $request->input('order')[0]['dir'] ?? 'desc';
+    
+            // Construir la URL con los parámetros de ordenamiento
+            $url = "https://reportapi.infocenterlatam.com/api/istadistic/listPost?page=" . $page . "&per_page=" . $request->input('length') . "&sort_by=" . $sortBy . "&sort_direction=" . $sortDirection."&id_page=17841429099311322";
+
+            // Agregar las fechas si están presentes
+            if ($startDate && $endDate) {
+                $url .= "&start_date=" . $startDate . "&end_date=" . $endDate;
+            }
+
+            $response = Http::get($url);
+            $datas = $response->json();
+            $items = $datas['data'];
+            $total = $datas['total'];
+            //dd($items);
+            return response()->json([
+                'draw' => $request->input('draw'),
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $items,
+            ]);
+        }
     }
 }
