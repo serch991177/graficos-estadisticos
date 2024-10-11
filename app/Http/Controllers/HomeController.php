@@ -396,7 +396,7 @@ class HomeController extends Controller
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
-       
+        //dd($postData);
 
         $imageUrl = $postData['full_picture'];
         if (empty($imageUrl)) {
@@ -424,9 +424,14 @@ class HomeController extends Controller
         $overview = public_path() . '/img/escucha_3.jpg';
         $imageoverview = base64_encode(file_get_contents($overview));
         $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+        $popcomment = public_path() . '/img/escucha_5.jpg';
+        $imagepopcomment = base64_encode(file_get_contents($popcomment));
+        $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
         
         
-        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+        
+        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
@@ -477,7 +482,7 @@ class HomeController extends Controller
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
         $datos = $responseBody['data'] ?? null;
-        //dd($datos);
+        //dd($datos['comment_pop']);
         if(empty($datos)){
             Alert::error('No se encontraron Publicaciones en la fecha');
             return redirect('/reportes-facebook');
@@ -509,13 +514,15 @@ class HomeController extends Controller
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
 
-            
             $grafico_escucha = public_path() . '/img/escucha_4.jpg';
             $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
             $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
            
-
-            $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica]);
+            $popcomment = public_path() . '/img/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            
+            $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -813,7 +820,7 @@ class HomeController extends Controller
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
-        
+        //dd($postData);
         
         if(empty($postData)){
             echo "No hay comentarios disponibles."; 
@@ -845,9 +852,11 @@ class HomeController extends Controller
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
            
-
-
-            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+            $popcomment = public_path() . '/img/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            
+            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);

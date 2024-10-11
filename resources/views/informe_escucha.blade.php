@@ -36,6 +36,12 @@
                 height: 100vh;
             }
         @endif
+
+        .page-5{
+            background-image: url('{{ $src_popcomment }}');
+            background-size: cover;
+            height: 100vh;
+        }
         
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
@@ -75,7 +81,7 @@
     <!-- Contenido de informe escucha -->
     <div class="page-2">
         <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{ \Carbon\Carbon::parse($postData['created_time'])->format('d/m/Y') }}</h1></div>
-        <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 30px;font-family: 'Noto Sans', sans-serif;">{!! preg_replace('/[\x{1F000}-\x{1FFFF}]|[\x{200D}]|[\x{2600}-\x{27BF}]/u', '', $postData['story']) !!}</h1></div>
+        <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 15px;font-family: 'Noto Sans', sans-serif;">{!! preg_replace('/[\x{1F000}-\x{1FFFF}]|[\x{200D}]|[\x{2600}-\x{27BF}]/u', '', $postData['story']) !!}</h1></div>
         <div style="position:absolute; top:440px; left:290px;"><h1 style="color:black;font-size: 30px;">Facebook</h1></div>
         <div style="position:absolute; top:550px; left:400px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
         <div style="position:absolute; top:660px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
@@ -93,8 +99,128 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 
+    <!--comentarios -->
+    <div class="page-5" >
+        <div style="position:absolute; top:300px; left:100px;width:1580px;">
+            @php
+                // Verificamos si 'message' está definido y no está vacío
+                $message = $postData['comment_pop']['most_reacted'][0]['message'] ?? '';
+            @endphp
 
+            @if (!empty($message))
+                @if (strpos($message, 'data:image/') === 0)
+                    {{-- Si es una imagen en base64 --}}
+                    <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
+                @else
+                    {{-- Si es texto --}}
+                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                @endif
+            @else
+                {{-- Si no hay contenido en message --}}
+                <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
+            @endif
+        </div>
+        <div style="position:absolute; top:650px; left:100px;width:1400px;">
+            @php
+                // Verificamos si 'message' está definido y no está vacío
+                $message = $postData['comment_pop']['most_reacted'][1]['message'] ?? '';
+            @endphp
 
+            @if (!empty($message))
+                @if (strpos($message, 'data:image/') === 0)
+                    {{-- Si es una imagen en base64 --}}
+                    <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
+                @else
+                    {{-- Si es texto --}}
+                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                @endif
+            @else
+                {{-- Si no hay contenido en message --}}
+                <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
+            @endif
+        </div>
+        <div style="position:absolute; top:980px; left:100px;width:1250px;">
+            @php
+                // Verificamos si 'message' está definido y no está vacío
+                $message = $postData['comment_pop']['most_reacted'][2]['message'] ?? '';
+            @endphp
+
+            @if (!empty($message))
+                @if (strpos($message, 'data:image/') === 0)
+                    {{-- Si es una imagen en base64 --}}
+                    <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
+                @else
+                    {{-- Si es texto --}}
+                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                @endif
+            @else
+                {{-- Si no hay contenido en message --}}
+                <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
+            @endif
+        </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+    <div class="page-5" >
+        <div style="position:absolute; top:300px; left:100px;width:1580px;">
+            @php
+                // Verificamos si 'message' está definido y no está vacío
+                $message = $postData['comment_pop']['most_commented'][0]['message'] ?? '';
+            @endphp
+
+            @if (!empty($message))
+                @if (strpos($message, 'data:image/') === 0)
+                    {{-- Si es una imagen en base64 --}}
+                    <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
+                @else
+                    {{-- Si es texto --}}
+                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                @endif
+            @else
+                {{-- Si no hay contenido en message --}}
+                <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
+            @endif
+        </div>
+        <div style="position:absolute; top:650px; left:100px;width:1400px;">
+            @php
+                // Verificamos si 'message' está definido y no está vacío
+                $message = $postData['comment_pop']['most_commented'][1]['message'] ?? '';
+            @endphp
+
+            @if (!empty($message))
+                @if (strpos($message, 'data:image/') === 0)
+                    {{-- Si es una imagen en base64 --}}
+                    <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
+                @else
+                    {{-- Si es texto --}}
+                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                @endif
+            @else
+                {{-- Si no hay contenido en message --}}
+                <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
+            @endif
+        </div>
+        <div style="position:absolute; top:980px; left:100px;width:1250px;">
+            @php
+                // Verificamos si 'message' está definido y no está vacío
+                $message = $postData['comment_pop']['most_commented'][2]['message'] ?? '';
+            @endphp
+
+            @if (!empty($message))
+                @if (strpos($message, 'data:image/') === 0)
+                    {{-- Si es una imagen en base64 --}}
+                    <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
+                @else
+                    {{-- Si es texto --}}
+                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                @endif
+            @else
+                {{-- Si no hay contenido en message --}}
+                <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
+            @endif
+        </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
 
     <!--graficas-->    
     @if(isset($imageChartBase64) || isset($imageChartBarBase64))

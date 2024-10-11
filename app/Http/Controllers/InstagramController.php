@@ -674,8 +674,13 @@ class InstagramController extends Controller
         $overview = public_path() . '/img/escucha_3.jpg';
         $imageoverview = base64_encode(file_get_contents($overview));
         $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+       
+        $popcomment = public_path() . '/img/escucha_5.jpg';
+        $imagepopcomment = base64_encode(file_get_contents($popcomment));
+        $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+       
         
-        $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+        $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
@@ -763,8 +768,12 @@ class InstagramController extends Controller
             $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
             $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
            
+            $popcomment = public_path() . '/img/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+           
 
-            $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica]);
+            $vista = view('informe_escucha_instagram',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -814,7 +823,11 @@ class InstagramController extends Controller
             $imageoverview = base64_encode(file_get_contents($overview));
             $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
             
-            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias]);
+            $popcomment = public_path() . '/img/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+           
+            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
