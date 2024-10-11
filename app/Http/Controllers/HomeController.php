@@ -720,6 +720,11 @@ class HomeController extends Controller
             $comentado_facebook = public_path() . '/img/facebook_9.jpg';
             $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
             $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
+
+            $impressions_facebook = public_path() . '/img/facebook_11.jpg';
+            $imageimpressions_facebook = base64_encode(file_get_contents($impressions_facebook));
+            $src_impressions = 'data:' . mime_content_type($impressions_facebook) . ';base64,' . $imageimpressions_facebook;
+
             
             $gracias = public_path() . '/img/facebook_10.jpg';
             $imagegracias = base64_encode(file_get_contents($gracias));
@@ -735,6 +740,7 @@ class HomeController extends Controller
                 'src_compartido' => $src_compartido,
                 'src_comentado_facebook' => $src_comentado_facebook,
                 'src_interaccion_facebook' => $src_interaccion_facebook,
+                'src_impressions' => $src_impressions,
                 'src_gracias' => $src_gracias,
                 'datos'=>$datos,
                 'chartUrl'=>$chartUrl,

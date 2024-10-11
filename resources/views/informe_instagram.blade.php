@@ -57,6 +57,12 @@
             background-size: cover;
             height: 100vh;
         }
+
+        .page-10 {
+            background-image: url('{{ $src_saved }}');
+            background-size: cover;
+            height: 100vh;
+        }
             
         .page-break {
             page-break-before: always;
@@ -187,7 +193,7 @@
     @endif
 
     <!--contenido mas guardado-->
-    <div class="page-7">
+    <div class="page-10">
         <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['getMostSavedPost'][0]['media_url']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
         <div style="position:absolute; top:980px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['getMostSavedPost'][0]['media_type']}}</h1></div>
         <div style="position:absolute; top:1120px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['getMostSavedPost'][0]['created_time']}}</h1></div>
@@ -201,7 +207,7 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     @if(isset($datos['getMostSavedPost'][1]))
-        <div class="page-7">
+        <div class="page-10">
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['getMostSavedPost'][1]['media_url']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
             <div style="position:absolute; top:980px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['getMostSavedPost'][1]['media_type']}}</h1></div>
             <div style="position:absolute; top:1120px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['getMostSavedPost'][1]['created_time']}}</h1></div>

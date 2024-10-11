@@ -63,6 +63,11 @@
             height: 100vh;
         }
             
+        .page-10 {
+            background-image: url('{{ $src_impressions }}');
+            background-size: cover;
+            height: 100vh;
+        }
         .page-break {
             page-break-before: always;
         }
@@ -202,7 +207,7 @@
 
 
     <!--impresions-->
-    <div class="page-8">
+    <div class="page-10">
         <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['topImpressionsPosts'][0]['full_picture']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
         <div style="position:absolute; top:1020px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['type_post']}}</h1></div>
         <div style="position:absolute; top:1150px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['created_time']}}</h1></div>
@@ -217,7 +222,7 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     @if(isset($datos['topImpressionsPosts'][1]))
-        <div class="page-8">
+        <div class="page-10">
             <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['topImpressionsPosts'][1]['full_picture']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
             <div style="position:absolute; top:1020px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['type_post']}}</h1></div>
             <div style="position:absolute; top:1150px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['created_time']}}</h1></div>

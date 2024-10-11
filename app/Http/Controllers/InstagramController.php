@@ -578,6 +578,11 @@ class InstagramController extends Controller
             $gracias = public_path() . '/img/8.jpg';
             $imagegracias = base64_encode(file_get_contents($gracias));
             $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+
+            $saved = public_path() . '/img/9.jpg';
+            $imagesaved = base64_encode(file_get_contents($saved));
+            $src_saved = 'data:' . mime_content_type($saved) . ';base64,' . $imagesaved;
+            
             //Fin Imagenes de Faceboo
             $vista = view('informe_instagram', [
                 'src_inicio' => $src_inicio,
@@ -589,6 +594,7 @@ class InstagramController extends Controller
                 'src_comentado_facebook' => $src_comentado_facebook,
                 //'src_reacciones_facebook' => $src_reacciones_facebook,
                 'src_gracias' => $src_gracias,
+                'src_saved' => $src_saved,
                 'datos'=>$datos,
                 'chartUrl'=>$chartUrl,
                 'totalReactionsSum'=>$totalReactionsSum,
