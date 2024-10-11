@@ -781,9 +781,18 @@ class HomeController extends Controller
 
         $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/showPost';
         $headers = ['Content-Type' => 'application/json'];
-        $body = '{
-            "id": '.$request->id.'
-        }';        
+        if($request->secondValue == 1){
+            $body = '{
+                "id": '.$request->id.',
+                "id_page": 104864678120869
+            }'; 
+        }else{
+            $body = '{
+                "id": '.$request->id.',
+                "id_page": 102674511293040
+            }'; 
+        }
+               
         $client = new Client();
         $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);

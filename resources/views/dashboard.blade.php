@@ -1209,7 +1209,7 @@
                 "data": null,
                 "render": function(data, type, row) {
                     return `
-                        <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-id2="1" data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-chart-bar"></i>
                         </button>
                         <br><br>
@@ -1350,7 +1350,7 @@
                 "data": null,
                 "render": function(data, type, row) {
                     return `
-                        <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-id2="2"  data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-chart-bar"></i>
                         </button>
                         <br><br>
@@ -1915,6 +1915,7 @@
         var myPieChart;
         $(document).on('click', '.id_graficar', function(){
             var id = $(this).val();
+            var secondValue = $(this).data('id2');
             // Mostrar el spinner y ocultar el canvas al hacer clic en el botón
             $('#spinner').show();
             $('#myPieModal').hide();
@@ -1926,7 +1927,7 @@
                 },
                 url: "{{ route('recuperar_id_grafica') }}",
                 async: false,
-                data: JSON.stringify({'id': id}),
+                data: JSON.stringify({'id': id,'secondValue':secondValue}),
                 success: function(data) {
                     // Destruir el gráfico existente si existe
                     if (myPieChart) {
