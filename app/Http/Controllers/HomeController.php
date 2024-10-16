@@ -559,7 +559,7 @@ class HomeController extends Controller
             Alert::error('No se encontraron Publicaciones en la fecha');
             return redirect('/reportes-facebook');
         }else{
-            $total_seguidores= $datos['follwers']['total_seguidores_ultimo'];
+            $total_seguidores= $datos['follwers']['total_seguidores_ultimo'] ?? 0;
             $nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
             $unfollows = $datos['follwers']['total_seguidores_perdidos'];
             $sumatotalinteraccionespost1 = $datos['TopPost'][0]['comments_count'] + $datos['TopPost'][0]['share_count'] + $datos['TopPost'][0]['like_count'] + $datos['TopPost'][0]['love_count'] + $datos['TopPost'][0]['haha_count']+ $datos['TopPost'][0]['wow_count']+ $datos['TopPost'][0]['sad_count']+ $datos['TopPost'][0]['angry_count'];
