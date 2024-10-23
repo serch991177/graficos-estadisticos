@@ -41,6 +41,12 @@
             background-size: cover;
             height: 100vh;
         }
+
+        .page-6{
+            background-image: url('{{$src_commentreaction}}');
+            background-size: cover;
+            height: 100vh;
+        }
         
     </style>
 </head>
@@ -158,7 +164,7 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
 
-    <div class="page-5" >
+    <div class="page-6" >
         <div style="position:absolute; top:300px; left:100px;width:1580px;">
             @php
                 // Verificamos si 'message' está definido y no está vacío
