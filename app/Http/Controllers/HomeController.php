@@ -432,8 +432,8 @@ class HomeController extends Controller
         $commentreaction = public_path() . '/img/escucha_6.jpg';
         $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
         $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
-        
-        $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+        $is_chart = 0;
+        $vista = view('informe_escucha',['is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
@@ -527,8 +527,8 @@ class HomeController extends Controller
             $commentreaction = public_path() . '/img/escucha_6.jpg';
             $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
             $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
-
-            $vista = view('informe_escucha',['postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+            $is_chart = 0;
+            $vista = view('informe_escucha',['is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -821,13 +821,17 @@ class HomeController extends Controller
         return response()->json(['dibujar_torta'=>$dibujar_torta]);    
     }
     public function informeescuchaid(Request $request){
+        set_time_limit(600);
+        $url_python = 'http://75.102.23.23:5001/analyze_comments?id_post='.$request->id;
+        $response_python = Http::timeout(600)->get($url_python);
+        $data_python = $response_python->json();
         $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPostforId/'.$request->id;
         $response_informe = Http::get($url_informe);
         $data_informe = $response_informe->json();
+        //dd($data_informe,$data_python); 
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
         //dd($postData);
-        
         if(empty($postData)){
             echo "No hay comentarios disponibles."; 
         }else{
@@ -866,7 +870,43 @@ class HomeController extends Controller
             $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
             $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
 
-            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction]);
+            
+            $grafico_escucha = public_path() . '/img/escucha_4.jpg';
+            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+
+            // Construir la URL de QuickChart
+            // Suma total de los valores
+            $total = $data_informe['data']['ia_positive'] + $data_informe['data']['ia_negative'] + $data_informe['data']['ia_neutro'];
+            // Calcular los porcentajes
+            // Verificar que el total no sea cero
+            if ($total > 0) {
+                // Calcular los porcentajes
+                $positive_percentage = ($data_informe['data']['ia_positive'] / $total) * 100;
+                $negative_percentage = ($data_informe['data']['ia_negative'] / $total) * 100;
+                $neutral_percentage = ($data_informe['data']['ia_neutro'] / $total) * 100;
+            } else {
+                // Si el total es cero, puedes asignar valores por defecto o manejar el error
+                $positive_percentage = 0;
+                $negative_percentage = 0;
+                $neutral_percentage = 0;
+            }
+            $chart_url = 'https://quickchart.io/chart?c={type:"pie",data:{labels:["Positivo","Negativo","Neutro"],datasets:[{data:[' . 
+                round($positive_percentage, 2) . ',' . 
+                round($negative_percentage, 2) . ',' . 
+                round($neutral_percentage, 2) . ']}]}}';
+
+            /*$chart_url = 'https://quickchart.io/chart?c={type:"pie",data:{labels:["Positivo","Negativo","Neutro"],datasets:[{data:[' . 
+                $data_informe['data']['ia_positive'] . ',' . 
+                $data_informe['data']['ia_negative'] . ',' . 
+                $data_informe['data']['ia_neutro'] . ']}]}}';*/
+
+            $chart_bar = 'https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["Positivo","Negativo"   ],datasets:[{data:[' . 
+                round($positive_percentage, 2) . ',' . 
+                round($negative_percentage, 2) . ',' . '],backgroundColor:["green","red","gray"]}]}}';
+            $is_chart = 1;
+
+            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
