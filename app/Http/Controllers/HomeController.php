@@ -822,9 +822,16 @@ class HomeController extends Controller
     }
     public function informeescuchaid(Request $request){
         set_time_limit(600);
-        $url_python = 'http://75.102.23.23:5001/analyze_comments?id_post='.$request->id;
-        $response_python = Http::timeout(600)->get($url_python);
-        $data_python = $response_python->json();
+        //$url_python = 'http://75.102.23.23:5001/analyze_comments?id_post='.$request->id;
+        //$response_python = Http::timeout(600)->get($url_python);
+        //$data_python = $response_python->json();
+        $data_python = [
+            "message" => "Análisis completado y datos enviados.",
+            "status" => "success"
+        ];
+        
+        //dd($data_python,$array);
+        //$data_python = ; 
         $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPostforId/'.$request->id;
         $response_informe = Http::get($url_informe);
         $data_informe = $response_informe->json();
