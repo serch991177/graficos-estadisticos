@@ -107,9 +107,11 @@
 
     <!--comentarios -->
     <div class="page-5" >
+        <div style="position:absolute; top:270px; left:350px;">
+            <span>Likes : {{$postData['comment_pop']['most_reacted'][0]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][0]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][0]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][0]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][0]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][0]['Angries']}}</span>
+        </div>
         <div style="position:absolute; top:300px; left:100px;width:1580px;">
             @php
-                // Verificamos si 'message' está definido y no está vacío
                 $message = $postData['comment_pop']['most_reacted'][0]['message'] ?? '';
             @endphp
 
@@ -125,6 +127,9 @@
                 {{-- Si no hay contenido en message --}}
                 <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
             @endif
+        </div>
+        <div style="position:absolute; top:620px; left:350px;">
+            <span>Likes : {{$postData['comment_pop']['most_reacted'][1]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][1]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][1]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][1]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][1]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][1]['Angries']}}</span>
         </div>
         <div style="position:absolute; top:650px; left:100px;width:1400px;">
             @php
@@ -144,6 +149,9 @@
                 {{-- Si no hay contenido en message --}}
                 <h1 style="color:black;font-size: 30px;">No hay contenido disponible</h1>
             @endif
+        </div>
+        <div style="position:absolute; top:950px; left:350px;">
+            <span>Likes : {{$postData['comment_pop']['most_reacted'][2]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][2]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][2]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][2]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][2]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][2]['Angries']}}</span>
         </div>
         <div style="position:absolute; top:980px; left:100px;width:1250px;">
             @php
@@ -231,12 +239,22 @@
     @if($is_chart == 1)
         @if($postData['ia_positive'] > 0 || $postData['ia_negative'] > 0 || $postData['ia_neutro'] > 0)
             <div class="page-4">
+                <div style="position:absolute; top:400px; left: 400px;">
+                    <p>Positivo: {{$postData['ia_positive']}}</p>
+                    <p>Negativo: {{$postData['ia_negative']}}</p>
+                    <p>Neutro: {{$postData['ia_neutro']}}</p>
+                </div>
                 <div style="position:absolute; top:400px; left:480px;"> 
                     <img src="{{$chart_url}}" width="1000px">
                 </div>
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             </div>
             <div class="page-4">
+                <div style="position:absolute; top:400px; left: 400px;">
+                    <p>Positivo: {{$postData['ia_positive']}}</p>
+                    <p>Negativo: {{$postData['ia_negative']}}</p>
+                    <p>Neutro: {{$postData['ia_neutro']}}</p>
+                </div>
                 <div style="position:absolute; top:400px; left:480px;"> 
                     <img src="{{$chart_bar}}" width="1000px">
                 </div>

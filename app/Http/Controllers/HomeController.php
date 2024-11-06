@@ -898,10 +898,12 @@ class HomeController extends Controller
                 $negative_percentage = 0;
                 $neutral_percentage = 0;
             }
+
             $chart_url = 'https://quickchart.io/chart?c={type:"pie",data:{labels:["Positivo","Negativo","Neutro"],datasets:[{data:[' . 
                 round($positive_percentage, 2) . ',' . 
                 round($negative_percentage, 2) . ',' . 
-                round($neutral_percentage, 2) . ']}]}}';
+                round($neutral_percentage, 2) . '],backgroundColor:["green","red","gray"]}]}}';
+    
 
             /*$chart_url = 'https://quickchart.io/chart?c={type:"pie",data:{labels:["Positivo","Negativo","Neutro"],datasets:[{data:[' . 
                 $data_informe['data']['ia_positive'] . ',' . 
@@ -912,7 +914,6 @@ class HomeController extends Controller
                 round($positive_percentage, 2) . ',' . 
                 round($negative_percentage, 2) . ',' . '],backgroundColor:["green","red","gray"]}]}}';
             $is_chart = 1;
-
             $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
