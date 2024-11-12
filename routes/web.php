@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Rutas relacionadas con informes y gráficos facebook 
     Route::post('/informe_escucha', [HomeController::class, 'informeescucha'])->name('informe_escucha');
     Route::post('/recuperar_id_grafica', [HomeController::class, 'recuperaridgrafica'])->name('recuperar_id_grafica');
+    Route::post('/recuperar_id_reacciones',[HomeController::class,'recuperaridreacciones'])->name('recuperar_id_reacciones');
     Route::post('/recuperar_id_informe', [HomeController::class, 'informeescuchaid'])->name('informe_id_escucha');
     Route::post('/informe_facebook', [HomeController::class, 'informefacebook'])->name('informe_actualizado');
     Route::get('/tabla-post', [HomeController::class, 'tablepost'])->name('tablepost');

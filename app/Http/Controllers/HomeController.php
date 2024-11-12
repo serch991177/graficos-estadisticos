@@ -204,12 +204,12 @@ class HomeController extends Controller
             '<i class="fas fa-link"></i>',
             '<i class="fas fa-calendar-alt"></i>',
             '<i class="fas fa-comments" style="color: #77DD77;"></i>',
-            '<i class="fas fa-thumbs-up" style="color: #2196F3;"></i>',
+            /*'<i class="fas fa-thumbs-up" style="color: #2196F3;"></i>',
             '<i class="fas fa-heart" style="color: #E91E63;"></i>',
             '<i class="fas fa-smile" style="color: #FFEB3B;"></i>',
             '<i class="fa-solid fa-face-surprise" style="color: #FF5722;"></i>',
             '<i class="fas fa-sad-tear" style="color: #9C27B0;"></i>',
-            '<i class="fas fa-angry" style="color: #F44336;"></i>',
+            '<i class="fas fa-angry" style="color: #F44336;"></i>',*/
             '<i class="fas fa-share" style="color: #03A9F4;"></i>',
             '<i class="fas fa-bullseye" style="color: #4CAF50;"></i>',
             '<i class="fas fa-handshake" style="color: #FFC107;"></i>',
@@ -400,7 +400,7 @@ class HomeController extends Controller
 
         $imageUrl = $postData['full_picture'];
         if (empty($imageUrl)) {
-            $imageUrl = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+            $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
             $response = Http::get($imageUrl);
             $imageContents = $response->body();
             $imageBase64 = base64_encode($imageContents);
@@ -412,26 +412,50 @@ class HomeController extends Controller
             $imageSrc = $imageUrl;
         }
 
-        
-        $inicio = public_path() . '/img/escucha_1.jpg';
-        $imageInicio = base64_encode(file_get_contents($inicio));
-        $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+        if($request->input('button_facebook') == 104864678120869){
+            //imagenes sumate    
+            $inicio = public_path() . '/img/escucha_sumate/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
 
-        $facebook = public_path() . '/img/escucha_2.jpg';
-        $imagefacebook = base64_encode(file_get_contents($facebook));
-        $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-        
-        $overview = public_path() . '/img/escucha_3.jpg';
-        $imageoverview = base64_encode(file_get_contents($overview));
-        $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+            $facebook = public_path() . '/img/escucha_sumate/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            
+            $overview = public_path() . '/img/escucha_sumate/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
 
-        $popcomment = public_path() . '/img/escucha_5.jpg';
-        $imagepopcomment = base64_encode(file_get_contents($popcomment));
-        $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
-        
-        $commentreaction = public_path() . '/img/escucha_6.jpg';
-        $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
-        $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+            $popcomment = public_path() . '/img/escucha_sumate/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            
+            $commentreaction = public_path() . '/img/escucha_sumate/escucha_6.jpg';
+            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+        }else{
+            //imagenes manfred
+            $inicio = public_path() . '/img/escucha_manfred/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+            $facebook = public_path() . '/img/escucha_manfred/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            
+            $overview = public_path() . '/img/escucha_manfred/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+            $popcomment = public_path() . '/img/escucha_manfred/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            
+            $commentreaction = public_path() . '/img/escucha_manfred/escucha_6.jpg';
+            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+        }
+
         $is_chart = 0;
         $vista = view('informe_escucha',['is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
@@ -492,7 +516,7 @@ class HomeController extends Controller
             $total_reacciones = $datos['like_count'] + $datos['love_count'] + $datos['haha_count'] + $datos['wow_count'] + $datos['sad_count'] + $datos['angry_count'];
             $imageUrl = $datos['full_picture'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+                $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
                 $response = Http::get($imageUrl);
                 $imageContents = $response->body();
                 $imageBase64 = base64_encode($imageContents);
@@ -504,29 +528,59 @@ class HomeController extends Controller
                 $imageSrc = $imageUrl;
             }
 
-            $inicio = public_path() . '/img/escucha_1.jpg';
-            $imageInicio = base64_encode(file_get_contents($inicio));
-            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-    
-            $facebook = public_path() . '/img/escucha_2.jpg';
-            $imagefacebook = base64_encode(file_get_contents($facebook));
-            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-            
-            $overview = public_path() . '/img/escucha_3.jpg';
-            $imageoverview = base64_encode(file_get_contents($overview));
-            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
 
-            $grafico_escucha = public_path() . '/img/escucha_4.jpg';
-            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
-            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
-           
-            $popcomment = public_path() . '/img/escucha_5.jpg';
-            $imagepopcomment = base64_encode(file_get_contents($popcomment));
-            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            if($request->input('button_facebook') == 104864678120869){
+                //imagenes sumate    
+                $inicio = public_path() . '/img/escucha_sumate/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+        
+                $facebook = public_path() . '/img/escucha_sumate/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_sumate/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+                $grafico_escucha = public_path() . '/img/escucha_sumate/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
             
-            $commentreaction = public_path() . '/img/escucha_6.jpg';
-            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
-            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+                $popcomment = public_path() . '/img/escucha_sumate/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_sumate/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+            }else{
+                //imagenes manfred
+                $inicio = public_path() . '/img/escucha_manfred/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+        
+                $facebook = public_path() . '/img/escucha_manfred/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_manfred/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+                $grafico_escucha = public_path() . '/img/escucha_manfred/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+            
+                $popcomment = public_path() . '/img/escucha_manfred/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_manfred/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+            }
+            
             $is_chart = 0;
             $vista = view('informe_escucha',['is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
@@ -541,7 +595,6 @@ class HomeController extends Controller
     }
 
     public function informefacebook(Request $request){
-       
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
         $request->validate([
             'start_date' => 'required|date|before:end_date',
@@ -560,7 +613,6 @@ class HomeController extends Controller
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
         $datos = $responseBody['data'];
-        //dd($datos['TopPost'][0]['type_post']);
         if(empty($datos['TopPost'])){
             Alert::error('No se encontraron Publicaciones en la fecha');
             return redirect('/reportes-facebook');
@@ -569,63 +621,51 @@ class HomeController extends Controller
             $nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
             $unfollows = $datos['follwers']['total_seguidores_perdidos'];
             $sumatotalinteraccionespost1 = $datos['TopPost'][0]['comments_count'] + $datos['TopPost'][0]['share_count'] + $datos['TopPost'][0]['like_count'] + $datos['TopPost'][0]['love_count'] + $datos['TopPost'][0]['haha_count']+ $datos['TopPost'][0]['wow_count']+ $datos['TopPost'][0]['sad_count']+ $datos['TopPost'][0]['angry_count'];
-            $sumatotalinteraccionespost2 = $datos['TopPost'][1]['comments_count'] + $datos['TopPost'][1]['share_count'] + $datos['TopPost'][1]['like_count'] + $datos['TopPost'][1]['love_count'] + $datos['TopPost'][1]['haha_count']+ $datos['TopPost'][1]['wow_count']+ $datos['TopPost'][1]['sad_count']+ $datos['TopPost'][1]['angry_count'];      
+            $sumatotalinteraccionespost2 = ($datos['TopPost'][1]['comments_count'] ?? 0) + ($datos['TopPost'][1]['share_count'] ?? 0) + ($datos['TopPost'][1]['like_count'] ?? 0) + ($datos['TopPost'][1]['love_count'] ?? 0) + ($datos['TopPost'][1]['haha_count'] ?? 0) + ($datos['TopPost'][1]['wow_count'] ?? 0) + ($datos['TopPost'][1]['sad_count'] ?? 0) + ($datos['TopPost'][1]['angry_count'] ?? 0);      
             $sumatotalinteraccionesCompartido = $datos['getMostSharedPost'][0]['comments_count'] + $datos['getMostSharedPost'][0]['share_count'] + $datos['getMostSharedPost'][0]['like_count'] + $datos['getMostSharedPost'][0]['love_count'] + $datos['getMostSharedPost'][0]['haha_count']+ $datos['getMostSharedPost'][0]['wow_count']+ $datos['getMostSharedPost'][0]['sad_count']+ $datos['getMostSharedPost'][0]['angry_count'];
             $sumatotalinteraccionesComentarios = $datos['getMostCommentsPost'][0]['comments_count'] + $datos['getMostCommentsPost'][0]['share_count'] + $datos['getMostCommentsPost'][0]['like_count'] + $datos['getMostCommentsPost'][0]['love_count'] + $datos['getMostCommentsPost'][0]['haha_count']+ $datos['getMostCommentsPost'][0]['wow_count']+ $datos['getMostCommentsPost'][0]['sad_count']+ $datos['getMostCommentsPost'][0]['angry_count'];
             
             $imageUrlCompartido = $datos['getMostSharedPost'][0]['full_picture'];
             if (empty($imageUrlCompartido)) {
-                $imageUrlCompartido = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+                $imageUrlCompartido = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
                 $responseCompartido = Http::get($imageUrlCompartido);
                 $imageContentsCompartido = $responseCompartido->body();
                 $imageBase64Compartidos = base64_encode($imageContentsCompartido);
                 $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
             }else{    
-                /*$responseCompartido = Http::get($imageUrlCompartido);
-                $imageContentsCompartido = $responseCompartido->body();
-                $imageBase64Compartidos = base64_encode($imageContentsCompartido);*/
                 $imageSrcCompartido = $imageUrlCompartido;
             }
             
             $imageUrlComentario = $datos['getMostCommentsPost'][0]['full_picture'];
             if (empty($imageUrlComentario)) {
-                $imageUrlComentario = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+                $imageUrlComentario = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
                 $responseComentario = Http::get($imageUrlComentario);
                 $imageContentsComentario = $responseComentario->body();
                 $imageBase64Comentario = base64_encode($imageContentsComentario);
                 $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
             }else{    
-                /*$responseComentario = Http::get($imageUrlComentario);
-                $imageContentsComentario = $responseComentario->body();
-                $imageBase64Comentario = base64_encode($imageContentsComentario);*/
                 $imageSrcComentario = $imageUrlComentario;
             }
 
 
             $imageUrlMayorAlcance1 = $datos['TopPost'][0]['full_picture'];
             if (empty($imageUrlMayorAlcance1)) {
-                $imageUrlMayorAlcance1 = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+                $imageUrlMayorAlcance1 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
                 $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
                 $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
                 $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
                 $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
             }else{
-                /*$responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
-                $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
-                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);*/
                 $imageSrcMayorAlcance1 = $imageUrlMayorAlcance1;
             }
-            $imageUrlMayorAlcance2 = $datos['TopPost'][1]['full_picture'];
+            $imageUrlMayorAlcance2 = $datos['TopPost'][1]['full_picture'] ?? null;
             if (empty($imageUrlMayorAlcance2)){
-                $imageUrlMayorAlcance2 = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+                $imageUrlMayorAlcance2 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
                 $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
                 $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
                 $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
                 $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
             }else{
-                /*$responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
-                $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);*/
                 $imageSrcMayorAlcance2 = $imageUrlMayorAlcance2;
             }
             /**grafico 1 de tendencia */  
@@ -701,49 +741,93 @@ class HomeController extends Controller
             /**Fin Grafico 2 de tendencia */
             
             //Imagenes de Facebook
-            $inicio = public_path() . '/img/facebook_1.jpg';
-            $imageInicio = base64_encode(file_get_contents($inicio));
-            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-            
-            $facebook = public_path() . '/img/facebook_2.jpg';
-            $imagefacebook = base64_encode(file_get_contents($facebook));
-            $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-            
-            $overview = public_path() . '/img/facebook_3.jpg';
-            $imageoverview = base64_encode(file_get_contents($overview));
-            $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+            if($request->input('button_facebook') == 104864678120869){
+                //Imagenes Sumate
+                $inicio = public_path() . '/img/facebook_sumate/facebook_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
 
+                $facebook = public_path() . '/img/facebook_sumate/facebook_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
             
-            $interaccion_facebook = public_path() . '/img/facebook_4.jpg';
-            $imaginteraccion_facebook = base64_encode(file_get_contents($interaccion_facebook));
-            $src_interaccion_facebook = 'data:' . mime_content_type($interaccion_facebook) . ';base64,' . $imaginteraccion_facebook;
-            
-            $resultado_facebook = public_path() . '/img/facebook_5.jpg';
-            $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
-            $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
-            
-            $mayoralcance_facebook = public_path() . '/img/facebook_7.jpg';
-            $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
-            $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
-            
-            $compartido_facebook = public_path() . '/img/facebook_8.jpg';
-            $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
-            $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
-            
-            $comentado_facebook = public_path() . '/img/facebook_9.jpg';
-            $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
-            $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
+                $overview = public_path() . '/img/facebook_sumate/facebook_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
 
-            $impressions_facebook = public_path() . '/img/facebook_11.jpg';
-            $imageimpressions_facebook = base64_encode(file_get_contents($impressions_facebook));
-            $src_impressions = 'data:' . mime_content_type($impressions_facebook) . ';base64,' . $imageimpressions_facebook;
+                $interaccion_facebook = public_path() . '/img/facebook_sumate/facebook_4.jpg';
+                $imaginteraccion_facebook = base64_encode(file_get_contents($interaccion_facebook));
+                $src_interaccion_facebook = 'data:' . mime_content_type($interaccion_facebook) . ';base64,' . $imaginteraccion_facebook;
+                
+                $resultado_facebook = public_path() . '/img/facebook_sumate/facebook_5.jpg';
+                $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
+                $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
+            
+                $mayoralcance_facebook = public_path() . '/img/facebook_sumate/facebook_6.jpg';
+                $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
+                $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
+                
+                $impressions_facebook = public_path() . '/img/facebook_sumate/facebook_7.jpg';
+                $imageimpressions_facebook = base64_encode(file_get_contents($impressions_facebook));
+                $src_impressions = 'data:' . mime_content_type($impressions_facebook) . ';base64,' . $imageimpressions_facebook;
 
+                $compartido_facebook = public_path() . '/img/facebook_sumate/facebook_8.jpg';
+                $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
+                $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
+                
+                $comentado_facebook = public_path() . '/img/facebook_sumate/facebook_9.jpg';
+                $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
+                $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
+                    
+                $gracias = public_path() . '/img/facebook_sumate/facebook_10.jpg';
+                $imagegracias = base64_encode(file_get_contents($gracias));
+                $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+                //Fin Imagenes sumate
+            }else{
+                //Imagenes Manfred
+                $inicio = public_path() . '/img/facebook_manfred/facebook_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+                $facebook = public_path() . '/img/facebook_manfred/facebook_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_facebook = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
             
-            $gracias = public_path() . '/img/facebook_10.jpg';
-            $imagegracias = base64_encode(file_get_contents($gracias));
-            $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+                $overview = public_path() . '/img/facebook_manfred/facebook_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_overview = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+                $interaccion_facebook = public_path() . '/img/facebook_manfred/facebook_4.jpg';
+                $imaginteraccion_facebook = base64_encode(file_get_contents($interaccion_facebook));
+                $src_interaccion_facebook = 'data:' . mime_content_type($interaccion_facebook) . ';base64,' . $imaginteraccion_facebook;
+                
+                $resultado_facebook = public_path() . '/img/facebook_manfred/facebook_5.jpg';
+                $imageresultado_facebook = base64_encode(file_get_contents($resultado_facebook));
+                $src_resultado_facebook = 'data:' . mime_content_type($resultado_facebook) . ';base64,' . $imageresultado_facebook;
             
-            //Fin Imagenes de Faceboo
+                $mayoralcance_facebook = public_path() . '/img/facebook_manfred/facebook_6.jpg';
+                $imagemayoralcance = base64_encode(file_get_contents($mayoralcance_facebook));
+                $src_mayoralcance = 'data:' . mime_content_type($mayoralcance_facebook) . ';base64,' . $imagemayoralcance;
+                
+                $impressions_facebook = public_path() . '/img/facebook_manfred/facebook_7.jpg';
+                $imageimpressions_facebook = base64_encode(file_get_contents($impressions_facebook));
+                $src_impressions = 'data:' . mime_content_type($impressions_facebook) . ';base64,' . $imageimpressions_facebook;
+
+                $compartido_facebook = public_path() . '/img/facebook_manfred/facebook_8.jpg';
+                $imagecompartido = base64_encode(file_get_contents($compartido_facebook));
+                $src_compartido = 'data:' . mime_content_type($compartido_facebook) . ';base64,' . $imagecompartido;
+                
+                $comentado_facebook = public_path() . '/img/facebook_manfred/facebook_9.jpg';
+                $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
+                $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
+                    
+                $gracias = public_path() . '/img/facebook_manfred/facebook_10.jpg';
+                $imagegracias = base64_encode(file_get_contents($gracias));
+                $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
+                //Fin Imagenes Manfred
+            }
+
+            //Fin Imagenes de Facebook
             $vista = view('informe_facebook', [
                 'src_inicio' => $src_inicio,
                 'src_facebook' => $src_facebook,
@@ -820,8 +904,37 @@ class HomeController extends Controller
         $dibujar_torta = ['labels' => ['Likes', 'Loves', 'Hahas','Wows','Sads','Angrys','Shares','Comments'],'values' => [$totalLikes,$totalLoves,$totalHahas,$totalWows,$totalSads,$totalAngries,$totalShares,$totalComments]];
         return response()->json(['dibujar_torta'=>$dibujar_torta]);    
     }
+
+    public function recuperaridreacciones(Request $request){
+        
+        $url_total = 'https://reportapi.infocenterlatam.com/api/fstadistic/showPost';
+        $headers = ['Content-Type' => 'application/json'];
+        if($request->secondValue == 1){
+            $body = '{
+                "id": '.$request->id.',
+                "id_page": 104864678120869
+            }'; 
+        }else{
+            $body = '{
+                "id": '.$request->id.',
+                "id_page": 102674511293040
+            }'; 
+        }
+               
+        $client = new Client();
+        $response = $client->get($url_total, ['headers' => $headers,'body' => $body,]);
+        $responseBody = json_decode($response->getBody()->getContents(),true);
+        $totalLikes = $responseBody['data']['like_count'];
+        $totalLoves = $responseBody['data']['love_count'];
+        $totalHahas = $responseBody['data']['haha_count'];
+        $totalWows = $responseBody['data']['wow_count'];
+        $totalSads = $responseBody['data']['sad_count'];
+        $totalAngries = $responseBody['data']['angry_count'];
+        return response()->json(['totalLikes'=>$totalLikes,'totalLoves'=>$totalLoves,'totalHahas'=>$totalHahas,'totalWows'=>$totalWows,'totalSads'=>$totalSads,'totalAngries'=>$totalAngries]);    
+    }
     public function informeescuchaid(Request $request){
         set_time_limit(600);
+        
         //$url_python = 'http://75.102.23.23:5001/analyze_comments?id_post='.$request->id;
         //$response_python = Http::timeout(600)->get($url_python);
         //$data_python = $response_python->json();
@@ -845,7 +958,7 @@ class HomeController extends Controller
             // dd($postData[0]->full_picture);
             $imageUrl = $postData['full_picture'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://scontent.flpb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=CXvrx_Ggy9gQ7kNvgE5UUId&_nc_ht=scontent.flpb2-1.fna&_nc_gid=AjAKxe6nnpw7sTRja1MkIxM&oh=00_AYCYP7KMw3zuz6ZjofUIzsv8GqJ0abHshNLJHxnCG5repg&oe=671BE143';
+                $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
                 $response = Http::get($imageUrl);
                 $imageContents = $response->body();
                 $imageBase64 = base64_encode($imageContents);
@@ -857,30 +970,67 @@ class HomeController extends Controller
                 $imageSrc = $imageUrl;
             }
 
-            $inicio = public_path() . '/img/escucha_1.jpg';
-            $imageInicio = base64_encode(file_get_contents($inicio));
-            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-    
-            $facebook = public_path() . '/img/escucha_2.jpg';
-            $imagefacebook = base64_encode(file_get_contents($facebook));
-            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-            
-            $overview = public_path() . '/img/escucha_3.jpg';
-            $imageoverview = base64_encode(file_get_contents($overview));
-            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-           
-            $popcomment = public_path() . '/img/escucha_5.jpg';
-            $imagepopcomment = base64_encode(file_get_contents($popcomment));
-            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
-            
-            $commentreaction = public_path() . '/img/escucha_6.jpg';
-            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
-            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
 
+            if($request->input('button_facebook') == 104864678120869){
+                //imagenes sumate    
+                $inicio = public_path() . '/img/escucha_sumate/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+        
+                $facebook = public_path() . '/img/escucha_sumate/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_sumate/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
             
-            $grafico_escucha = public_path() . '/img/escucha_4.jpg';
-            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
-            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+                $popcomment = public_path() . '/img/escucha_sumate/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_sumate/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+
+                $grafico_escucha = public_path() . '/img/escucha_sumate/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+
+                $grafico_palabras = public_path() . '/img/escucha_sumate/escucha_7.jpg';
+                $imagepalabrasescucha = base64_encode(file_get_contents($grafico_palabras));
+                $src_escucha_palabras = 'data:' . mime_content_type($grafico_palabras) . ';base64,' . $imagepalabrasescucha;
+
+            }else{
+                //imagenes manfred
+                $inicio = public_path() . '/img/escucha_manfred/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+        
+                $facebook = public_path() . '/img/escucha_manfred/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_manfred/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+            
+                $popcomment = public_path() . '/img/escucha_manfred/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_manfred/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+
+                $grafico_escucha = public_path() . '/img/escucha_manfred/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+
+                $grafico_palabras = public_path() . '/img/escucha_manfred/escucha_7.jpg';
+                $imagepalabrasescucha = base64_encode(file_get_contents($grafico_palabras));
+                $src_escucha_palabras = 'data:' . mime_content_type($grafico_palabras) . ';base64,' . $imagepalabrasescucha;
+            }
 
             // Construir la URL de QuickChart
             // Suma total de los valores
@@ -914,7 +1064,7 @@ class HomeController extends Controller
                 round($positive_percentage, 2) . ',' . 
                 round($negative_percentage, 2) . ',' . '],backgroundColor:["green","red","gray"]}]}}';
             $is_chart = 1;
-            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart]);
+            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -940,7 +1090,6 @@ class HomeController extends Controller
         $response = $client->get($url_tendecia, ['headers' => $headers_total,'body' => $body,]);
         $responseBody_total = json_decode($response->getBody()->getContents(),true);
         $datostendencia = $responseBody_total['data'];
-        //dd($datostendencia);
         $trendData = [
             'dates' => [],
             'likes' => [],
@@ -952,7 +1101,6 @@ class HomeController extends Controller
             'clicks' => [],
             'impressions' => []
         ];
-        //dd($trendData);
         foreach ($datostendencia as $datatendencia) {
             $trendData['dates'][] = $datatendencia['date'];
             $trendData['likes'][] = (int)$datatendencia['likes'];

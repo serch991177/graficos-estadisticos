@@ -143,6 +143,40 @@
         </div>
     @endif
 
+        
+    <!--impresions-->
+    <div class="page-10">
+        <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['topImpressionsPosts'][0]['full_picture']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
+        <div style="position:absolute; top:1020px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['type_post']}}</h1></div>
+        <div style="position:absolute; top:1150px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['created_time']}}</h1></div>
+        <div style="position:absolute; top:900px; left:90px; font-size:21px; width:500px; padding:10px; box-sizing:border-box;"><h1 style="color:black;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['story']}}</h1></div>
+        @php($sumatotalinteraccionesImpresiones = $datos['topImpressionsPosts'][0]['comments_count'] + $datos['topImpressionsPosts'][0]['share_count'] + $datos['topImpressionsPosts'][0]['like_count'] + $datos['topImpressionsPosts'][0]['love_count'] + $datos['topImpressionsPosts'][0]['haha_count']+ $datos['topImpressionsPosts'][0]['wow_count']+ $datos['topImpressionsPosts'][0]['sad_count']+ $datos['topImpressionsPosts'][0]['angry_count'] )
+        <div style="position:absolute; top:200px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$sumatotalinteraccionesImpresiones}}</h1></div>
+        <div style="position:absolute; top:330px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['total_reactions']}}</h1></div>
+        <div style="position:absolute; top:460px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['comments_count']}}</h1></div>
+        <div style="position:absolute; top:600px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['share_count']}}</h1></div>
+        <div style="position:absolute; top:730px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['post_impressions']}}</h1></div>
+        <div style="position:absolute; top:860px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['post_click']}}</h1></div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    @if(isset($datos['topImpressionsPosts'][1]))
+        <div class="page-10">
+            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['topImpressionsPosts'][1]['full_picture']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
+            <div style="position:absolute; top:1020px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['type_post']}}</h1></div>
+            <div style="position:absolute; top:1150px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['created_time']}}</h1></div>
+            <div style="position:absolute; top:900px; left:90px; font-size:21px; width:500px; padding:10px; box-sizing:border-box;"><h1 style="color:black;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['story']}}</h1></div>
+            @php($sumatotalinteraccionesImpresiones2 = $datos['topImpressionsPosts'][1]['comments_count'] + $datos['topImpressionsPosts'][1]['share_count'] + $datos['topImpressionsPosts'][1]['like_count'] + $datos['topImpressionsPosts'][1]['love_count'] + $datos['topImpressionsPosts'][1]['haha_count']+ $datos['topImpressionsPosts'][1]['wow_count']+ $datos['topImpressionsPosts'][1]['sad_count']+ $datos['topImpressionsPosts'][1]['angry_count'] )
+            <div style="position:absolute; top:200px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$sumatotalinteraccionesImpresiones2}}</h1></div>
+            <div style="position:absolute; top:330px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['total_reactions']}}</h1></div>
+            <div style="position:absolute; top:460px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['comments_count']}}</h1></div>
+            <div style="position:absolute; top:600px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['share_count']}}</h1></div>
+            <div style="position:absolute; top:730px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['post_impressions']}}</h1></div>
+            <div style="position:absolute; top:860px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['post_click']}}</h1></div>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        </div>
+    @endif
+
+
     <!--contenido mas compartido-->
     <div class="page-7">
         <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$imageSrcCompartido}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
@@ -206,37 +240,6 @@
     @endif
 
 
-    <!--impresions-->
-    <div class="page-10">
-        <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['topImpressionsPosts'][0]['full_picture']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
-        <div style="position:absolute; top:1020px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['type_post']}}</h1></div>
-        <div style="position:absolute; top:1150px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['created_time']}}</h1></div>
-        <div style="position:absolute; top:900px; left:90px; font-size:21px; width:500px; padding:10px; box-sizing:border-box;"><h1 style="color:black;font-size: 30px;">{{$datos['topImpressionsPosts'][0]['story']}}</h1></div>
-        @php($sumatotalinteraccionesImpresiones = $datos['topImpressionsPosts'][0]['comments_count'] + $datos['topImpressionsPosts'][0]['share_count'] + $datos['topImpressionsPosts'][0]['like_count'] + $datos['topImpressionsPosts'][0]['love_count'] + $datos['topImpressionsPosts'][0]['haha_count']+ $datos['topImpressionsPosts'][0]['wow_count']+ $datos['topImpressionsPosts'][0]['sad_count']+ $datos['topImpressionsPosts'][0]['angry_count'] )
-        <div style="position:absolute; top:200px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$sumatotalinteraccionesImpresiones}}</h1></div>
-        <div style="position:absolute; top:330px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['total_reactions']}}</h1></div>
-        <div style="position:absolute; top:460px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['comments_count']}}</h1></div>
-        <div style="position:absolute; top:600px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['share_count']}}</h1></div>
-        <div style="position:absolute; top:730px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['post_impressions']}}</h1></div>
-        <div style="position:absolute; top:860px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][0]['post_click']}}</h1></div>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    </div>
-    @if(isset($datos['topImpressionsPosts'][1]))
-        <div class="page-10">
-            <div style="color: rgb(0, 0, 0) !important; text-align:center; position:absolute; top:260px; left:150px; font-size:21px; width:450px; height:470px; overflow:hidden; border:1px solid #ccc; padding:10px; box-sizing:border-box;"><img src="{{$datos['topImpressionsPosts'][1]['full_picture']}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
-            <div style="position:absolute; top:1020px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['type_post']}}</h1></div>
-            <div style="position:absolute; top:1150px; left:760px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['created_time']}}</h1></div>
-            <div style="position:absolute; top:900px; left:90px; font-size:21px; width:500px; padding:10px; box-sizing:border-box;"><h1 style="color:black;font-size: 30px;">{{$datos['topImpressionsPosts'][1]['story']}}</h1></div>
-            @php($sumatotalinteraccionesImpresiones2 = $datos['topImpressionsPosts'][1]['comments_count'] + $datos['topImpressionsPosts'][1]['share_count'] + $datos['topImpressionsPosts'][1]['like_count'] + $datos['topImpressionsPosts'][1]['love_count'] + $datos['topImpressionsPosts'][1]['haha_count']+ $datos['topImpressionsPosts'][1]['wow_count']+ $datos['topImpressionsPosts'][1]['sad_count']+ $datos['topImpressionsPosts'][1]['angry_count'] )
-            <div style="position:absolute; top:200px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$sumatotalinteraccionesImpresiones2}}</h1></div>
-            <div style="position:absolute; top:330px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['total_reactions']}}</h1></div>
-            <div style="position:absolute; top:460px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['comments_count']}}</h1></div>
-            <div style="position:absolute; top:600px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['share_count']}}</h1></div>
-            <div style="position:absolute; top:730px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['post_impressions']}}</h1></div>
-            <div style="position:absolute; top:860px; left:750px; font-size:21px; width:300px; padding:10px; box-sizing:border-box;"><h1 style="color:white;font-size: 50px;">{{$datos['topImpressionsPosts'][1]['post_click']}}</h1></div>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        </div>
-    @endif
 
 
     <!--Imagen de Gracias-->

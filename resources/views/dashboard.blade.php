@@ -243,7 +243,7 @@
 <br><br>
 <!--Pie de los totales de las reacciones-->
 <div class="container">
-    <h1 class="text-center">Reacciones de Publicaciones de Facebook</h1>
+    <h1 class="text-center">Gráfico de Interacciones</h1>
     <div class="row">
         <div class="col-md-12 canvas-container" style="display:flex;justify-content:center;">
             <canvas id="myPieChart"></canvas>
@@ -435,7 +435,7 @@
     }
 </script>-->
 <div class="container">
-    <h1 class="text-center">Mapa Estadistico</h1>
+    <h1 class="text-center">Mapa de Seguidores</h1>
     <div class="row">
         <div class="col-md-12 canvas-container" style="display:flex;justify-content:center;">
             <div id="myMap" style="height: 500px; min-width: 810px"></div>
@@ -880,7 +880,7 @@
     }
 </style>
 <div class="container">
-    <h1 class="text-center">Grafica de Tendencia</h1>
+    <h1 class="text-center">Tendencia de interacciones</h1>
     <form id="date-form">
         <div class="form-inline">
             <label for="start-date">Fecha de Inicio:</label>
@@ -897,7 +897,7 @@
 </div>
 <!--Grafico de tendencias mas comentarios-->
 <div class="container">
-    <h1 class="text-center">Grafica de tendencia de publicaciones mas comentadas</h1>
+    <h1 class="text-center">Gráfica de tendencia de publicaciones más comentadas</h1>
     <div class="row">
         <form id="filters-form">
             <div class="form-inline">
@@ -921,7 +921,7 @@
     </div>
 </div>
 <!--Grafico de tendencias con mas likes-->
-<div class="container">
+{{--<div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas Likes</h1>
     <div class="row">
         <form>
@@ -944,7 +944,7 @@
         </form>
         <div id="charttendencialikes" style="width: 100%; height: 600px;"></div>
     </div>
-</div> 
+</div>
 <!--Grafico de tendencias con mas loves-->
 <div class="container">
     <h1 class="text-center">Grafica de tendencia de publicaciones mas loves</h1>
@@ -1064,10 +1064,10 @@
         </form>
         <div id="charttendenciaangries" style="width: 100%; height: 600px;"></div>
     </div>
-</div>
+</div>--}}
 <!--Grafico de tendencias con mas shares-->
 <div class="container">
-    <h1 class="text-center">Grafica de tendencia de publicaciones mas shares</h1>
+    <h1 class="text-center">Gráfica de tendencia de publicaciones más compartidas</h1>
     <div class="row">
         <form>
             <div class="form-inline">
@@ -1134,6 +1134,105 @@
   </div>
 </div>
 <!--Fin Modal Graficas-->
+<!--Modal Reacciones-->
+<div class="modal fade" id="ReactionModal" tabindex="-1" role="dialog" aria-labelledby="ReactionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title col-11 text-center" id="ReactionModalLabel">Reacciones de Publicaciones de Facebook</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <h1 class="text-center">Reacciones de Publicaciones de Facebook</h1>
+            <div class="row">
+                <!-- Total de me gustas -->
+                <div class="col-md-4">
+                    <div class="card text-white" style="background-color: #80D4E5;">
+                        <div class="card-header">
+                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/e4299734559659.56d57de04bda4.gif" alt="Total de me gustas" style="max-width: 100%; "> 
+                        <div class="text-center">Total de me gustas</div>
+                        <!--<i class="fas fa-thumbs-up"></i> Total de me gustas-->
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center" id="totallikesmodal">1</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total de me enamoras -->
+                <div class="col-md-4">
+                    <div class="card text-white" style="background-color: #C080C0;">
+                        <div class="card-header">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/65ea2034559659.56d57de06cea2.gif" alt="Total de me enamoras" style="max-width: 100%;"> 
+                            <div class="text-center">Total de me enamoras</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center" id="totallovesmodal">2</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total de me diviertes -->
+                <div class="col-md-4">
+                    <div class="card text-white" style="background-color: #F497B7;">
+                        <div class="card-header">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/35c9bf34559659.56d57de0eb467.gif" alt="Total de me diviertes" style="max-width: 100%;"> 
+                            <div class="text-center">Total de me diviertes</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center" id="totalhahasmodal">3</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Total de me asombras -->
+                <div class="col-md-4">
+                    <div class="card text-white" style="background-color: #E89A9A;">
+                        <div class="card-header">
+                            <img src="/img/emoji-wow.gif" alt="Total de me asombras" style="max-width: 100%;"> 
+                            <div class="text-center">Total de me asombras</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center" id="totalwowsmodal">4</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total de me entristece -->
+                <div class="col-md-4">
+                    <div class="card text-white" style="background-color: #D080D0;">
+                        <div class="card-header">
+                            <img src="/img/emoji-sad.gif" alt="Total de me entristece" style="max-width: 100%;"> 
+                            <div class="text-center">Total de me entristece</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center" id="totalsadsmodal">5</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total de me enojas -->
+                <div class="col-md-4">
+                    <div class="card text-white" style="background-color: #F4A4A4;">
+                        <div class="card-header">
+                            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/e66e6e34559659.56d57de095aee.gif" alt="Total de me enojas" style="max-width: 100%;"> 
+                            <div class="text-center">Total de me enojas</div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center" id="totalangriesmodal">6</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin Modal Reacciones-->
 <!--Bar Race-->
 <!--Scripts de ciudades-->
 <!--Scripts de javascript-->
@@ -1195,12 +1294,12 @@
             },
             { "data": "created_time" },
             { "data": "comments_count" },
-            { "data": "like_count" },
+            /*{ "data": "like_count" },
             { "data": "love_count" },
             { "data": "haha_count" },
             { "data": "wow_count" },
             { "data": "sad_count" },
-            { "data": "angry_count" },
+            { "data": "angry_count" },*/
             { "data": "share_count" },
             {"data":"post_impressions"},
             {"data":"total_reactions"},
@@ -1209,6 +1308,10 @@
                 "data": null,
                 "render": function(data, type, row) {
                     return `
+                        <button type="button" title="Generar Reacciones" class="btn btn-success id_reacciones" value="${row.id}"data-id2="1" data-toggle="modal" data-target="#ReactionModal">
+                            <i class="fa fa-registered"> </i>
+                        </button>
+                        <br><br>
                         <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-id2="1" data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-chart-bar"></i>
                         </button>
@@ -1336,12 +1439,12 @@
             },
             { "data": "created_time" },
             { "data": "comments_count" },
-            { "data": "like_count" },
+            /*{ "data": "like_count" },
             { "data": "love_count" },
             { "data": "haha_count" },
             { "data": "wow_count" },
             { "data": "sad_count" },
-            { "data": "angry_count" },
+            { "data": "angry_count" },*/
             { "data": "share_count" },
             {"data":"post_impressions"},
             {"data":"total_reactions"},
@@ -1350,6 +1453,10 @@
                 "data": null,
                 "render": function(data, type, row) {
                     return `
+                        <button type="button" title="Generar Reacciones" class="btn btn-success id_reacciones" value="${row.id}"data-id2="2" data-toggle="modal" data-target="#ReactionModal">
+                            <i class="fa fa-registered"> </i>
+                        </button>
+                        <br><br>
                         <button type="button"  title="Generar Grafica" class="btn btn-primary id_graficar" value="${row.id}" data-id2="2"  data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-chart-bar"></i>
                         </button>
@@ -1447,7 +1554,7 @@
                 labels: @json($data['labels']),
                 datasets: [{
                     data: @json($data['values']),
-                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9', '#D4B3E6', '#F7C8D9', '#E8A4B8', '#D9D9D9']
+                    backgroundColor: ['#7FA5F9', '#D76600', '#915100', '#355900', '#BABABA', '#FF4B4B', '#DEA9FF', '#00A038']
                 }]
             },
             options: {
@@ -1536,15 +1643,18 @@
         const dataMap = {!! $jsonDataMap !!}; // Datos iniciales
         chart = Highcharts.mapChart('myMap', {
             chart: { map: 'custom/world' },
-            title: { text: 'Mapa Mundial' },
+            title: { text: 'Mapa de Seguidores' },
             subtitle: { text: 'Número de fans en el mundo' },
             mapNavigation: { enabled: true, buttonOptions: { verticalAlign: 'bottom' } },
             colorAxis: {
                 min: 0,
                 stops: [
-                    [0, '#D4B3E6'],
+                    [0, '#F7C8D9'],  // Menor cantidad de seguidores
+                    [0.5, '#D4B3E6'],
+                    [1, '#D4B3E6']   // Mayor cantidad de seguidores
+                   /* [0, '#D4B3E6'],
                     [0.5, '#A8DDEB'],
-                    [1, '#F7C8D9']
+                    [1, '#F7C8D9']*/
                 ]
             },
             series: [{
@@ -1944,7 +2054,7 @@
                                 labels: data.dibujar_torta.labels,
                                 datasets: [{
                                     data: data.dibujar_torta.values,
-                                    backgroundColor: ['#A8DDEB', '#C0E1F7', '#CFEFF4', '#A1D7D9', '#D4B3E6', '#F7C8D9', '#E8A4B8', '#D9D9D9']
+                                    backgroundColor: ['#7FA5F9', '#D76600', '#915100', '#355900', '#BABABA', '#FF4B4B', '#DEA9FF', '#00A038']
                                 }]
                             },
                             options: {
@@ -1967,6 +2077,39 @@
                         $('#spinner').hide();
                         $('#myPieModal').show();
                     }, 500); // Ajusta el tiempo según sea necesario
+                },
+                error: function() {
+                    // En caso de error, ocultar el spinner
+                    $('#spinner').hide();
+                }
+            });
+        });
+    });
+</script>
+<!--Funcion para recuperar reacciones-->
+<script>
+    $(document).ready(function(){
+        $(document).on('click', '.id_reacciones', function(){
+            var id = $(this).val();
+            var secondValue = $(this).data('id2');
+            // Mostrar el spinner y ocultar el canvas al hacer clic en el botón
+            $('#spinner').show();
+            $.ajax({
+                type: "POST",
+                headers: {'Content-Type': 'application/json','X-CSRF-TOKEN': '{{ csrf_token() }}',},
+                url: "{{ route('recuperar_id_reacciones') }}",
+                async: false,
+                data: JSON.stringify({'id': id,'secondValue':secondValue}),
+                success: function(data) {
+                    $('#ReactionModal').modal('show');
+                    document.getElementById("totallikesmodal").innerHTML = data.totalLikes;
+                    document.getElementById("totallovesmodal").innerHTML = data.totalLoves;
+                    document.getElementById("totalhahasmodal").innerHTML = data.totalHahas;
+                    document.getElementById("totalwowsmodal").innerHTML = data.totalWows;
+                    document.getElementById("totalsadsmodal").innerHTML = data.totalSads;
+                    document.getElementById("totalangriesmodal").innerHTML = data.totalAngries;
+                    // Retraso para asegurar que el modal está completamente visible
+                    setTimeout(function() {$('#spinner').hide();}, 500);
                 },
                 error: function() {
                     // En caso de error, ocultar el spinner
@@ -2108,7 +2251,7 @@
                 type: 'column'
             },
             title: {
-                text: 'Publicaciones Más Comentadas'
+                text: 'Gráfica de tendencia de publicaciones más comentadas'
             },
             xAxis: {
                 categories: categories,
@@ -2666,7 +2809,7 @@
                 type: 'column'
             },
             title: {
-                text: 'Publicaciones con mas Compartidas'
+                text: 'Gráfica de tendencia de publicaciones más compartidas'
             },
             xAxis: {
                 categories: categories,
@@ -2895,7 +3038,6 @@
     // Inicializar la gráfica al cargar la página
     document.addEventListener('DOMContentLoaded', initChartTrend);
 </script>
-
 <!--trend manfred-->
 <script>
     let chartTrendFollowmanfred;
@@ -3270,7 +3412,7 @@
                 document.getElementById("boton_trend_manfred").style.display='none'; 
                 document.getElementById("boton_comentario_sumate").style.display='';
                 document.getElementById("boton_comentario_manfred").style.display='none';      
-                document.getElementById("boton_like_sumate").style.display='';
+                /*document.getElementById("boton_like_sumate").style.display='';
                 document.getElementById("boton_like_manfred").style.display='none';     
                 document.getElementById("boton_love_sumate").style.display='';
                 document.getElementById("boton_love_manfred").style.display='none';
@@ -3281,7 +3423,7 @@
                 document.getElementById("boton_sad_sumate").style.display='';
                 document.getElementById("boton_sad_manfred").style.display='none';
                 document.getElementById("boton_angry_sumate").style.display='';
-                document.getElementById("boton_angry_manfred").style.display='none';
+                document.getElementById("boton_angry_manfred").style.display='none';*/
                 document.getElementById("boton_shares_sumate").style.display='';
                 document.getElementById("boton_shares_manfred").style.display='none';
                 document.getElementById("boton_all_sumate").style.display='';
@@ -3304,7 +3446,7 @@
                 document.getElementById("boton_trend_manfred").style.display='';
                 document.getElementById("boton_comentario_sumate").style.display='none';
                 document.getElementById("boton_comentario_manfred").style.display=''; 
-                document.getElementById("boton_like_sumate").style.display='none';
+                /*document.getElementById("boton_like_sumate").style.display='none';
                 document.getElementById("boton_like_manfred").style.display='';
                 document.getElementById("boton_love_sumate").style.display='none';
                 document.getElementById("boton_love_manfred").style.display='';
@@ -3315,7 +3457,7 @@
                 document.getElementById("boton_sad_sumate").style.display='none';
                 document.getElementById("boton_sad_manfred").style.display='';
                 document.getElementById("boton_angry_sumate").style.display='none';
-                document.getElementById("boton_angry_manfred").style.display='';
+                document.getElementById("boton_angry_manfred").style.display='';*/
                 document.getElementById("boton_shares_sumate").style.display='none';
                 document.getElementById("boton_shares_manfred").style.display='';
                 document.getElementById("boton_all_sumate").style.display='none';

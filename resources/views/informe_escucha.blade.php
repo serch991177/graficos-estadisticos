@@ -49,11 +49,17 @@
             height: 100vh;
         }
         
+        @if(isset($src_escucha_palabras))
+            .page-7{
+                background-image: url('{{$src_escucha_palabras}}');
+                background-size: cover;
+                height: 100vh;
+            }
+        @endif
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-    
     {{-- Process top reactions --}}
     @php
         $topReactionsArray = $postData['top_reactions'];
@@ -80,7 +86,7 @@
 
         
     @endphp
-    <div class="page-1" >
+    <div class="page-1">
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     
@@ -88,19 +94,19 @@
     <div class="page-2">
         <div style="position:absolute; top:200px; left:270px;"> <h1 style="color:black;font-size: 35px;">{{ \Carbon\Carbon::parse($postData['created_time'])->format('d/m/Y') }}</h1></div>
         <div style="position:absolute; top:300px; left:270px; width:1300px;"><h1 style="color:black;font-size: 15px;font-family: 'Noto Sans', sans-serif;">{!! preg_replace('/[\x{1F000}-\x{1FFFF}]|[\x{200D}]|[\x{2600}-\x{27BF}]/u', '', $postData['story']) !!}</h1></div>
-        <div style="position:absolute; top:440px; left:290px;"><h1 style="color:black;font-size: 30px;">Facebook</h1></div>
-        <div style="position:absolute; top:550px; left:400px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
-        <div style="position:absolute; top:660px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
-        <div style="position:absolute; top:810px; left:400px;"><h1 style="color:black;font-size: 12px;">{!! $reactionstop !!}</h1></div>
-        <div style="position:absolute; top:900px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['share_count']}}</h1></div>
-        <div style="position:absolute; top:1000px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count']}}</h1></div>
-        <div style="position:absolute; top:1100px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count'] + $postData['like_count'] + $postData['love_count']  + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'] + $postData['share_count']}}</h1></div>
-        <div style="position:absolute; top:1200px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['post_impressions']}}</h1></div>
+        {{--<div style="position:absolute; top:440px; left:290px;"><h1 style="color:black;font-size: 30px;">Facebook</h1></div>--}}
+        <div style="position:absolute; top:480px; left:450px;"><h1 style="color:black;font-size: 30px;">{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</h1></div>
+        <div style="position:absolute; top:600px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$total_reacciones}}</h1></div>
+        <div style="position:absolute; top:740px; left:400px;"><h1 style="color:black;font-size: 12px;">{!! $reactionstop !!}</h1></div>
+        <div style="position:absolute; top:850px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['share_count']}}</h1></div>
+        <div style="position:absolute; top:950px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count']}}</h1></div>
+        <div style="position:absolute; top:1050px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['comments_count'] + $postData['like_count'] + $postData['love_count']  + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'] + $postData['share_count']}}</h1></div>
+        <div style="position:absolute; top:1150px; left:400px;"><h1 style="color:black;font-size: 30px;">{{$postData['post_impressions']}}</h1></div>
         <div style="position:absolute; top:660px; left:950px;width:450px; height:470px; overflow:hidden;"><img src="{{$imageSrc}}" style="max-width:100%; max-height:100%;" alt="Image"></div>
         @if(isset($postData['comment_pop']['message']))
             <div style="position:absolute; top:200px; left:870px;width:790px;"><h1 style="color:black;font-size: 15px;">{{$postData['comment_pop']['message']}}</h1></div>
         @else
-            <div style="position:absolute; top:200px; left:870px;width:790px;"><h1 style="color:black;font-size: 20px;">No hay comentarios.</h1></div>
+            <div style="position:absolute; top:200px; left:870px;width:790px;"><h1 style="color:black;font-size: 20px;"></h1></div>
         @endif
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
@@ -108,7 +114,7 @@
     <!--comentarios -->
     <div class="page-5" >
         <div style="position:absolute; top:270px; left:350px;">
-            <span>Likes : {{$postData['comment_pop']['most_reacted'][0]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][0]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][0]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][0]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][0]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][0]['Angries']}}</span>
+            <span>Likes : {{$postData['comment_pop']['most_reacted'][0]['like_count'] ?? $postData['comment_pop']['most_reacted'][0]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][0]['love_count'] ?? $postData['comment_pop']['most_reacted'][0]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][0]['haha_count'] ?? $postData['comment_pop']['most_reacted'][0]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][0]['wow_count'] ?? $postData['comment_pop']['most_reacted'][0]['Wows'] }} Sads :{{$postData['comment_pop']['most_reacted'][0]['sad_count'] ?? $postData['comment_pop']['most_reacted'][0]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][0]['angry_count'] ?? $postData['comment_pop']['most_reacted'][0]['Angries']}}</span>
         </div>
         <div style="position:absolute; top:300px; left:100px;width:1580px;">
             @php
@@ -129,7 +135,7 @@
             @endif
         </div>
         <div style="position:absolute; top:620px; left:350px;">
-            <span>Likes : {{$postData['comment_pop']['most_reacted'][1]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][1]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][1]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][1]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][1]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][1]['Angries']}}</span>
+            <span>Likes : {{$postData['comment_pop']['most_reacted'][1]['like_count'] ?? $postData['comment_pop']['most_reacted'][1]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][1]['love_count'] ?? $postData['comment_pop']['most_reacted'][1]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][1]['haha_count'] ?? $postData['comment_pop']['most_reacted'][1]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][1]['wow_count'] ?? $postData['comment_pop']['most_reacted'][1]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][1]['sad_count'] ?? $postData['comment_pop']['most_reacted'][1]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][1]['angry_count'] ?? $postData['comment_pop']['most_reacted'][1]['Angries']}}</span>
         </div>
         <div style="position:absolute; top:650px; left:100px;width:1400px;">
             @php
@@ -151,7 +157,7 @@
             @endif
         </div>
         <div style="position:absolute; top:950px; left:350px;">
-            <span>Likes : {{$postData['comment_pop']['most_reacted'][2]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][2]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][2]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][2]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][2]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][2]['Angries']}}</span>
+            <span>Likes : {{$postData['comment_pop']['most_reacted'][2]['like_count'] ?? $postData['comment_pop']['most_reacted'][2]['Likes']}}  Loves : {{$postData['comment_pop']['most_reacted'][2]['love_count'] ?? $postData['comment_pop']['most_reacted'][2]['Loves']}}  Hahas: {{$postData['comment_pop']['most_reacted'][2]['haha_count'] ?? $postData['comment_pop']['most_reacted'][2]['Hahas']}}  Wows: {{$postData['comment_pop']['most_reacted'][2]['wow_count'] ?? $postData['comment_pop']['most_reacted'][2]['Wows']}} Sads :{{$postData['comment_pop']['most_reacted'][2]['sad_count'] ?? $postData['comment_pop']['most_reacted'][2]['Sads']}} Angries :{{$postData['comment_pop']['most_reacted'][2]['angry_count'] ?? $postData['comment_pop']['most_reacted'][2]['Angries']}}</span>
         </div>
         <div style="position:absolute; top:980px; left:100px;width:1250px;">
             @php
@@ -249,7 +255,7 @@
                 </div>
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             </div>
-            <div class="page-4">
+            {{--<div class="page-4">
                 <div style="position:absolute; top:400px; left: 400px;">
                     <p>Positivo: {{$postData['ia_positive']}}</p>
                     <p>Negativo: {{$postData['ia_negative']}}</p>
@@ -259,8 +265,8 @@
                     <img src="{{$chart_bar}}" width="1000px">
                 </div>
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            </div>
-            <div class="page-4">
+            </div>--}}
+            <div class="page-7">
                 <div style="position:absolute; top:400px; left:480px;"> 
                     <img src="{{$postData['clouds_words']}}" width="1000px">
                 </div>
@@ -292,59 +298,5 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     
-    
-    {{--<table>
-        <caption>DATOS DE LA PUBLICACION</caption>
-        <tr>
-            <td>FECHA</td>
-            <td>{{$postData['created_time']}}</td>
-        </tr>
-        <tr>
-            <td>TEMA</td>
-            <td>{{$postData['story']}}</td>
-        </tr>
-        <tr>
-            <td>PAGINA</td>
-            <td>Facebook</td>
-        </tr>
-        <tr>
-            <td>TIEMPO DE LA MUESTRA</td>
-            <td>{{\Carbon\Carbon::parse($postData['created_time'])->diffForHumans()}}</td>
-        </tr>
-        <tr>
-            <td>TOTAL REACCIONES</td>
-            <td>{{$total_reacciones}}</td>
-        </tr>
-        <tr>
-            <td>TENDENCIA DE REACCIONES</td>
-            <td>{!! $reactionstop !!}</td>
-        </tr>
-        <tr>
-            <td>COMPARTIDOS</td>
-            <td>{{$postData['share_count']}}</td>
-        </tr>
-        <tr>
-            <td>COMENTARIOS</td>
-            <td>{{$postData['comments_count']}}</td>
-        </tr>
-    </table>
-
-    <h1 class="text-center">Imagen de la Publicacion</h1>
-    <table class="image-center">
-        <tr>
-            <td>
-                <img src="{{$imageSrc}}" alt="" width="200px">
-            </td>
-        </tr>
-    </table>
-    <h1 class="text-center">Comentario mas relevante</h1>
-    @if(isset($postData['comment_pop']['message']))
-        <p class="text-center">{{$postData['comment_pop']['message']}}</p>
-    @else
-        <p>No hay comentarios.</p>
-    @endif
-    
-    
-    --}}
 </body>
 </html>
