@@ -1319,6 +1319,7 @@
                         <form action="{{ route('informe_id_escucha') }}" method="post" target="_blank">
                             @csrf 
                             <input type="hidden" name="id" value="${row.id}">
+                            <input type="hidden" name="contexto" value="">
                             <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
                         </form>
                     `;

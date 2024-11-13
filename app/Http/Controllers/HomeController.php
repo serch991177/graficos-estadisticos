@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\Process\Process;
+use phpseclib3\Net\SSH2;
 
 class HomeController extends Controller
 {
@@ -48,7 +49,6 @@ class HomeController extends Controller
         $totalclicks = $data['data'][0]['post_click'];
         $data = ['labels' => ['Likes', 'Loves', 'Hahas','Wows','Sads','Angrys','Shares','Comments'],'values' => [$totalLikes,$totalLoves,$totalHahas,$totalWows,$totalSads,$totalAngries,$totalShares,$totalComments]];
         //end count reactions
-        //dd($data);
 
         // Servicio de mapas
         $url_mapa_country = 'https://reportapi.infocenterlatam.com/api/userfacebookcountry/getlistcountry';
@@ -61,7 +61,6 @@ class HomeController extends Controller
         $formattedDataMap = $dataCollection->map(function($item) {return [strtolower($item['country_name']), $item['fan_count']];});
         // Convierte a JSON para ser utilizado en JavaScript
         $jsonDataMap = $formattedDataMap->toJson();
-        //dd($jsonDataMap);
         //end servicio de mapas
 
         //servicio top 10 countries
@@ -352,7 +351,6 @@ class HomeController extends Controller
 
     public function tablepost(Request $request) {
         if ($request->ajax()) {
-            //dd($request);
             $page = $request->input('start') / $request->input('length') + 1;
             // Obtener las fechas del request
             $startDate = $request->input('start_date');
@@ -374,7 +372,6 @@ class HomeController extends Controller
             $datas = $response->json();
             $items = $datas['data'];
             $total = $datas['total'];
-            //dd($items);
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,
@@ -387,7 +384,6 @@ class HomeController extends Controller
 
     public function informeescucha(Request $request){
         set_time_limit(300); // Establece el límite a 300 segundos si es necesario
-        //dd($request->input('reaction_id'));
         $body = [
             'id_page' => $request->input('reaction_id')
         ];
@@ -396,7 +392,6 @@ class HomeController extends Controller
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
-        //dd($postData);
 
         $imageUrl = $postData['full_picture'];
         if (empty($imageUrl)) {
@@ -508,7 +503,6 @@ class HomeController extends Controller
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
         $datos = $responseBody['data'] ?? null;
-        //dd($datos['comment_pop']);
         if(empty($datos)){
             Alert::error('No se encontraron Publicaciones en la fecha');
             return redirect('/reportes-facebook');
@@ -934,28 +928,42 @@ class HomeController extends Controller
     }
     public function informeescuchaid(Request $request){
         set_time_limit(600);
-        
+        $result =  $this->executePythonScript($request->id);
+        if($result){
+            $data_python = [
+                "message" => "Análisis completado y datos enviados.",
+                "status" => "success"
+            ];
+        } else {
+            echo 'hubo un error';
+        }
+
+        $url_python = 'https://reportapi.infocenterlatam.com/api/fstadistic/setContextpostId';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "context" : "'.$request->contexto.'",
+            "post_id" : "'.$request->id.'"
+        }';        
+        $client = new Client();
+        $responsepython = $client->post($url_python, ['headers' => $headers,'body' => $body,]);
+        $responseBodypython = json_decode($responsepython->getBody()->getContents(),true);
+        $datospython = $responseBodypython['message'];
+
         //$url_python = 'http://75.102.23.23:5001/analyze_comments?id_post='.$request->id;
         //$response_python = Http::timeout(600)->get($url_python);
         //$data_python = $response_python->json();
-        $data_python = [
-            "message" => "Análisis completado y datos enviados.",
-            "status" => "success"
-        ];
         
-        //dd($data_python,$array);
+        
         //$data_python = ; 
         $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPostforId/'.$request->id;
         $response_informe = Http::get($url_informe);
         $data_informe = $response_informe->json();
-        //dd($data_informe,$data_python); 
+        
         $postData = $data_informe['data'];
         $total_reacciones = $postData['like_count'] + $postData['love_count'] + $postData['haha_count'] + $postData['wow_count'] + $postData['sad_count'] + $postData['angry_count'];
-        //dd($postData);
         if(empty($postData)){
             echo "No hay comentarios disponibles."; 
         }else{
-            // dd($postData[0]->full_picture);
             $imageUrl = $postData['full_picture'];
             if (empty($imageUrl)) {
                 $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
@@ -1122,7 +1130,6 @@ class HomeController extends Controller
 
         // Filtrar los datos según el rango de fechas
         $filteredData = $this->filterDataByDateRange($datosformateadosTrend, $startDate, $endDate);
-        //dd($filteredData);
         return response()->json($filteredData);
     }
 
@@ -1573,7 +1580,6 @@ class HomeController extends Controller
         }
         // Convertir los datos en una colección de Laravel
         $query = collect($data['data']);
-        //dd($query);
         // Filtrar por fechas si están presentes
         if ($startDate) {
             $query = $query->filter(function ($item) use ($startDate) {
@@ -1588,7 +1594,6 @@ class HomeController extends Controller
         // Ordenar por comments_count en orden descendente y limitar los resultados
         $query = $query->sortByDesc('impressions')->take($limit);
         $posts = $query->map(function ($item) {
-            //dd($item);
             return (object)[
                 'story' => $item['story'],
                 'created_time' => $item['date'],
@@ -1620,7 +1625,6 @@ class HomeController extends Controller
         // Obtener las fechas de inicio y fin desde la solicitud HTTP
         $date_start = $request->input('start_date_python');
         $date_end = $request->input('end_date_python');
-        //dd($date_start);
         // Verificar que las fechas no están vacías
         if(empty($date_start) || empty($date_end)) {
             return response()->json([
@@ -1653,5 +1657,36 @@ class HomeController extends Controller
         dd($output);
         // Mostrar el resultado en la vista o redirigir con un mensaje
         return view('resultado_python', ['output' => $output]);*/
+    }
+
+    public function executePythonScript($id_post ):bool{
+        set_time_limit(600);
+        $ssh_host = '75.102.23.23';  // Dirección IP del servidor remoto
+        $ssh_port = 12141;  // Puerto SSH
+        $ssh_user = 'root';  // Usuario SSH
+        $ssh_pass = 'KcP#$gZ8HYu&';  // Contraseña SSH
+        $ssh = new SSH2($ssh_host, $ssh_port);
+        if (!$ssh->login($ssh_user, $ssh_pass)) {
+            return response()->json(['error' => 'No se pudo conectar al servidor SSH.'], 500);
+        }
+        $venv_path = '/usr/apps/venv/bin/activate';
+        $python_script = '/usr/apps/iaresponse.py';
+        $command = "source $venv_path && python $python_script $id_post";
+        $ssh->setTimeout(600);
+        $output = $ssh->exec($command);
+        $ssh->disconnect(); 
+        if (empty($output)) {
+            return response()->json(['error' => 'No se recibió respuesta del script Python.'], 500);
+        }
+        preg_match('/\{.*\}$/s', $output, $matches);
+        if (isset($matches[0])) {
+           
+            $json_output = json_decode($matches[0], true); 
+            return true;
+          
+        } else {
+            
+           return false;
+        }
     }
 }
