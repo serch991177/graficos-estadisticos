@@ -395,7 +395,7 @@ class HomeController extends Controller
 
         $imageUrl = $postData['full_picture'];
         if (empty($imageUrl)) {
-            $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+            $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
             $response = Http::get($imageUrl);
             $imageContents = $response->body();
             $imageBase64 = base64_encode($imageContents);
@@ -510,7 +510,7 @@ class HomeController extends Controller
             $total_reacciones = $datos['like_count'] + $datos['love_count'] + $datos['haha_count'] + $datos['wow_count'] + $datos['sad_count'] + $datos['angry_count'];
             $imageUrl = $datos['full_picture'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $response = Http::get($imageUrl);
                 $imageContents = $response->body();
                 $imageBase64 = base64_encode($imageContents);
@@ -621,7 +621,7 @@ class HomeController extends Controller
             
             $imageUrlCompartido = $datos['getMostSharedPost'][0]['full_picture'];
             if (empty($imageUrlCompartido)) {
-                $imageUrlCompartido = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlCompartido = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseCompartido = Http::get($imageUrlCompartido);
                 $imageContentsCompartido = $responseCompartido->body();
                 $imageBase64Compartidos = base64_encode($imageContentsCompartido);
@@ -632,7 +632,7 @@ class HomeController extends Controller
             
             $imageUrlComentario = $datos['getMostCommentsPost'][0]['full_picture'];
             if (empty($imageUrlComentario)) {
-                $imageUrlComentario = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlComentario = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseComentario = Http::get($imageUrlComentario);
                 $imageContentsComentario = $responseComentario->body();
                 $imageBase64Comentario = base64_encode($imageContentsComentario);
@@ -644,7 +644,7 @@ class HomeController extends Controller
 
             $imageUrlMayorAlcance1 = $datos['TopPost'][0]['full_picture'];
             if (empty($imageUrlMayorAlcance1)) {
-                $imageUrlMayorAlcance1 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlMayorAlcance1 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
                 $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
                 $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
@@ -654,7 +654,7 @@ class HomeController extends Controller
             }
             $imageUrlMayorAlcance2 = $datos['TopPost'][1]['full_picture'] ?? null;
             if (empty($imageUrlMayorAlcance2)){
-                $imageUrlMayorAlcance2 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
                 $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
                 $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
@@ -966,7 +966,7 @@ class HomeController extends Controller
         }else{
             $imageUrl = $postData['full_picture'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $response = Http::get($imageUrl);
                 $imageContents = $response->body();
                 $imageBase64 = base64_encode($imageContents);

@@ -402,7 +402,7 @@ class InstagramController extends Controller
             
             $imageUrlCompartido = $datos['getMostSharedPost'][0]['media_url'];
             if (empty($imageUrlCompartido)) {
-                $imageUrlCompartido = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlCompartido = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseCompartido = Http::get($imageUrlCompartido);
                 $imageContentsCompartido = $responseCompartido->body();
                 $imageBase64Compartidos = base64_encode($imageContentsCompartido);
@@ -416,7 +416,7 @@ class InstagramController extends Controller
             
             $imageUrlComentario = $datos['getMostCommentsPost'][0]['media_url'];
             if (empty($imageUrlComentario)) {
-                $imageUrlComentario = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlComentario = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseComentario = Http::get($imageUrlComentario);
                 $imageContentsComentario = $responseComentario->body();
                 $imageBase64Comentario = base64_encode($imageContentsComentario);
@@ -431,7 +431,7 @@ class InstagramController extends Controller
 
             $imageUrlMayorAlcance1 = $datos['TopPost'][0]['media_url'];
             if (empty($imageUrlMayorAlcance1)) {
-                $imageUrlMayorAlcance1 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlMayorAlcance1 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
                 $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
                 $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
@@ -445,7 +445,7 @@ class InstagramController extends Controller
 
             /*$imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
             if (empty($imageUrlMayorAlcance2)){
-                $imageUrlMayorAlcance2 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
                 $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
                 $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
@@ -457,7 +457,7 @@ class InstagramController extends Controller
                 $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
             }*/
 
-            $imageUrlMayorAlcance2 = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+            $imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
             // Verificar si el índice 1 existe en $datos['TopPost'] y si el campo 'media_url' no está vacío
             if (isset($datos['TopPost'][1]) && !empty($datos['TopPost'][1]['media_url'])) {
                 $imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
@@ -651,7 +651,7 @@ class InstagramController extends Controller
 
         $imageUrl = $postData['media_url'];
         if (empty($imageUrl)) {
-            $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+            $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
             $response = Http::get($imageUrl);
             $imageContents = $response->body();
             $imageBase64 = base64_encode($imageContents);
@@ -743,7 +743,7 @@ class InstagramController extends Controller
             $total_reacciones = $datos['comments_count'] + $datos['shares_count'] + $datos['likes_count'] + $datos['saved_count'] ;
             $imageUrl = $datos['media_url'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $response = Http::get($imageUrl);
                 $imageContents = $response->body();
                 $imageBase64 = base64_encode($imageContents);
@@ -805,7 +805,7 @@ class InstagramController extends Controller
             // dd($postData[0]->full_picture);
             $imageUrl = $postData['media_url'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://repositoriogamcdev.cochabamba.bo/repositorio_ddsi/sis_tramite/logo_manfred_0a9f1c85-6eb7-4b9d-9342-26ec4b24cffd.png';
+                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
                 $response = Http::get($imageUrl);
                 $imageContents = $response->body();
                 $imageBase64 = base64_encode($imageContents);
