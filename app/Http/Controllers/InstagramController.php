@@ -9,6 +9,8 @@ use Dompdf\Options;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use RealRashid\SweetAlert\Facades\Alert;
+use phpseclib3\Net\SSH2;
+
 
 class InstagramController extends Controller
 {
@@ -792,6 +794,28 @@ class InstagramController extends Controller
     }
 
     public function informeescuchaid(Request $request){
+        set_time_limit(600);
+        $result =  $this->executePythonScript($request->id);
+        if($result){
+            $data_python = [
+                "message" => "Análisis completado y datos enviados.",
+                "status" => "success"
+            ];
+        } else {
+            echo 'hubo un error';
+        }
+
+        $url_python = 'https://reportapi.infocenterlatam.com/api/fstadistic/setContextpostId';
+        $headers = ['Content-Type' => 'application/json'];
+        $body = '{
+            "context" : "'.$request->contexto.'",
+            "post_id" : "'.$request->id.'"
+        }';        
+        $client = new Client();
+        $responsepython = $client->post($url_python, ['headers' => $headers,'body' => $body,]);
+        $responseBodypython = json_decode($responsepython->getBody()->getContents(),true);
+        $datospython = $responseBodypython['message'];
+        
         $url_informe = 'https://reportapi.infocenterlatam.com/api/istadistic/topPostforId/'.$request->id;
         $response_informe = Http::get($url_informe);
         $data_informe = $response_informe->json();
@@ -837,7 +861,45 @@ class InstagramController extends Controller
             $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
             $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
            
-            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+            $grafico_escucha = public_path() . '/img/escucha_sumate/escucha_4.jpg';
+            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+
+            $grafico_palabras = public_path() . '/img/escucha_sumate/escucha_7.jpg';
+            $imagepalabrasescucha = base64_encode(file_get_contents($grafico_palabras));
+            $src_escucha_palabras = 'data:' . mime_content_type($grafico_palabras) . ';base64,' . $imagepalabrasescucha;
+
+
+            // Construir la URL de QuickChart
+            // Suma total de los valores
+            $total = $data_informe['data']['ia_positive'] + $data_informe['data']['ia_negative'] + $data_informe['data']['ia_neutro'];
+            // Calcular los porcentajes
+            // Verificar que el total no sea cero
+            if ($total > 0) {
+                // Calcular los porcentajes
+                $positive_percentage = ($data_informe['data']['ia_positive'] / $total) * 100;
+                $negative_percentage = ($data_informe['data']['ia_negative'] / $total) * 100;
+                $neutral_percentage = ($data_informe['data']['ia_neutro'] / $total) * 100;
+            } else {
+                // Si el total es cero, puedes asignar valores por defecto o manejar el error
+                $positive_percentage = 0;
+                $negative_percentage = 0;
+                $neutral_percentage = 0;
+            }
+
+            $chart_url = 'https://quickchart.io/chart?c={type:"pie",data:{labels:["Positivo","Negativo","Neutro"],datasets:[{data:[' . 
+                round($positive_percentage, 2) . ',' . 
+                round($negative_percentage, 2) . ',' . 
+                round($neutral_percentage, 2) . '],backgroundColor:["green","red","gray"]}]}}';
+    
+
+            $chart_bar = 'https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["Positivo","Negativo"   ],datasets:[{data:[' . 
+                round($positive_percentage, 2) . ',' . 
+                round($negative_percentage, 2) . ',' . '],backgroundColor:["green","red","gray"]}]}}';
+            $is_chart = 1;
+            
+
+            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -850,6 +912,37 @@ class InstagramController extends Controller
             // $dompdf->stream('autorizaciones.pdf');
             $dompdf->stream ('',array("Attachment" => false));
         }   
+    }
+
+    public function executePythonScript($id_post ):bool{
+        set_time_limit(600);
+        $ssh_host = '75.102.23.23';  // Dirección IP del servidor remoto
+        $ssh_port = 12141;  // Puerto SSH
+        $ssh_user = 'root';  // Usuario SSH
+        $ssh_pass = 'KcP#$gZ8HYu&';  // Contraseña SSH
+        $ssh = new SSH2($ssh_host, $ssh_port);
+        if (!$ssh->login($ssh_user, $ssh_pass)) {
+            return response()->json(['error' => 'No se pudo conectar al servidor SSH.'], 500);
+        }
+        $venv_path = '/usr/apps/venv/bin/activate';
+        $python_script = '/usr/apps/iaresponse.py';
+        $command = "source $venv_path && python $python_script $id_post";
+        $ssh->setTimeout(600);
+        $output = $ssh->exec($command);
+        $ssh->disconnect(); 
+        if (empty($output)) {
+            return response()->json(['error' => 'No se recibió respuesta del script Python.'], 500);
+        }
+        preg_match('/\{.*\}$/s', $output, $matches);
+        if (isset($matches[0])) {
+           
+            $json_output = json_decode($matches[0], true); 
+            return true;
+          
+        } else {
+            
+           return false;
+        }
     }
 
     public function getTopSaved(Request $request){

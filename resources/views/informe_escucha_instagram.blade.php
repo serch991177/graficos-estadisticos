@@ -28,7 +28,7 @@
             background-size: cover;
             height: 100vh;
         }
-        @if(isset($src_escucha_grafica))
+        @if(isset($src_escucha_grafica)|| (isset($data_python) && $data_python['status'] == "success"))
             .page-4 {
                 background-image: url('{{ $src_escucha_grafica }}');
                 background-size: cover;
@@ -47,7 +47,13 @@
             background-size: cover;
             height: 100vh;
         }
-        
+        @if(isset($src_escucha_palabras))
+            .page-7{
+                background-image: url('{{$src_escucha_palabras}}');
+                background-size: cover;
+                height: 100vh;
+            }
+        @endif
     </style>
 </head>
 <body>    
@@ -225,6 +231,38 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     
+    @if($is_chart == 1)
+        @if($postData['ia_positive'] > 0 || $postData['ia_negative'] > 0 || $postData['ia_neutro'] > 0)
+            <div class="page-4">
+                <div style="position:absolute; top:400px; left: 400px;">
+                    <p>Positivo: {{$postData['ia_positive']}}</p>
+                    <p>Negativo: {{$postData['ia_negative']}}</p>
+                    <p>Neutro: {{$postData['ia_neutro']}}</p>
+                </div>
+                <div style="position:absolute; top:400px; left:480px;"> 
+                    <img src="{{$chart_url}}" width="1000px">
+                </div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+            {{--<div class="page-4">
+                <div style="position:absolute; top:400px; left: 400px;">
+                    <p>Positivo: {{$postData['ia_positive']}}</p>
+                    <p>Negativo: {{$postData['ia_negative']}}</p>
+                    <p>Neutro: {{$postData['ia_neutro']}}</p>
+                </div>
+                <div style="position:absolute; top:400px; left:480px;"> 
+                    <img src="{{$chart_bar}}" width="1000px">
+                </div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>--}}
+            <div class="page-7">
+                <div style="position:absolute; top:400px; left:480px;"> 
+                    <img src="{{$postData['clouds_words']}}" width="1000px">
+                </div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </div>
+        @endif
+    @endif
      <!--graficas-->    
     @if(isset($imageChartBase64) || isset($imageChartBarBase64))
         @if(isset($imageChartBase64))

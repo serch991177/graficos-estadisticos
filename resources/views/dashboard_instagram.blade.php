@@ -855,6 +855,41 @@
       </div>
     </div>
 </div>
+<!--Modal PDF-->
+<div class="modal fade" id="PdfModal" tabindex="-1" role="dialog" aria-labelledby="PdfModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title col-11 text-center" id="PdfModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+            <h1 class="text-center">Generacion de Informe</h1>
+            <form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
+                @csrf 
+                <input type="hidden" name="id" id="id_generar_pdf" value="">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <label>Ingrese el contexto</label>
+                        <textarea required name="contexto" id="contexto" cols="35" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
+                </div>
+            </form>
+        </div>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--Fin modal pdf-->
 <!--Scripts de javascript-->
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
 <script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
@@ -1009,11 +1044,14 @@
                             <i class="fas fa-chart-bar"></i>
                         </button>
                         <br><br>
-                        <form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
+                        <button type="button" title="Generar PDF" class="btn btn-warning id_pdf" value="${row.id}" data-toggle="modal" data-target="#PdfModal">
+                            <i class="fas fa-file-pdf"></i>
+                        </button>
+                        {{--<form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
                             @csrf 
                             <input type="hidden" name="id" value="${row.id}">
                             <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
-                        </form>
+                        </form>--}}
                     `;
                 }
             }
@@ -1147,11 +1185,14 @@
                             <i class="fas fa-chart-bar"></i>
                         </button>
                         <br><br>
-                        <form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
+                        <button type="button" title="Generar PDF" class="btn btn-warning id_pdf" value="${row.id}" data-toggle="modal" data-target="#PdfModal">
+                            <i class="fas fa-file-pdf"></i>
+                        </button>
+                        {{--<form action="{{ route('informe_id_escucha_instagram') }}" method="post" target="_blank">
                             @csrf 
                             <input type="hidden" name="id" value="${row.id}">
                             <button class="btn btn-warning" title="Generar PDF"><i class="fas fa-file-pdf"></i></button>
-                        </form>
+                        </form>--}}
                     `;
                 }
             }
@@ -1289,6 +1330,16 @@
                     $('#spinner').hide();
                 }
             });
+        });
+    });
+</script>
+<!--Funcion para recuperar el id del pdf-->
+<script>
+    $(document).ready(function(){
+        $(document).on('click','.id_pdf',function(){
+            var id = $(this).val();
+            document.getElementById("contexto").value = "";
+            document.getElementById("id_generar_pdf").value = id;
         });
     });
 </script>
