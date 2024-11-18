@@ -928,7 +928,7 @@ class HomeController extends Controller
     }
     public function informeescuchaid(Request $request){
         set_time_limit(600);
-        $result =  $this->executePythonScript($request->id,"");
+        $result =  $this->executePythonScript($request->id,"facebook");
         if($result){
             $data_python = [
                 "message" => "Análisis completado y datos enviados.",
