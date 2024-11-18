@@ -404,11 +404,10 @@ class InstagramController extends Controller
             
             $imageUrlCompartido = $datos['getMostSharedPost'][0]['media_url'];
             if (empty($imageUrlCompartido)) {
-                $imageUrlCompartido = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseCompartido = Http::get($imageUrlCompartido);
-                $imageContentsCompartido = $responseCompartido->body();
-                $imageBase64Compartidos = base64_encode($imageContentsCompartido);
-                $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcCompartido = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 /*$responseCompartido = Http::get($imageUrlCompartido);
                 $imageContentsCompartido = $responseCompartido->body();
@@ -418,11 +417,10 @@ class InstagramController extends Controller
             
             $imageUrlComentario = $datos['getMostCommentsPost'][0]['media_url'];
             if (empty($imageUrlComentario)) {
-                $imageUrlComentario = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseComentario = Http::get($imageUrlComentario);
-                $imageContentsComentario = $responseComentario->body();
-                $imageBase64Comentario = base64_encode($imageContentsComentario);
-                $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcComentario = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 /*$responseComentario = Http::get($imageUrlComentario);
                 $imageContentsComentario = $responseComentario->body();
@@ -433,11 +431,10 @@ class InstagramController extends Controller
 
             $imageUrlMayorAlcance1 = $datos['TopPost'][0]['media_url'];
             if (empty($imageUrlMayorAlcance1)) {
-                $imageUrlMayorAlcance1 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
-                $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
-                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
-                $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcMayorAlcance1 = 'data:image/png;base64,' . $imageBase64;
             }else{
                 /*$responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
                 $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
@@ -459,7 +456,11 @@ class InstagramController extends Controller
                 $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
             }*/
 
-            $imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
+            $imagePath = public_path('img/imagen_default.png');
+            $imageContents = file_get_contents($imagePath);
+            $imageBase64 = base64_encode($imageContents);
+            $imageUrlMayorAlcance2 = 'data:image/png;base64,' . $imageBase64;
+            //$imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
             // Verificar si el índice 1 existe en $datos['TopPost'] y si el campo 'media_url' no está vacío
             if (isset($datos['TopPost'][1]) && !empty($datos['TopPost'][1]['media_url'])) {
                 $imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
@@ -653,11 +654,10 @@ class InstagramController extends Controller
 
         $imageUrl = $postData['media_url'];
         if (empty($imageUrl)) {
-            $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
+            $imagePath = public_path('img/imagen_default.png');
+            $imageContents = file_get_contents($imagePath);
             $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            $imageSrc = 'data:image/png;base64,' . $imageBase64;
         }else{    
             /*$response = Http::get($imageUrl);
             $imageContents = $response->body();
@@ -745,11 +745,10 @@ class InstagramController extends Controller
             $total_reacciones = $datos['comments_count'] + $datos['shares_count'] + $datos['likes_count'] + $datos['saved_count'] ;
             $imageUrl = $datos['media_url'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $response = Http::get($imageUrl);
-                $imageContents = $response->body();
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
                 $imageBase64 = base64_encode($imageContents);
-                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+                $imageSrc = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 /*$response = Http::get($imageUrl);
                 $imageContents = $response->body();
@@ -830,11 +829,10 @@ class InstagramController extends Controller
             // dd($postData[0]->full_picture);
             $imageUrl = $postData['media_url'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $response = Http::get($imageUrl);
-                $imageContents = $response->body();
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
                 $imageBase64 = base64_encode($imageContents);
-                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+                $imageSrc = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 /*$response = Http::get($imageUrl);
                 $imageContents = $response->body();

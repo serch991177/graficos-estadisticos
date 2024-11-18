@@ -395,11 +395,10 @@ class HomeController extends Controller
 
         $imageUrl = $postData['full_picture'];
         if (empty($imageUrl)) {
-            $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-            $response = Http::get($imageUrl);
-            $imageContents = $response->body();
+            $imagePath = public_path('img/imagen_default.png');
+            $imageContents = file_get_contents($imagePath);
             $imageBase64 = base64_encode($imageContents);
-            $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+            $imageSrc = 'data:image/png;base64,' . $imageBase64;
         }else{    
             /*$response = Http::get($imageUrl);
             $imageContents = $response->body();
@@ -510,11 +509,10 @@ class HomeController extends Controller
             $total_reacciones = $datos['like_count'] + $datos['love_count'] + $datos['haha_count'] + $datos['wow_count'] + $datos['sad_count'] + $datos['angry_count'];
             $imageUrl = $datos['full_picture'];
             if (empty($imageUrl)) {
-                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $response = Http::get($imageUrl);
-                $imageContents = $response->body();
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
                 $imageBase64 = base64_encode($imageContents);
-                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+                $imageSrc = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 /*$response = Http::get($imageUrl);
                 $imageContents = $response->body();
@@ -621,22 +619,20 @@ class HomeController extends Controller
             
             $imageUrlCompartido = $datos['getMostSharedPost'][0]['full_picture'];
             if (empty($imageUrlCompartido)) {
-                $imageUrlCompartido = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseCompartido = Http::get($imageUrlCompartido);
-                $imageContentsCompartido = $responseCompartido->body();
-                $imageBase64Compartidos = base64_encode($imageContentsCompartido);
-                $imageSrcCompartido = 'data:' . $responseCompartido->header('Content-Type') . ';base64,' . $imageBase64Compartidos;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcCompartido = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 $imageSrcCompartido = $imageUrlCompartido;
             }
             
             $imageUrlComentario = $datos['getMostCommentsPost'][0]['full_picture'];
             if (empty($imageUrlComentario)) {
-                $imageUrlComentario = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseComentario = Http::get($imageUrlComentario);
-                $imageContentsComentario = $responseComentario->body();
-                $imageBase64Comentario = base64_encode($imageContentsComentario);
-                $imageSrcComentario = 'data:' . $responseComentario->header('Content-Type') . ';base64,' . $imageBase64Comentario;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcComentario = 'data:image/png;base64,' . $imageBase64;
             }else{    
                 $imageSrcComentario = $imageUrlComentario;
             }
@@ -644,21 +640,19 @@ class HomeController extends Controller
 
             $imageUrlMayorAlcance1 = $datos['TopPost'][0]['full_picture'];
             if (empty($imageUrlMayorAlcance1)) {
-                $imageUrlMayorAlcance1 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
-                $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
-                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);
-                $imageSrcMayorAlcance1 = 'data:' . $responseMayorAlcance1->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance1;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcMayorAlcance1 = 'data:image/png;base64,' . $imageBase64;
             }else{
                 $imageSrcMayorAlcance1 = $imageUrlMayorAlcance1;
             }
             $imageUrlMayorAlcance2 = $datos['TopPost'][1]['full_picture'] ?? null;
             if (empty($imageUrlMayorAlcance2)){
-                $imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
-                $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
-                $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
+                $imagePath = public_path('img/imagen_default.png');
+                $imageContents = file_get_contents($imagePath);
+                $imageBase64 = base64_encode($imageContents);
+                $imageSrcMayorAlcance2 = 'data:image/png;base64,' . $imageBase64;
             }else{
                 $imageSrcMayorAlcance2 = $imageUrlMayorAlcance2;
             }
@@ -965,12 +959,12 @@ class HomeController extends Controller
             echo "No hay comentarios disponibles."; 
         }else{
             $imageUrl = $postData['full_picture'];
+            $imageUrl = "";
             if (empty($imageUrl)) {
-                $imageUrl = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $response = Http::get($imageUrl);
-                $imageContents = $response->body();
+                $imagePath = public_path('img/imagen_default.png'); // Ruta absoluta en el servidor
+                $imageContents = file_get_contents($imagePath);
                 $imageBase64 = base64_encode($imageContents);
-                $imageSrc = 'data:' . $response->header('Content-Type') . ';base64,' . $imageBase64;
+                $imageSrc = 'data:image/png;base64,' . $imageBase64;            
             }else{    
                 /*$response = Http::get($imageUrl);
                 $imageContents = $response->body();
