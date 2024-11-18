@@ -802,10 +802,10 @@ class InstagramController extends Controller
                 "status" => "success"
             ];
         } else {
-            echo 'hubo un error';
+            dd('No se encontraron resultados');
         }
 
-        $url_python = 'https://reportapi.infocenterlatam.com/api/fstadistic/setContextpostId';
+        $url_python = 'https://reportapi.infocenterlatam.com/api/istadistic/setContextpostId';
         $headers = ['Content-Type' => 'application/json'];
         $body = '{
             "context" : "'.$request->contexto.'",

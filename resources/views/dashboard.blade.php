@@ -1249,7 +1249,7 @@
                 @csrf 
                 <input type="hidden" name="id" id="id_generar_pdf" value="">
                 <div class="row">
-                    <div class="col-md-12 text-center">
+                    <div class="col-md-12 text-center d-flex" style="flex-direction:column;">
                         <label>Ingrese el contexto</label>
                         <textarea required name="contexto" id="contexto" cols="35" rows="4"></textarea>
                     </div>

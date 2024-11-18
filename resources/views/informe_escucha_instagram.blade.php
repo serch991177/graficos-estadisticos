@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informe de Escucha</title>
     <style>
-         @page {
+        @page {
             margin: 0in;
         }
 

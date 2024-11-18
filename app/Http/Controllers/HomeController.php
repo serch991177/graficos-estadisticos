@@ -935,7 +935,7 @@ class HomeController extends Controller
                 "status" => "success"
             ];
         } else {
-            echo 'hubo un error';
+            dd('No se encontraron resultados');
         }
 
         $url_python = 'https://reportapi.infocenterlatam.com/api/fstadistic/setContextpostId';
