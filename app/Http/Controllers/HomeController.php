@@ -959,7 +959,7 @@ class HomeController extends Controller
             echo "No hay comentarios disponibles."; 
         }else{
             $imageUrl = $postData['full_picture'];
-            $imageUrl = "";
+            //$imageUrl = "";
             if (empty($imageUrl)) {
                 $imagePath = public_path('img/imagen_default.png'); // Ruta absoluta en el servidor
                 $imageContents = file_get_contents($imagePath);
