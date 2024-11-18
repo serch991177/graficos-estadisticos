@@ -795,7 +795,7 @@ class InstagramController extends Controller
 
     public function informeescuchaid(Request $request){
         set_time_limit(600);
-        $result =  $this->executePythonScript($request->id);
+        $result =  $this->executePythonScript($request->id,"instagram");
         if($result){
             $data_python = [
                 "message" => "Análisis completado y datos enviados.",
@@ -914,7 +914,7 @@ class InstagramController extends Controller
         }   
     }
 
-    public function executePythonScript($id_post ):bool{
+    public function executePythonScript($id_post, $type ):bool{
         set_time_limit(600);
         $ssh_host = '75.102.23.23';  // Dirección IP del servidor remoto
         $ssh_port = 12141;  // Puerto SSH
@@ -926,7 +926,7 @@ class InstagramController extends Controller
         }
         $venv_path = '/usr/apps/venv/bin/activate';
         $python_script = '/usr/apps/iaresponse.py';
-        $command = "source $venv_path && python $python_script $id_post";
+        $command = "source $venv_path && python $python_script $id_post $type";
         $ssh->setTimeout(600);
         $output = $ssh->exec($command);
         $ssh->disconnect(); 
