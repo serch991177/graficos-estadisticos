@@ -225,7 +225,6 @@ class InstagramController extends Controller
     }
 
     public function getChartData(Request $request){  
-        //dd($request); 
         $url_tendecia = 'https://reportapi.infocenterlatam.com/api/istadistic/getPostsReactions';
         $body = [
             'id_page' => $request->idpage
@@ -241,7 +240,6 @@ class InstagramController extends Controller
             'scopes'=>[],
             'shares'=>[]
         ];
-        //dd($trendData);
         foreach ($datostendencia as $datatendencia) {
             $trendData['dates'][] = $datatendencia['date'];
             $trendData['likes'][] = (int)$datatendencia['likes'];
@@ -387,14 +385,10 @@ class InstagramController extends Controller
         $response = $client->post($url_total, ['headers' => $headers,'body' => $body,]);
         $responseBody = json_decode($response->getBody()->getContents(),true);
         $datos = $responseBody['data'];
-        //dd($datos['TopPost'][0]['type_post']);
         if(empty($datos['TopPost'])){
             Alert::error('No se encontraron Publicaciones en la fecha');
             return redirect('/reportes-instagram');
         }else{
-            //$total_seguidores= $datos['follwers']['total_seguidores_ultimo'];
-            //$nuevos_seguidores = $datos['follwers']['total_nuevos_seguidores'];
-            //$unfollows = $datos['follwers']['total_seguidores_perdidos'];
             $sumatotalinteraccionespost1 = $datos['TopPost'][0]['comments_count'] + $datos['TopPost'][0]['shares_count'] + $datos['TopPost'][0]['saved_count'] + $datos['TopPost'][0]['likes_count'];
             if(isset($datos['TopPost'][1])) {
                 $sumatotalinteraccionespost2 = $datos['TopPost'][1]['comments_count'] + $datos['TopPost'][1]['shares_count'] + $datos['TopPost'][1]['saved_count'] + $datos['TopPost'][1]['likes_count'];      
@@ -409,9 +403,6 @@ class InstagramController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrcCompartido = 'data:image/png;base64,' . $imageBase64;
             }else{    
-                /*$responseCompartido = Http::get($imageUrlCompartido);
-                $imageContentsCompartido = $responseCompartido->body();
-                $imageBase64Compartidos = base64_encode($imageContentsCompartido);*/
                 $imageSrcCompartido = $imageUrlCompartido;
             }
             
@@ -422,9 +413,6 @@ class InstagramController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrcComentario = 'data:image/png;base64,' . $imageBase64;
             }else{    
-                /*$responseComentario = Http::get($imageUrlComentario);
-                $imageContentsComentario = $responseComentario->body();
-                $imageBase64Comentario = base64_encode($imageContentsComentario);*/
                 $imageSrcComentario = $imageUrlComentario;
             }
 
@@ -436,39 +424,19 @@ class InstagramController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrcMayorAlcance1 = 'data:image/png;base64,' . $imageBase64;
             }else{
-                /*$responseMayorAlcance1 = Http::get($imageUrlMayorAlcance1);
-                $imageContentsMayorAlcance1 = $responseMayorAlcance1->body();
-                $imageBase64MayorAlcance1 = base64_encode($imageContentsMayorAlcance1);*/
                 $imageSrcMayorAlcance1 = $imageUrlMayorAlcance1;
             }
 
-            /*$imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
-            if (empty($imageUrlMayorAlcance2)){
-                $imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-                $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
-                $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
-                $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
-            }else{
-                $responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
-                $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-                $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);
-                $imageSrcMayorAlcance2 = 'data:' . $responseMayorAlcance2->header('Content-Type') . ';base64,' . $imageBase64MayorAlcance2;
-            }*/
 
             $imagePath = public_path('img/imagen_default.png');
             $imageContents = file_get_contents($imagePath);
             $imageBase64 = base64_encode($imageContents);
             $imageUrlMayorAlcance2 = 'data:image/png;base64,' . $imageBase64;
             //$imageUrlMayorAlcance2 = 'https://scontent.fcbb2-1.fna.fbcdn.net/v/t1.6435-9/121240003_204482091112281_7819078301545357074_n.png?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=qMtcCOCekJYQ7kNvgGPxRy2&_nc_zt=23&_nc_ht=scontent.fcbb2-1.fna&_nc_gid=AvdPVSVXuNSHeAAgcsweRjL&oh=00_AYCSMTUS5fgy7KPd1Ie0nsuC97Oo2GAdbBpENwtXqz_8lw&oe=67606F43';
-            // Verificar si el índice 1 existe en $datos['TopPost'] y si el campo 'media_url' no está vacío
             if (isset($datos['TopPost'][1]) && !empty($datos['TopPost'][1]['media_url'])) {
                 $imageUrlMayorAlcance2 = $datos['TopPost'][1]['media_url'];
             }
             // Obtener la imagen desde la URL
-            /*$responseMayorAlcance2 = Http::get($imageUrlMayorAlcance2);
-            $imageContentsMayorAlcance2 = $responseMayorAlcance2->body();
-            $imageBase64MayorAlcance2 = base64_encode($imageContentsMayorAlcance2);*/
             $imageSrcMayorAlcance2 = $imageUrlMayorAlcance2;
 
 
@@ -509,41 +477,6 @@ class InstagramController extends Controller
             ];
             $chartUrl = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chartData));
             /**Fin grafico 11 de tendencia */
-
-            /**Grafico 2 de tendencia */
-            /*$dailyResults = $responseBody['data']['follwers']['daily_results'];
-            $datesSeguidores = [];
-            $totalSeguidores = [];
-            $nuevosSeguidores = [];
-            $seguidoresPerdidos = [];
-            foreach ($dailyResults as $date => $result) {
-                $datesSeguidores[] = $date;
-                $totalSeguidores[] = $result['total_seguidores'];
-                $nuevosSeguidores[] = $result['nuevos_seguidores'];
-                $seguidoresPerdidos[] = $result['seguidores_perdidos'];
-            }
-            $chartDataSeguidores = [
-                'type' => 'line',
-                'data' => [
-                    'labels' => $datesSeguidores,
-                    'datasets' => [
-                        [
-                            'label' => 'Nuevos Seguidores',
-                            'data' => $nuevosSeguidores,
-                            'borderColor' => 'rgba(75, 192, 192, 1)',
-                            'fill' => false,
-                        ],
-                        [
-                            'label' => 'Seguidores Perdidos',
-                            'data' => $seguidoresPerdidos,
-                            'borderColor' => 'rgba(255, 99, 132, 1)',
-                            'fill' => false,
-                        ],
-                    ],
-                ],
-            ];
-            $chartUrlSeguidores = 'https://quickchart.io/chart?c=' . urlencode(json_encode($chartDataSeguidores));*/
-            /**Fin Grafico 2 de tendencia */
             
             //Imagenes de Facebook
             $inicio = public_path() . '/img/1.jpg';
@@ -573,10 +506,6 @@ class InstagramController extends Controller
             $comentado_facebook = public_path() . '/img/7.jpg';
             $imagecomentado_facebook = base64_encode(file_get_contents($comentado_facebook));
             $src_comentado_facebook = 'data:' . mime_content_type($comentado_facebook) . ';base64,' . $imagecomentado_facebook;
-            
-            //$reacciones_facebook = public_path() . '/img/8.jpg';
-            //$imagereacciones_facebook = base64_encode(file_get_contents($reacciones_facebook));
-            //$src_reacciones_facebook = 'data:' . mime_content_type($reacciones_facebook) . ';base64,' . $imagereacciones_facebook;
             
             $gracias = public_path() . '/img/8.jpg';
             $imagegracias = base64_encode(file_get_contents($gracias));
@@ -616,19 +545,13 @@ class InstagramController extends Controller
                 'sumatotalinteraccionesCompartido' => $sumatotalinteraccionesCompartido,
                 'sumatotalinteraccionesComentarios' => $sumatotalinteraccionesComentarios
             ]);
-            //file_put_contents(public_path('output.html'), $vista);
-            //$options = new Options();
             $options = new Options();
             $options->set('isRemoteEnabled',TRUE);
             $options->set('isHtml5ParserEnabled', true);
             $options->set('isPhpEnabled', true);
             $dompdf = new Dompdf($options);
-            //$dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
-            //$dompdf->setPaper('letter','Landscape');
-            //$dompdf->setPaper(array(0, 0, 630, 1300), 'Landscape'); // 8.5 x 13 pulgadas
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
-            //$dompdf->set_option('isPhpEnabled', true);
             $dompdf->render();
             $dompdf->stream('',array("Attachment" => false));
         }
@@ -642,11 +565,7 @@ class InstagramController extends Controller
         ];
         $url_informe = 'https://reportapi.infocenterlatam.com/api/istadistic/topPost';
         $response_informe = Http::get($url_informe,$body);
-
-        
-        /*$response_informe = retry(3, function () {
-            return Http::timeout(30)->get('https://reportapi.infocenterlatam.com/api/istadistic/topPost');
-        }, 100);  */      
+    
         $data_informe = $response_informe->json();
         $postData = $data_informe['data'];
         $total_reacciones = $postData['comments_count'] + $postData['likes_count'] + $postData['shares_count'] + $postData['saved_count'] ;
@@ -659,9 +578,6 @@ class InstagramController extends Controller
             $imageBase64 = base64_encode($imageContents);
             $imageSrc = 'data:image/png;base64,' . $imageBase64;
         }else{    
-            /*$response = Http::get($imageUrl);
-            $imageContents = $response->body();
-            $imageBase64 = base64_encode($imageContents);*/
             $imageSrc = $imageUrl;
         }
 
@@ -690,13 +606,9 @@ class InstagramController extends Controller
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($vista);
-        //$dompdf->setPaper('letter', 'portrait');
         $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
         $dompdf->set_option('isPhpEnabled', true);
-        //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
-        // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
         $dompdf->render();
-        // $dompdf->stream('autorizaciones.pdf');
         $dompdf->stream ('',array("Attachment" => false));
     }
 
@@ -750,9 +662,6 @@ class InstagramController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrc = 'data:image/png;base64,' . $imageBase64;
             }else{    
-                /*$response = Http::get($imageUrl);
-                $imageContents = $response->body();
-                $imageBase64 = base64_encode($imageContents);*/
                 $imageSrc = $imageUrl;
             }
 
@@ -826,7 +735,6 @@ class InstagramController extends Controller
         if(empty($postData)){
             echo "No hay comentarios disponibles."; 
         }else{
-            // dd($postData[0]->full_picture);
             $imageUrl = $postData['media_url'];
             if (empty($imageUrl)) {
                 $imagePath = public_path('img/imagen_default.png');
@@ -834,9 +742,6 @@ class InstagramController extends Controller
                 $imageBase64 = base64_encode($imageContents);
                 $imageSrc = 'data:image/png;base64,' . $imageBase64;
             }else{    
-                /*$response = Http::get($imageUrl);
-                $imageContents = $response->body();
-                $imageBase64 = base64_encode($imageContents);*/
                 $imageSrc = $imageUrl;
             }
 
@@ -905,10 +810,7 @@ class InstagramController extends Controller
             $dompdf->loadHtml($vista);
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
             $dompdf->set_option('isPhpEnabled', true);
-            //$dompdf->page_text(1,1, "{PAGE_NUM} of {PAGE_COUNT}", $font, 10, array(0,0,0));
-            // page_text($w - 120, $h - 40, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
             $dompdf->render();
-            // $dompdf->stream('autorizaciones.pdf');
             $dompdf->stream ('',array("Attachment" => false));
         }   
     }
@@ -1106,14 +1008,12 @@ class InstagramController extends Controller
         $url_mapa_country = "https://reportapi.infocenterlatam.com/api/istadistic/listfrom?date={$endDate}&id_page={$request->id_page}"; // Usa startDate para filtrar
         $response_mapa_country = Http::get($url_mapa_country);
         $dataMapCountry = $response_mapa_country->json();
-        //dd($dataMapCountry);
         $dataCollection = collect($dataMapCountry['data']);
         
         // Formatea los datos para Highcharts
         $formattedDataMap = $dataCollection->map(function($item) {
             return [strtolower($item['country_name']), $item['fan_count']];
         });
-        //dd($formattedDataMap);
         return response()->json($formattedDataMap);
     }
     
@@ -1181,7 +1081,6 @@ class InstagramController extends Controller
 
     public function tablepostmanfredinstagram(Request $request){
         if ($request->ajax()) {
-            //dd($request);
             $page = $request->input('start') / $request->input('length') + 1;
             // Obtener las fechas del request
             $startDate = $request->input('start_date');
@@ -1203,7 +1102,6 @@ class InstagramController extends Controller
             $datas = $response->json();
             $items = $datas['data'];
             $total = $datas['total'];
-            //dd($items);
             return response()->json([
                 'draw' => $request->input('draw'),
                 'recordsTotal' => $total,

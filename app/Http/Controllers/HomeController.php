@@ -1640,17 +1640,7 @@ class HomeController extends Controller
             'output' => $output
         ]);
 
-        // Ruta del archivo Python
-        /*$pythonScriptPath = "C:\\Users\\DADI-\\Downloads\\hola_mundo.py";
-        // Comando para ejecutar el archivo Python
-        $command = escapeshellcmd("python " . $pythonScriptPath);
-        // Ejecutar el comando
-        putenv('PATH=' . getenv('PATH') . ':/path/to/python');
-        $command = escapeshellcmd("/path/to/python " . $pythonScriptPath . " 2>&1");
-        $output = shell_exec($command);
-        dd($output);
-        // Mostrar el resultado en la vista o redirigir con un mensaje
-        return view('resultado_python', ['output' => $output]);*/
+        
     }
 
 
