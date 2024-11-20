@@ -581,25 +581,50 @@ class InstagramController extends Controller
             $imageSrc = $imageUrl;
         }
 
-        $inicio = public_path() . '/img/escucha_1.jpg';
-        $imageInicio = base64_encode(file_get_contents($inicio));
-        $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+        if($request->input('reaction_id') == 17841444478446953){
+            //imagenes sumate    
+            $inicio = public_path() . '/img/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
 
-        $facebook = public_path() . '/img/escucha_2.jpg';
-        $imagefacebook = base64_encode(file_get_contents($facebook));
-        $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
-        
-        $overview = public_path() . '/img/escucha_3.jpg';
-        $imageoverview = base64_encode(file_get_contents($overview));
-        $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-       
-        $popcomment = public_path() . '/img/escucha_5.jpg';
-        $imagepopcomment = base64_encode(file_get_contents($popcomment));
-        $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
-       
-        $commentreaction = public_path() . '/img/escucha_6.jpg';
-        $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
-        $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+            $facebook = public_path() . '/img/escucha_sumate/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            
+            $overview = public_path() . '/img/escucha_sumate/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+            $popcomment = public_path() . '/img/escucha_sumate/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            
+            $commentreaction = public_path() . '/img/escucha_sumate/escucha_6.jpg';
+            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+        }else{
+            //imagenes manfred
+            $inicio = public_path() . '/img/escucha_1.jpg';
+            $imageInicio = base64_encode(file_get_contents($inicio));
+            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+
+            $facebook = public_path() . '/img/escucha_manfred/escucha_2.jpg';
+            $imagefacebook = base64_encode(file_get_contents($facebook));
+            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            
+            $overview = public_path() . '/img/escucha_manfred/escucha_3.jpg';
+            $imageoverview = base64_encode(file_get_contents($overview));
+            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+
+            $popcomment = public_path() . '/img/escucha_manfred/escucha_5.jpg';
+            $imagepopcomment = base64_encode(file_get_contents($popcomment));
+            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+            
+            $commentreaction = public_path() . '/img/escucha_manfred/escucha_6.jpg';
+            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+        }
+
         $is_chart = 0;
         $vista = view('informe_escucha_instagram',['is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
@@ -665,31 +690,58 @@ class InstagramController extends Controller
                 $imageSrc = $imageUrl;
             }
 
-            $inicio = public_path() . '/img/escucha_1.jpg';
-            $imageInicio = base64_encode(file_get_contents($inicio));
-            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
-
-            $facebook = public_path() . '/img/escucha_2.jpg';
-            $imagefacebook = base64_encode(file_get_contents($facebook));
-            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            if($request->input('date_listen_id') == 17841444478446953){
+                //imagenes sumate    
+                $inicio = public_path() . '/img/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+    
+                $facebook = public_path() . '/img/escucha_sumate/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_sumate/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+    
+                $popcomment = public_path() . '/img/escucha_sumate/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_sumate/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+                
+                $grafico_escucha = public_path() . '/img/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;    
+            }else{
+                //imagenes manfred
+                $inicio = public_path() . '/img/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+    
+                $facebook = public_path() . '/img/escucha_manfred/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_manfred/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+    
+                $popcomment = public_path() . '/img/escucha_manfred/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_manfred/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
             
-            $overview = public_path() . '/img/escucha_3.jpg';
-            $imageoverview = base64_encode(file_get_contents($overview));
-            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-            
-            $grafico_escucha = public_path() . '/img/escucha_4.jpg';
-            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
-            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
-           
-            $popcomment = public_path() . '/img/escucha_5.jpg';
-            $imagepopcomment = base64_encode(file_get_contents($popcomment));
-            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
-           
-            $commentreaction = public_path() . '/img/escucha_6.jpg';
-            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
-            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+                $grafico_escucha = public_path() . '/img/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;    
+            }
             $is_chart = 0;
-
             $vista = view('informe_escucha_instagram',['is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
@@ -745,34 +797,68 @@ class InstagramController extends Controller
                 $imageSrc = $imageUrl;
             }
 
-            $inicio = public_path() . '/img/escucha_1.jpg';
-            $imageInicio = base64_encode(file_get_contents($inicio));
-            $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
 
-            $facebook = public_path() . '/img/escucha_2.jpg';
-            $imagefacebook = base64_encode(file_get_contents($facebook));
-            $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+            if($request->input('date_listen_id') == 17841444478446953){
+                //imagenes sumate    
+                $inicio = public_path() . '/img/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+    
+                $facebook = public_path() . '/img/escucha_sumate/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_sumate/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+    
+                $popcomment = public_path() . '/img/escucha_sumate/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_sumate/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
+                
+                $grafico_escucha = public_path() . '/img/escucha_sumate/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
+
+                $grafico_palabras = public_path() . '/img/escucha_sumate/escucha_7.jpg';
+                $imagepalabrasescucha = base64_encode(file_get_contents($grafico_palabras));
+                $src_escucha_palabras = 'data:' . mime_content_type($grafico_palabras) . ';base64,' . $imagepalabrasescucha;
+        
+            }else{
+                //imagenes manfred
+                $inicio = public_path() . '/img/escucha_1.jpg';
+                $imageInicio = base64_encode(file_get_contents($inicio));
+                $src_inicio = 'data:' . mime_content_type($inicio) . ';base64,' . $imageInicio;
+    
+                $facebook = public_path() . '/img/escucha_manfred/escucha_2.jpg';
+                $imagefacebook = base64_encode(file_get_contents($facebook));
+                $src_escucha = 'data:' . mime_content_type($facebook) . ';base64,' . $imagefacebook;
+                
+                $overview = public_path() . '/img/escucha_manfred/escucha_3.jpg';
+                $imageoverview = base64_encode(file_get_contents($overview));
+                $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
+    
+                $popcomment = public_path() . '/img/escucha_manfred/escucha_5.jpg';
+                $imagepopcomment = base64_encode(file_get_contents($popcomment));
+                $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                
+                $commentreaction = public_path() . '/img/escucha_manfred/escucha_6.jpg';
+                $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
+                $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
             
-            $overview = public_path() . '/img/escucha_3.jpg';
-            $imageoverview = base64_encode(file_get_contents($overview));
-            $src_gracias = 'data:' . mime_content_type($overview) . ';base64,' . $imageoverview;
-            
-            $popcomment = public_path() . '/img/escucha_5.jpg';
-            $imagepopcomment = base64_encode(file_get_contents($popcomment));
-            $src_popcomment = 'data:' . mime_content_type($popcomment) . ';base64,' . $imagepopcomment;
+                $grafico_escucha = public_path() . '/img/escucha_manfred/escucha_4.jpg';
+                $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
+                $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
 
-            $commentreaction = public_path() . '/img/escucha_6.jpg';
-            $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
-            $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
-           
-            $grafico_escucha = public_path() . '/img/escucha_sumate/escucha_4.jpg';
-            $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
-            $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;
-
-            $grafico_palabras = public_path() . '/img/escucha_sumate/escucha_7.jpg';
-            $imagepalabrasescucha = base64_encode(file_get_contents($grafico_palabras));
-            $src_escucha_palabras = 'data:' . mime_content_type($grafico_palabras) . ';base64,' . $imagepalabrasescucha;
-
+                $grafico_palabras = public_path() . '/img/escucha_manfred/escucha_7.jpg';
+                $imagepalabrasescucha = base64_encode(file_get_contents($grafico_palabras));
+                $src_escucha_palabras = 'data:' . mime_content_type($grafico_palabras) . ';base64,' . $imagepalabrasescucha;
+    
+            }
 
             // Construir la URL de QuickChart
             // Suma total de los valores
