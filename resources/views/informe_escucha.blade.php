@@ -1,5 +1,6 @@
 <html lang="en">
 <head>
+    <link href="{{ base_path('vendor/iamcal/php-emoji/lib/emoji.css') }}" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informe de Escucha</title>
