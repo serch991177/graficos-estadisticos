@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use RealRashid\SweetAlert\Facades\Alert;
 use Symfony\Component\Process\Process;
 use phpseclib3\Net\SSH2;
+use Emojione\Emojione;
 
 class HomeController extends Controller
 {
@@ -449,9 +450,11 @@ class HomeController extends Controller
             $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
             $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
         }
+        $contenidoConEmojisToppost0 = $postData['story'] ?? "Contenido no disponible.";
+        $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
 
         $is_chart = 0;
-        $vista = view('informe_escucha',['is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+        $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($options);
@@ -573,8 +576,12 @@ class HomeController extends Controller
                 $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
             }
             
+            $contenidoConEmojisToppost0 = $datos['story'] ?? "Contenido no disponible.";
+            $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
+            
+
             $is_chart = 0;
-            $vista = view('informe_escucha',['is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+            $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);
@@ -814,9 +821,34 @@ class HomeController extends Controller
                 $src_gracias = 'data:' . mime_content_type($gracias) . ';base64,' . $imagegracias;
                 //Fin Imagenes Manfred
             }
-
+            // Contenido con emojis
+            $contenidoConEmojisToppost0 = $datos['TopPost'][0]['story'] ?? "Contenido no disponible.";
+            $contenidoConEmojisToppost1 = $datos['TopPost'][1]['story'] ?? "Contenido no disponible.";
+            $contenidoConEmojisTopImpressions0 = $datos['topImpressionsPosts'][0]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisTopImpressions1 = $datos['topImpressionsPosts'][1]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostShared0 = $datos['getMostSharedPost'][0]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostShared1 = $datos['getMostSharedPost'][1]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostComments0 = $datos['getMostCommentsPost'][0]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostComments1 = $datos['getMostCommentsPost'][1]['story'] ?? "Contenido no disponible";
+            // Reemplazar emojis con PNGs
+            $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
+            $contenidoConImagenesToppost1 = emoji_unified_to_html($contenidoConEmojisToppost1);
+            $contenidoConImagenesTopImpressions0 = emoji_unified_to_html($contenidoConEmojisTopImpressions0);
+            $contenidoConImagenesTopImpressions1 = emoji_unified_to_html($contenidoConEmojisTopImpressions1);
+            $contenidoConImagenesMostShared0 = emoji_unified_to_html($contenidoConEmojisMostShared0);
+            $contenidoConImagenesMostShared1 = emoji_unified_to_html($contenidoConEmojisMostShared1);
+            $contenidoConImagenesMostComments0 = emoji_unified_to_html($contenidoConEmojisMostComments0);
+            $contenidoConImagenesMostComments1 = emoji_unified_to_html($contenidoConEmojisMostComments1);
             //Fin Imagenes de Facebook
             $vista = view('informe_facebook', [
+                'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,
+                'contenidoConImagenesToppost1'=>$contenidoConImagenesToppost1,
+                'contenidoConImagenesTopImpressions0'=>$contenidoConImagenesTopImpressions0,
+                'contenidoConImagenesTopImpressions1'=>$contenidoConImagenesTopImpressions1,
+                'contenidoConImagenesMostShared0'=>$contenidoConImagenesMostShared0,
+                'contenidoConImagenesMostShared1'=>$contenidoConImagenesMostShared1,
+                'contenidoConImagenesMostComments0'=>$contenidoConImagenesMostComments0,
+                'contenidoConImagenesMostComments1'=>$contenidoConImagenesMostComments1,
                 'src_inicio' => $src_inicio,
                 'src_facebook' => $src_facebook,
                 'src_overview' => $src_overview,
@@ -846,11 +878,13 @@ class HomeController extends Controller
                 'sumatotalinteraccionesComentarios' => $sumatotalinteraccionesComentarios
             ]);
             //file_put_contents(public_path('output.html'), $vista);
+            
             //$options = new Options();
             $options = new Options();
             $options->set('isRemoteEnabled',TRUE);
             $options->set('isHtml5ParserEnabled', true);
             $options->set('isPhpEnabled', true);
+            $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
             $dompdf = new Dompdf($options);
             //$dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
@@ -1065,8 +1099,13 @@ class HomeController extends Controller
             $chart_bar = 'https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["Positivo","Negativo"   ],datasets:[{data:[' . 
                 round($positive_percentage, 2) . ',' . 
                 round($negative_percentage, 2) . ',' . '],backgroundColor:["green","red","gray"]}]}}';
+
+            $contenidoConEmojisToppost0 = $postData['story'] ?? "Contenido no disponible.";
+            $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
+            
+
             $is_chart = 1;
-            $vista = view('informe_escucha',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
+            $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $dompdf = new Dompdf($options);

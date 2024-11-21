@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d584f1c6b6bd9439431fad3a49c3c24b",
+    "content-hash": "40723a9705d524bdc9e7426907d7d1c1",
     "packages": [
         {
             "name": "brick/math",
@@ -1204,6 +1204,53 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "iamcal/php-emoji",
+            "version": "v1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamcal/php-emoji.git",
+                "reference": "f44c18b8cdec173c6eab618cbdcfcca260eadabe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamcal/php-emoji/zipball/f44c18b8cdec173c6eab618cbdcfcca260eadabe",
+                "reference": "f44c18b8cdec173c6eab618cbdcfcca260eadabe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/emoji.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cal Henderson",
+                    "email": "cal@iamcal.com",
+                    "homepage": "http://www.iamcal.com/"
+                }
+            ],
+            "description": "This is a PHP library for dealing with Emoji, allowing you to convert between various native formats and displaying them using HTML.",
+            "homepage": "https://github.com/iamcal/php-emoji",
+            "keywords": [
+                "convert",
+                "converter",
+                "emoji"
+            ],
+            "support": {
+                "issues": "https://github.com/iamcal/php-emoji/issues",
+                "source": "https://github.com/iamcal/php-emoji/tree/v1.4.2"
+            },
+            "time": "2017-03-04T06:59:20+00:00"
         },
         {
             "name": "laravel-frontend-presets/white-dashboard",
