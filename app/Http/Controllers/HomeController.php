@@ -457,6 +457,7 @@ class HomeController extends Controller
         $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
+        $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emojis
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($vista);
         $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
@@ -584,6 +585,7 @@ class HomeController extends Controller
             $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
+            $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
@@ -1108,6 +1110,7 @@ class HomeController extends Controller
             $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
+            $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
