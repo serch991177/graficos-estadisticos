@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use RealRashid\SweetAlert\Facades\Alert;
 use phpseclib3\Net\SSH2;
+use Emojione\Emojione;
 
 
 class InstagramController extends Controller
@@ -514,9 +515,35 @@ class InstagramController extends Controller
             $saved = public_path() . '/img/9.jpg';
             $imagesaved = base64_encode(file_get_contents($saved));
             $src_saved = 'data:' . mime_content_type($saved) . ';base64,' . $imagesaved;
-            
+
+            //Contenido con emojis
+            $contenidoConEmojisToppost0 = $datos['TopPost'][0]['story'] ?? "Contenido no disponible.";
+            $contenidoConEmojisToppost1 = $datos['TopPost'][1]['story'] ?? "Contenido no disponible.";
+            $contenidoConEmojisMostshared0 = $datos['getMostSharedPost'][0]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostShared1 = $datos['getMostSharedPost'][1]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostcomments0 = $datos['getMostCommentsPost'][0]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostcomments1 = $datos['getMostCommentsPost'][1]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostsaved0 = $datos['getMostSavedPost'][0]['story'] ?? "Contenido no disponible";
+            $contenidoConEmojisMostsaved1 = $datos['getMostSavedPost'][1]['story'] ?? "Contenido no disponible";
+            //Reemplazar emojis con pngs
+            $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
+            $contenidoConImagenesToppost1 = emoji_unified_to_html($contenidoConEmojisToppost1);
+            $contenidoConImagenesMostshared0 = emoji_unified_to_html($contenidoConEmojisMostshared0);
+            $contenidoConImagenesMostshared1 = emoji_unified_to_html($contenidoConEmojisMostShared1);
+            $contenidoConImagenesMostcomments0 = emoji_unified_to_html($contenidoConEmojisMostcomments0);
+            $contenidoConImagenesMostcomments1 = emoji_unified_to_html($contenidoConEmojisMostcomments1);
+            $contenidoConImagenesMostsaved0 = emoji_unified_to_html($contenidoConEmojisMostsaved0);
+            $contenidoConImagenesMostsaved1 = emoji_unified_to_html($contenidoConEmojisMostsaved1);
             //Fin Imagenes de Faceboo
             $vista = view('informe_instagram', [
+                'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,
+                'contenidoConImagenesToppost1'=>$contenidoConImagenesToppost1,
+                'contenidoConImagenesMostshared0'=>$contenidoConImagenesMostshared0,
+                'contenidoConImagenesMostshared1'=>$contenidoConImagenesMostshared1,
+                'contenidoConImagenesMostcomments0'=>$contenidoConImagenesMostcomments0,
+                'contenidoConImagenesMostcomments1'=>$contenidoConImagenesMostcomments1,
+                'contenidoConImagenesMostsaved0'=>$contenidoConImagenesMostsaved0,
+                'contenidoConImagenesMostsaved1'=>$contenidoConImagenesMostsaved1,
                 'src_inicio' => $src_inicio,
                 'src_facebook' => $src_facebook,
                 'src_overview' => $src_overview,
@@ -549,6 +576,7 @@ class InstagramController extends Controller
             $options->set('isRemoteEnabled',TRUE);
             $options->set('isHtml5ParserEnabled', true);
             $options->set('isPhpEnabled', true);
+            $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
@@ -624,11 +652,35 @@ class InstagramController extends Controller
             $imagecommentreaction = base64_encode(file_get_contents($commentreaction));
             $src_commentreaction = 'data:' . mime_content_type($commentreaction) . ';base64,' . $imagecommentreaction;
         }
+        $contenidoConEmojisToppost0 = $postData['story'] ?? "Contenido no disponible.";
+        $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
 
+        $comentarioconmasreacciones0 = $postData['comment_pop']['most_reacted'][0]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojisreacciones0 = emoji_unified_to_html($comentarioconmasreacciones0);
+
+        $comentarioconmasreacciones1 = $postData['comment_pop']['most_reacted'][1]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojisreacciones1 = emoji_unified_to_html($comentarioconmasreacciones1);
+
+        $comentarioconmasreacciones2 = $postData['comment_pop']['most_reacted'][2]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojisreacciones2 = emoji_unified_to_html($comentarioconmasreacciones2);
+
+        $comentarioconmascomentarios0 = $postData['comment_pop']['most_commented'][0]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojiscomentarios0 = emoji_unified_to_html($comentarioconmascomentarios0);
+
+        $comentarioconmascomentarios1 = $postData['comment_pop']['most_commented'][1]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojiscomentarios1 = emoji_unified_to_html($comentarioconmascomentarios1);
+
+        $comentarioconmascomentarios2 = $postData['comment_pop']['most_commented'][2]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojiscomentarios2 = emoji_unified_to_html($comentarioconmascomentarios2);
+       
         $is_chart = 0;
-        $vista = view('informe_escucha_instagram',['is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+        $vista = view('informe_escucha_instagram',[
+            'contenidoconEmojiscomentarios0'=>$contenidoconEmojiscomentarios0,'contenidoconEmojiscomentarios1'=>$contenidoconEmojiscomentarios1,'contenidoconEmojiscomentarios2'=>$contenidoconEmojiscomentarios2,
+            'contenidoconEmojisreacciones0'=>$contenidoconEmojisreacciones0,'contenidoconEmojisreacciones1'=>$contenidoconEmojisreacciones1,'contenidoconEmojisreacciones2'=>$contenidoconEmojisreacciones2,
+            'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
+        $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($vista);
         $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
@@ -741,10 +793,38 @@ class InstagramController extends Controller
                 $imagegraficoescucha = base64_encode(file_get_contents($grafico_escucha));
                 $src_escucha_grafica = 'data:' . mime_content_type($grafico_escucha) . ';base64,' . $imagegraficoescucha;    
             }
+
+
+            $contenidoConEmojisToppost0 = $datos['story'] ?? "Contenido no disponible.";
+            $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
+
+            $comentarioconmasreacciones0 = $datos['comment_pop']['most_reacted'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones0 = emoji_unified_to_html($comentarioconmasreacciones0);
+
+            $comentarioconmasreacciones1 = $datos['comment_pop']['most_reacted'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones1 = emoji_unified_to_html($comentarioconmasreacciones1);
+
+            $comentarioconmasreacciones2 = $datos['comment_pop']['most_reacted'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones2 = emoji_unified_to_html($comentarioconmasreacciones2);
+
+
+            $comentarioconmascomentarios0 = $datos['comment_pop']['most_commented'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios0 = emoji_unified_to_html($comentarioconmascomentarios0);
+
+            $comentarioconmascomentarios1 = $datos['comment_pop']['most_commented'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios1 = emoji_unified_to_html($comentarioconmascomentarios1);
+
+            $comentarioconmascomentarios2 = $datos['comment_pop']['most_commented'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios2 = emoji_unified_to_html($comentarioconmascomentarios2);
+
+
             $is_chart = 0;
-            $vista = view('informe_escucha_instagram',['is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+            $vista = view('informe_escucha_instagram',['contenidoconEmojiscomentarios0'=>$contenidoconEmojiscomentarios0,'contenidoconEmojiscomentarios1'=>$contenidoconEmojiscomentarios1,'contenidoconEmojiscomentarios2'=>$contenidoconEmojiscomentarios2,
+                'contenidoconEmojisreacciones0'=>$contenidoconEmojisreacciones0,'contenidoconEmojisreacciones1'=>$contenidoconEmojisreacciones1,'contenidoconEmojisreacciones2'=>$contenidoconEmojisreacciones2,
+                'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
+            $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emojis
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
@@ -887,11 +967,33 @@ class InstagramController extends Controller
                 round($positive_percentage, 2) . ',' . 
                 round($negative_percentage, 2) . ',' . '],backgroundColor:["green","red","gray"]}]}}';
             $is_chart = 1;
-            
+            $contenidoConEmojisToppost0 = $postData['story'] ?? "Contenido no disponible.";
+            $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
 
-            $vista = view('informe_escucha_instagram',['postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
+            $comentarioconmasreacciones0 = $postData['comment_pop']['most_reacted'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones0 = emoji_unified_to_html($comentarioconmasreacciones0);
+
+            $comentarioconmasreacciones1 = $postData['comment_pop']['most_reacted'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones1 = emoji_unified_to_html($comentarioconmasreacciones1);
+
+            $comentarioconmasreacciones2 = $postData['comment_pop']['most_reacted'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones2 = emoji_unified_to_html($comentarioconmasreacciones2);
+
+            $comentarioconmascomentarios0 = $postData['comment_pop']['most_commented'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios0 = emoji_unified_to_html($comentarioconmascomentarios0);
+
+            $comentarioconmascomentarios1 = $postData['comment_pop']['most_commented'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios1 = emoji_unified_to_html($comentarioconmascomentarios1);
+
+            $comentarioconmascomentarios2 = $postData['comment_pop']['most_commented'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios2 = emoji_unified_to_html($comentarioconmascomentarios2);
+       
+            $vista = view('informe_escucha_instagram',['contenidoconEmojiscomentarios0'=>$contenidoconEmojiscomentarios0,'contenidoconEmojiscomentarios1'=>$contenidoconEmojiscomentarios1,'contenidoconEmojiscomentarios2'=>$contenidoconEmojiscomentarios2,
+            'contenidoconEmojisreacciones0'=>$contenidoconEmojisreacciones0,'contenidoconEmojisreacciones1'=>$contenidoconEmojisreacciones1,'contenidoconEmojisreacciones2'=>$contenidoconEmojisreacciones2,
+                'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
+            $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
             $dompdf = new Dompdf($options);
             $dompdf->loadHtml($vista);
             $dompdf->setPaper(array(0, 0, 980, 1300), 'Landscape'); // 8.5 x 13 pulgadas
