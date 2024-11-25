@@ -453,8 +453,29 @@ class HomeController extends Controller
         $contenidoConEmojisToppost0 = $postData['story'] ?? "Contenido no disponible.";
         $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
 
+        $comentarioconmasreacciones0 = $postData['comment_pop']['most_reacted'][0]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojisreacciones0 = emoji_unified_to_html($comentarioconmasreacciones0);
+
+        $comentarioconmasreacciones1 = $postData['comment_pop']['most_reacted'][1]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojisreacciones1 = emoji_unified_to_html($comentarioconmasreacciones1);
+
+        $comentarioconmasreacciones2 = $postData['comment_pop']['most_reacted'][2]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojisreacciones2 = emoji_unified_to_html($comentarioconmasreacciones2);
+
+        $comentarioconmascomentarios0 = $postData['comment_pop']['most_commented'][0]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojiscomentarios0 = emoji_unified_to_html($comentarioconmascomentarios0);
+
+        $comentarioconmascomentarios1 = $postData['comment_pop']['most_commented'][1]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojiscomentarios1 = emoji_unified_to_html($comentarioconmascomentarios1);
+
+        $comentarioconmascomentarios2 = $postData['comment_pop']['most_commented'][2]['message'] ?? "No hay contenido disponible";
+        $contenidoconEmojiscomentarios2 = emoji_unified_to_html($comentarioconmascomentarios2);
+        
+
         $is_chart = 0;
-        $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+        $vista = view('informe_escucha',['contenidoconEmojiscomentarios0'=>$contenidoconEmojiscomentarios0,'contenidoconEmojiscomentarios1'=>$contenidoconEmojiscomentarios1,'contenidoconEmojiscomentarios2'=>$contenidoconEmojiscomentarios2,
+        'contenidoconEmojisreacciones0'=>$contenidoconEmojisreacciones0,'contenidoconEmojisreacciones1'=>$contenidoconEmojisreacciones1,'contenidoconEmojisreacciones2'=>$contenidoconEmojisreacciones2,
+        'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
         $options = new Options(); 
         $options->set('isRemoteEnabled', TRUE);
         $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emojis
@@ -579,10 +600,29 @@ class HomeController extends Controller
             
             $contenidoConEmojisToppost0 = $datos['story'] ?? "Contenido no disponible.";
             $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
-            
 
+            $comentarioconmasreacciones0 = $datos['comment_pop']['most_reacted'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones0 = emoji_unified_to_html($comentarioconmasreacciones0);
+
+            $comentarioconmasreacciones1 = $datos['comment_pop']['most_reacted'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones1 = emoji_unified_to_html($comentarioconmasreacciones1);
+
+            $comentarioconmasreacciones2 = $datos['comment_pop']['most_reacted'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones2 = emoji_unified_to_html($comentarioconmasreacciones2);
+
+            $comentarioconmascomentarios0 = $datos['comment_pop']['most_commented'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios0 = emoji_unified_to_html($comentarioconmascomentarios0);
+
+            $comentarioconmascomentarios1 = $datos['comment_pop']['most_commented'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios1 = emoji_unified_to_html($comentarioconmascomentarios1);
+
+            $comentarioconmascomentarios2 = $datos['comment_pop']['most_commented'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios2 = emoji_unified_to_html($comentarioconmascomentarios2);
+          
             $is_chart = 0;
-            $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
+            $vista = view('informe_escucha',['contenidoconEmojiscomentarios0'=>$contenidoconEmojiscomentarios0,'contenidoconEmojiscomentarios1'=>$contenidoconEmojiscomentarios1,'contenidoconEmojiscomentarios2'=>$contenidoconEmojiscomentarios2,
+                'contenidoconEmojisreacciones0'=>$contenidoconEmojisreacciones0,'contenidoconEmojisreacciones1'=>$contenidoconEmojisreacciones1,'contenidoconEmojisreacciones2'=>$contenidoconEmojisreacciones2,
+                'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'is_chart'=>$is_chart,'postData'=>$datos,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'imageChartBase64'=>$imageChartBase64,'imageChartBarBase64'=>$imageChartBarBase64,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_escucha_grafica'=>$src_escucha_grafica,'src_popcomment'=>$src_popcomment,'src_commentreaction'=>$src_commentreaction]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji
@@ -1104,10 +1144,29 @@ class HomeController extends Controller
 
             $contenidoConEmojisToppost0 = $postData['story'] ?? "Contenido no disponible.";
             $contenidoConImagenesToppost0 = emoji_unified_to_html($contenidoConEmojisToppost0);
-            
 
+            $comentarioconmasreacciones0 = $postData['comment_pop']['most_reacted'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones0 = emoji_unified_to_html($comentarioconmasreacciones0);
+
+            $comentarioconmasreacciones1 = $postData['comment_pop']['most_reacted'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones1 = emoji_unified_to_html($comentarioconmasreacciones1);
+
+            $comentarioconmasreacciones2 = $postData['comment_pop']['most_reacted'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojisreacciones2 = emoji_unified_to_html($comentarioconmasreacciones2);
+
+            $comentarioconmascomentarios0 = $postData['comment_pop']['most_commented'][0]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios0 = emoji_unified_to_html($comentarioconmascomentarios0);
+
+            $comentarioconmascomentarios1 = $postData['comment_pop']['most_commented'][1]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios1 = emoji_unified_to_html($comentarioconmascomentarios1);
+
+            $comentarioconmascomentarios2 = $postData['comment_pop']['most_commented'][2]['message'] ?? "No hay contenido disponible";
+            $contenidoconEmojiscomentarios2 = emoji_unified_to_html($comentarioconmascomentarios2);
+            
             $is_chart = 1;
-            $vista = view('informe_escucha',['contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
+            $vista = view('informe_escucha',['contenidoconEmojiscomentarios0'=>$contenidoconEmojiscomentarios0,'contenidoconEmojiscomentarios1'=>$contenidoconEmojiscomentarios1,'contenidoconEmojiscomentarios2'=>$contenidoconEmojiscomentarios2,
+            'contenidoconEmojisreacciones0'=>$contenidoconEmojisreacciones0,'contenidoconEmojisreacciones1'=>$contenidoconEmojisreacciones1,'contenidoconEmojisreacciones2'=>$contenidoconEmojisreacciones2,
+                'contenidoConImagenesToppost0'=>$contenidoConImagenesToppost0,'postData'=>$postData,'imageSrc'=>$imageSrc,'total_reacciones'=>$total_reacciones,'src_inicio'=>$src_inicio,'src_escucha'=>$src_escucha,'src_gracias'=>$src_gracias,'src_popcomment'=>$src_popcomment,'src_commentreaction' => $src_commentreaction,'src_escucha_grafica'=>$src_escucha_grafica,'data_python'=>$data_python,'chart_url'=>$chart_url,'chart_bar'=>$chart_bar,'is_chart'=>$is_chart,'src_escucha_palabras'=>$src_escucha_palabras]);
             $options = new Options(); 
             $options->set('isRemoteEnabled', TRUE);
             $options->setChroot(base_path('vendor/iamcal/php-emoji/lib')); // Establece el chroot a la ruta de los recursos de emoji

@@ -119,7 +119,7 @@
         </div>
         <div style="position:absolute; top:300px; left:100px;width:1580px;">
             @php
-                $message = $postData['comment_pop']['most_reacted'][0]['message'] ?? '';
+                $message = $contenidoconEmojisreacciones0 ?? '';
             @endphp
 
             @if (!empty($message))
@@ -128,7 +128,7 @@
                     <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
                 @else
                     {{-- Si es texto --}}
-                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                    <h1 style="color:black;font-size: 15px;">{!! $message !!}</h1>
                 @endif
             @else
                 {{-- Si no hay contenido en message --}}
@@ -141,7 +141,7 @@
         <div style="position:absolute; top:650px; left:100px;width:1400px;">
             @php
                 // Verificamos si 'message' está definido y no está vacío
-                $message = $postData['comment_pop']['most_reacted'][1]['message'] ?? '';
+                $message = $contenidoconEmojisreacciones1 ?? '';
             @endphp
 
             @if (!empty($message))
@@ -150,7 +150,7 @@
                     <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
                 @else
                     {{-- Si es texto --}}
-                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                    <h1 style="color:black;font-size: 15px;">{!! $message !!}</h1>
                 @endif
             @else
                 {{-- Si no hay contenido en message --}}
@@ -163,7 +163,7 @@
         <div style="position:absolute; top:980px; left:100px;width:1250px;">
             @php
                 // Verificamos si 'message' está definido y no está vacío
-                $message = $postData['comment_pop']['most_reacted'][2]['message'] ?? '';
+                $message = $contenidoconEmojisreacciones2 ?? '';
             @endphp
 
             @if (!empty($message))
@@ -172,7 +172,7 @@
                     <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
                 @else
                     {{-- Si es texto --}}
-                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                    <h1 style="color:black;font-size: 15px;">{!! $message !!}</h1>
                 @endif
             @else
                 {{-- Si no hay contenido en message --}}
@@ -186,7 +186,7 @@
         <div style="position:absolute; top:300px; left:100px;width:1580px;">
             @php
                 // Verificamos si 'message' está definido y no está vacío
-                $message = $postData['comment_pop']['most_commented'][0]['message'] ?? '';
+                $message = $contenidoconEmojiscomentarios0 ?? '';
             @endphp
 
             @if (!empty($message))
@@ -195,7 +195,7 @@
                     <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
                 @else
                     {{-- Si es texto --}}
-                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                    <h1 style="color:black;font-size: 15px;">{!! $message !!}</h1>
                 @endif
             @else
                 {{-- Si no hay contenido en message --}}
@@ -205,7 +205,7 @@
         <div style="position:absolute; top:650px; left:100px;width:1400px;">
             @php
                 // Verificamos si 'message' está definido y no está vacío
-                $message = $postData['comment_pop']['most_commented'][1]['message'] ?? '';
+                $message = $contenidoconEmojiscomentarios1 ?? '';
             @endphp
 
             @if (!empty($message))
@@ -214,7 +214,7 @@
                     <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
                 @else
                     {{-- Si es texto --}}
-                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                    <h1 style="color:black;font-size: 15px;">{!! $message !!}</h1>
                 @endif
             @else
                 {{-- Si no hay contenido en message --}}
@@ -224,7 +224,7 @@
         <div style="position:absolute; top:980px; left:100px;width:1250px;">
             @php
                 // Verificamos si 'message' está definido y no está vacío
-                $message = $postData['comment_pop']['most_commented'][2]['message'] ?? '';
+                $message = $contenidoconEmojiscomentarios2 ?? '';
             @endphp
 
             @if (!empty($message))
@@ -233,7 +233,7 @@
                     <img src="{{ $message }}" alt="Imagen base64" style="max-width:20%; max-height:20%;" />
                 @else
                     {{-- Si es texto --}}
-                    <h1 style="color:black;font-size: 15px;">{{ $message }}</h1>
+                    <h1 style="color:black;font-size: 15px;">{!! $message !!}</h1>
                 @endif
             @else
                 {{-- Si no hay contenido en message --}}
