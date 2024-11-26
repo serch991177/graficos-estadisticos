@@ -1338,8 +1338,17 @@
     $(document).ready(function(){
         $(document).on('click','.id_pdf',function(){
             var id = $(this).val();
-            document.getElementById("contexto").value = "";
-            document.getElementById("id_generar_pdf").value = id;
+            $.ajax({
+                type: "POST",
+                headers: {'Content-Type': 'application/json','X-CSRF-TOKEN': '{{ csrf_token() }}',},
+                url: "{{ route('recuperar_contexto') }}",
+                async: false,
+                data: JSON.stringify({'id': id}),
+                success: function(data) {
+                    document.getElementById("contexto").value = data.data.data.context;
+                    document.getElementById("id_generar_pdf").value = id;
+                }
+            });
         });
     });
 </script>

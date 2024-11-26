@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/tabla-post', [HomeController::class, 'tablepost'])->name('tablepost');
     Route::get('/reportes-facebook', [HomeController::class, 'cargarfacebookinforme'])->name('reportes_facebook');
     Route::post('/informe_escucha_fechas', [HomeController::class, 'informeescuchafecha'])->name('iforme_escucha_fecha');
+    Route::post('/recuperar_contexto',[HomeController::class,'recuperar_contexto'])->name('recuperar_contexto');
 
     // Rutas de AJAX para gráficos facebook
     Route::get('/get-chart-data', [HomeController::class, 'getChartData']);

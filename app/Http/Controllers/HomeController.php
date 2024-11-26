@@ -1776,4 +1776,12 @@ class HomeController extends Controller
         }
     }
 
+    public function recuperar_contexto(Request $request){
+        $url_informe = 'https://reportapi.infocenterlatam.com/api/fstadistic/topPostforId/'.$request->id;
+        $response_informe = Http::get($url_informe);
+        $data_informe = $response_informe->json();
+        return response()->json(['data'=>$data_informe]);
+        //dd($data_informe['data']['context']);
+    }
+
 }
