@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InstagramController;
+use App\Http\Controllers\TiktokController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth; // Importar el facade Auth
 
@@ -112,13 +113,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/manfred', [FacebookController::class, 'index'])->name('home_manfred');
     Route::get('/tabla-post-manfred', [FacebookController::class, 'tablepostmanfred'])->name('tablepostmanfred');
     Route::get('/get-chart-follows-manfred',[FacebookController::class,'getChartFollows']);
-
     Route::post('/manfred-instagram', [InstagramController::class, 'cambiocuenta'])->name('home_manfred_instagram');
     Route::get('/tabla-post-manfred-instagram', [InstagramController::class, 'tablepostmanfredinstagram'])->name('tablepostmanfredinstagram');
-
-
-
     Route::get('/maquetacion',[InstagramController::class,'tablamanfred'])->name('maquetacion_manfred');
+    //Rutas Titok
+    Route::get('/graficos-tiktok',[TiktokController::class,'index'])->name('graficos_tiktok');
+    Route::get('/tabla-post-manfred-tiktok', [TiktokController::class, 'tablepost'])->name('tablepostmanfredtiktok');
     //rutas python
     Route::post('/analisis',[HomeController::class,'runAnalysis'])->name('informe_python');
 });

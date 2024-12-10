@@ -60,6 +60,26 @@
                     </ul>
                 </div>
             </li>
+
+            <li>
+                <a data-toggle="collapse" href="#tiktok-feature" aria-expanded="true">
+                    <i class="fab fa-tiktok"></i>
+                    <span class="nav-link-text" >{{ __('tiktok  ') }}</span>
+                    <b class="caret mt-1"></b>
+                </a>    
+
+                <div class="collapse show" id="tiktok-feature">
+                    <ul class="nav pl-4">
+                        <li @if ($pageSlug == 'dashboard_tiktok') class="active " @endif>
+                            <a href="{{route('graficos_tiktok')}}">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>{{ _('Graficos') }}</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
         </ul>
     </div>
 </div>
